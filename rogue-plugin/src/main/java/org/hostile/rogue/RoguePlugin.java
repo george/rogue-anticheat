@@ -16,10 +16,11 @@ public class RoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener(this));
     }
 
     @Override
     public void onDisable() {
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener(this));
     }
 }
