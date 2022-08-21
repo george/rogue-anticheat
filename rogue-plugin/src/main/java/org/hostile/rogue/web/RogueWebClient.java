@@ -41,6 +41,9 @@ public class RogueWebClient {
             String payload = GSON.toJson(new JsonChain()
                     .addProperty("packet", packet.serialize().getJsonObject())
                     .addProperty("collisions", playerData.getCollisionTracker().getCollisions().serialize())
+                    .addProperty("gamemode", playerData.getPlayer().getGameMode().name())
+                    .addProperty("walkSpeed", playerData.getPlayer().getWalkSpeed())
+                    .addProperty("timestamp", System.currentTimeMillis())
             );
 
             int payloadLength = payload.getBytes().length;
