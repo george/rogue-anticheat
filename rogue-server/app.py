@@ -1,13 +1,14 @@
 from flask import Flask
-
 from flask import request
 from flask import Response
+
+from concurrent.futures import ThreadPoolExecutor
 
 import config
 import json
 
 app = Flask(__name__)
-
+executor = ThreadPoolExecutor(config.threads)
 
 @app.route('/players/<id>/', methods=['POST'])
 def handle_players_route(id):

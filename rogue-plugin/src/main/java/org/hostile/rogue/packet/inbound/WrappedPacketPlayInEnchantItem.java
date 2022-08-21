@@ -25,4 +25,9 @@ public class WrappedPacketPlayInEnchantItem extends WrappedPacket {
                 .addProperty("windowId", windowId)
                 .addProperty("button", button);
     }
+
+    @Override
+    public String getName() {
+        return "in_enchant_item";
+    }
 }

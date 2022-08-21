@@ -19,4 +19,9 @@ public class WrappedPacketPlayInCustomPayload extends WrappedPacket {
         return new JsonChain()
                 .addProperty("payload", payload);
     }
+
+    @Override
+    public String getName() {
+        return "in_custom_payload";
+    }
 }

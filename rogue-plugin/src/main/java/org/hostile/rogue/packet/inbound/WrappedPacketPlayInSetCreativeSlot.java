@@ -24,4 +24,9 @@ public class WrappedPacketPlayInSetCreativeSlot extends WrappedPacket {
                 .addProperty("slot", slot)
                 .addProperty("material", Material.getMaterial(itemStack.getTypeId()).name());
     }
+
+    @Override
+    public String getName() {
+        return "in_creative_slot";
+    }
 }

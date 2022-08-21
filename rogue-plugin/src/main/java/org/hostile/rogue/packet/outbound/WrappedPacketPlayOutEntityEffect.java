@@ -32,4 +32,9 @@ public class WrappedPacketPlayOutEntityEffect extends WrappedPacket {
                 .addProperty("amplifier", amplifier)
                 .addProperty("duration", duration);
     }
+
+    @Override
+    public String getName() {
+        return "out_entity_effect";
+    }
 }

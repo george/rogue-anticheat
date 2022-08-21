@@ -22,4 +22,9 @@ public class WrappedPacketPlayOutRemoveEntityEffect extends WrappedPacket {
                 .addProperty("entityId", entityId)
                 .addProperty("effectId", effectId);
     }
+
+    @Override
+    public String getName() {
+        return "out_remove_entity_effect";
+    }
 }

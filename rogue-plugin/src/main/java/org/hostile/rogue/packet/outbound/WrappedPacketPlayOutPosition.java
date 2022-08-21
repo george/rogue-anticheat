@@ -35,4 +35,9 @@ public class WrappedPacketPlayOutPosition extends WrappedPacket {
                 .addProperty("yaw", yaw)
                 .addProperty("pitch", pitch);
     }
+
+    @Override
+    public String getName() {
+        return "out_position";
+    }
 }

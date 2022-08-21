@@ -20,4 +20,9 @@ public class WrappedPacketPlayInArmAnimation extends WrappedPacket {
         return new JsonChain()
                 .addProperty("timestamp", timestamp);
     }
+
+    @Override
+    public String getName() {
+        return "in_animation";
+    }
 }

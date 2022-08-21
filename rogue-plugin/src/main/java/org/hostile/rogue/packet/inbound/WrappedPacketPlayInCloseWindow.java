@@ -19,4 +19,9 @@ public class WrappedPacketPlayInCloseWindow extends WrappedPacket {
         return new JsonChain()
                 .addProperty("windowId", windowId);
     }
+
+    @Override
+    public String getName() {
+        return "in_close_window";
+    }
 }

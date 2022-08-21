@@ -32,4 +32,9 @@ public class WrappedPacketPlayOutEntityVelocity extends WrappedPacket {
                 .addProperty("velocityY", velocityY)
                 .addProperty("velocityZ", velocityZ);
     }
+
+    @Override
+    public String getName() {
+        return "out_entity_velocity";
+    }
 }

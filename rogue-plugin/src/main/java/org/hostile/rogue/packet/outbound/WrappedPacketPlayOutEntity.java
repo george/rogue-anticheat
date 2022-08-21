@@ -34,4 +34,9 @@ public class WrappedPacketPlayOutEntity extends WrappedPacket {
                 .addProperty("yaw", yaw)
                 .addProperty("pitch", pitch);
     }
+
+    @Override
+    public String getName() {
+        return "out_entity";
+    }
 }

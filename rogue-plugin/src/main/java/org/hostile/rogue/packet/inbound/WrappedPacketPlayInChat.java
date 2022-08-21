@@ -19,4 +19,9 @@ public class WrappedPacketPlayInChat extends WrappedPacket {
         return new JsonChain()
                 .addProperty("message", message);
     }
+
+    @Override
+    public String getName() {
+        return "in_chat";
+    }
 }

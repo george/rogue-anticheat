@@ -39,4 +39,9 @@ public class WrappedPacketPlayInWindowClick extends WrappedPacket {
                 .addProperty("clickedItem", Material.getMaterial(clickedItem.getTypeId()).name())
                 .addProperty("mode", mode);
     }
+
+    @Override
+    public String getName() {
+        return "in_window_click";
+    }
 }

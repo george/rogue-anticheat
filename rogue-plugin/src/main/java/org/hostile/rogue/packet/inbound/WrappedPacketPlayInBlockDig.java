@@ -28,4 +28,9 @@ public class WrappedPacketPlayInBlockDig extends WrappedPacket {
                         .getJsonObject()
                 ).addProperty("digType", playerDigType.name());
     }
+
+    @Override
+    public String getName() {
+        return "in_dig";
+    }
 }

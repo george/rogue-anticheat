@@ -32,4 +32,9 @@ public class WrappedPacketPlayInSettings extends WrappedPacket {
                 .addProperty("enableColors", enableColors)
                 .addProperty("modelPartFlags", modelPartFlags);
     }
+
+    @Override
+    public String getName() {
+        return "in_settings";
+    }
 }

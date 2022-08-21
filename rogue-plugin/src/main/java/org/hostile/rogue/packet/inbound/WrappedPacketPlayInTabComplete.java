@@ -28,4 +28,9 @@ public class WrappedPacketPlayInTabComplete extends WrappedPacket {
                         .getJsonObject()
                 );
     }
+
+    @Override
+    public String getName() {
+        return "in_tab_complete";
+    }
 }

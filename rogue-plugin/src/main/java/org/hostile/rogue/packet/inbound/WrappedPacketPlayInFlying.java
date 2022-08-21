@@ -47,4 +47,9 @@ public class WrappedPacketPlayInFlying extends WrappedPacket {
                 .addProperty("moving", moving)
                 .addProperty("rotating", rotating);
     }
+
+    @Override
+    public String getName() {
+        return "in_flying";
+    }
 }

@@ -32,4 +32,9 @@ public class WrappedPacketPlayInUseEntity extends WrappedPacket {
                         .getJsonObject()
                 );
     }
+
+    @Override
+    public String getName() {
+        return "in_use_entity";
+    }
 }

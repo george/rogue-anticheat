@@ -20,4 +20,9 @@ public class WrappedPacketPlayInResourcePackStatus extends WrappedPacket {
         return new JsonChain()
                 .addProperty("resourcePackStatus", resourcePackStatus.name());
     }
+
+    @Override
+    public String getName() {
+        return "in_resource_pack";
+    }
 }

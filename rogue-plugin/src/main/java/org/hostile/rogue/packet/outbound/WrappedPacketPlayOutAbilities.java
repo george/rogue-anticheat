@@ -38,4 +38,9 @@ public class WrappedPacketPlayOutAbilities extends WrappedPacket {
                 .addProperty("flySpeed", flySpeed)
                 .addProperty("walkSpeed", walkSpeed);
     }
+
+    @Override
+    public String getName() {
+        return "out_abilities";
+    }
 }

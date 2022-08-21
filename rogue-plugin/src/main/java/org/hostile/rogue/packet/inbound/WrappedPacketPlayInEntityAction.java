@@ -29,4 +29,9 @@ public class WrappedPacketPlayInEntityAction extends WrappedPacket {
                 .addProperty("playerAction", action.name())
                 .addProperty("auxId", auxId);
     }
+
+    @Override
+    public String getName() {
+        return "in_entity_action";
+    }
 }

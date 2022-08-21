@@ -32,4 +32,9 @@ public class WrappedPacketPlayInSteerVehicle extends WrappedPacket {
                 .addProperty("jumping", jumping)
                 .addProperty("sneaking", sneaking);
     }
+
+    @Override
+    public String getName() {
+        return "in_steer_vehicle";
+    }
 }

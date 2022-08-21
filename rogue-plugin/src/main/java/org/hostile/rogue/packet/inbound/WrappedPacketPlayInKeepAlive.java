@@ -19,4 +19,9 @@ public class WrappedPacketPlayInKeepAlive extends WrappedPacket {
         return new JsonChain()
                 .addProperty("key", key);
     }
+
+    @Override
+    public String getName() {
+        return "in_keep_alive";
+    }
 }

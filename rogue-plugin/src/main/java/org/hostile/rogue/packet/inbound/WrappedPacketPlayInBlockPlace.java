@@ -46,4 +46,9 @@ public class WrappedPacketPlayInBlockPlace extends WrappedPacket {
                 .addProperty("facingZ", facingZ)
                 .addProperty("itemStack", Material.getMaterial(itemStack.getTypeId()).name());
     }
+
+    @Override
+    public String getName() {
+        return "in_place";
+    }
 }

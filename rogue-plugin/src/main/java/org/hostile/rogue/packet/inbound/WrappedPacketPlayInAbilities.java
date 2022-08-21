@@ -30,14 +30,18 @@ public class WrappedPacketPlayInAbilities extends WrappedPacket {
     }
 
     @Override
-    public JsonObject serialize() {
+    public JsonChain serialize() {
         return new JsonChain()
                 .addProperty("invulnerable", invulnerable)
                 .addProperty("flying", flying)
                 .addProperty("canFly", canFly)
                 .addProperty("canInstantlyBuild", canInstantlyBuild)
                 .addProperty("flySpeed", flySpeed)
-                .addProperty("walkSpeed", walkSpeed)
-                .getJsonObject();
+                .addProperty("walkSpeed", walkSpeed);
+    }
+
+    @Override
+    public String getName() {
+        return "in_abilities";
     }
 }

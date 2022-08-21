@@ -25,4 +25,9 @@ public class WrappedPacketPlayOutTransaction extends WrappedPacket {
                 .addProperty("transactionId", transactionId)
                 .addProperty("accepted", accepted);
     }
+
+    @Override
+    public String getName() {
+        return "out_transaction";
+    }
 }

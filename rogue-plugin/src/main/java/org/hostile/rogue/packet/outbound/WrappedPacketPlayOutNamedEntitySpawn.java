@@ -31,4 +31,9 @@ public class WrappedPacketPlayOutNamedEntitySpawn extends WrappedPacket {
                 .addProperty("posY", posY)
                 .addProperty("posZ", posZ);
     }
+
+    @Override
+    public String getName() {
+        return "out_named_entity_spawn";
+    }
 }

@@ -35,4 +35,9 @@ public class WrappedPacketPlayInUpdateSign extends WrappedPacket {
                         .addProperty("z", blockPosition.getZ()).getJsonObject())
                 .addProperty("components", components);
     }
+
+    @Override
+    public String getName() {
+        return "in_update_sign";
+    }
 }

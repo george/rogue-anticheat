@@ -20,4 +20,9 @@ public class WrappedPacketPlayInClientCommand extends WrappedPacket {
         return new JsonChain()
                 .addProperty("clientCommand", clientCommand.name());
     }
+
+    @Override
+    public String getName() {
+        return "in_client_command";
+    }
 }

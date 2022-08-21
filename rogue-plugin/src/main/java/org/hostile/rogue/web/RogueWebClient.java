@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.hostile.rogue.RoguePlugin;
 import org.hostile.rogue.data.PlayerData;
+import org.hostile.rogue.packet.PacketWrapper;
 import org.hostile.rogue.packet.WrappedPacket;
 import org.hostile.rogue.util.json.JsonChain;
 
@@ -40,6 +41,7 @@ public class RogueWebClient {
         if (packet != null) {
             String payload = GSON.toJson(new JsonChain()
                     .addProperty("packet", packet.serialize().getJsonObject())
+                    .addProperty("type", packet.getName())
                     .addProperty("collisions", playerData.getCollisionTracker().getCollisions().serialize())
                     .addProperty("gamemode", playerData.getPlayer().getGameMode().name())
                     .addProperty("walkSpeed", playerData.getPlayer().getWalkSpeed())

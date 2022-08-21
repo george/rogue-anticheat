@@ -29,4 +29,9 @@ public class WrappedPacketPlayOutDestroyEntities extends WrappedPacket {
         return new JsonChain()
                 .addProperty("entities", entities);
     }
+
+    @Override
+    public String getName() {
+        return "out_destroy_entities";
+    }
 }
