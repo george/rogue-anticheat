@@ -3,8 +3,10 @@ package org.hostile.rogue.packet.inbound;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayInWindowClick extends WrappedPacket {
@@ -25,5 +27,16 @@ public class WrappedPacketPlayInWindowClick extends WrappedPacket {
         this.actionNumber = packetContainer.getShorts().read(0);
         this.clickedItem = packetContainer.getItemModifier().read(0);
         this.mode = integers.read(3);
+    }
+
+    @Override
+    public JsonChain serialize() {
+        return new JsonChain()
+                .addProperty("windowId", windowId)
+                .addProperty("slotId", slotId)
+                .addProperty("usedButton", usedButton)
+                .addProperty("actionNumber", actionNumber)
+                .addProperty("clickedItem", Material.getMaterial(clickedItem.getTypeId()).name())
+                .addProperty("mode", mode);
     }
 }

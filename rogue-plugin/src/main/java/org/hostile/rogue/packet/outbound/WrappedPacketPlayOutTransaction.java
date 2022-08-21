@@ -3,6 +3,7 @@ package org.hostile.rogue.packet.outbound;
 import com.comphenix.protocol.events.PacketContainer;
 import lombok.Getter;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayOutTransaction extends WrappedPacket {
@@ -17,4 +18,11 @@ public class WrappedPacketPlayOutTransaction extends WrappedPacket {
         this.accepted = packetContainer.getBooleans().read(0);
     }
 
+    @Override
+    public JsonChain serialize() {
+        return new JsonChain()
+                .addProperty("windowId", windowId)
+                .addProperty("transactionId", transactionId)
+                .addProperty("accepted", accepted);
+    }
 }

@@ -2,8 +2,10 @@ package org.hostile.rogue.packet.inbound;
 
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayInAbilities extends WrappedPacket {
@@ -25,5 +27,17 @@ public class WrappedPacketPlayInAbilities extends WrappedPacket {
         this.canInstantlyBuild = booleans.read(3);
         this.flySpeed = floats.read(0);
         this.walkSpeed = floats.read(1);
+    }
+
+    @Override
+    public JsonObject serialize() {
+        return new JsonChain()
+                .addProperty("invulnerable", invulnerable)
+                .addProperty("flying", flying)
+                .addProperty("canFly", canFly)
+                .addProperty("canInstantlyBuild", canInstantlyBuild)
+                .addProperty("flySpeed", flySpeed)
+                .addProperty("walkSpeed", walkSpeed)
+                .getJsonObject();
     }
 }

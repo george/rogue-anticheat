@@ -4,6 +4,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
 import lombok.Getter;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayInFlying extends WrappedPacket {
@@ -32,5 +33,18 @@ public class WrappedPacketPlayInFlying extends WrappedPacket {
         this.onGround = booleans.read(0);
         this.moving = booleans.read(1);
         this.rotating = booleans.read(2);
+    }
+
+    @Override
+    public JsonChain serialize() {
+        return new JsonChain()
+                .addProperty("x", x)
+                .addProperty("y", y)
+                .addProperty("z", z)
+                .addProperty("yaw", yaw)
+                .addProperty("pitch", pitch)
+                .addProperty("onGround", onGround)
+                .addProperty("moving", moving)
+                .addProperty("rotating", rotating);
     }
 }

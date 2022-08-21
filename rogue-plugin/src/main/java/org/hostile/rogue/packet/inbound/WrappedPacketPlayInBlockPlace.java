@@ -4,8 +4,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayInBlockPlace extends WrappedPacket {
@@ -29,4 +31,19 @@ public class WrappedPacketPlayInBlockPlace extends WrappedPacket {
         this.facingZ = floats.read(2);
     }
 
+    @Override
+    public JsonChain serialize() {
+        return new JsonChain()
+                .addProperty("blockPosition", new JsonChain()
+                        .addProperty("x", blockPosition.getX())
+                        .addProperty("y", blockPosition.getY())
+                        .addProperty("z", blockPosition.getZ())
+                        .getJsonObject()
+                )
+                .addProperty("face", face)
+                .addProperty("facingX", facingX)
+                .addProperty("facingY", facingY)
+                .addProperty("facingZ", facingZ)
+                .addProperty("itemStack", Material.getMaterial(itemStack.getTypeId()).name());
+    }
 }

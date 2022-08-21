@@ -1,0 +1,13 @@
+host: "127.0.0.1"
+port: 3000
+user-agent: "rogue"
+flag-permission: "rogue.admin"
+
+punishments:
+  ban:
+    command: "ban %s Unfair Advantage"
+  kick:
+    command: "kick %s Unfair Advantage"
+  flag:
+    message:
+      contents: "&7[&b&l!&7] &e%player% &7flagged check &e%check% &7(Type &e%type%&7) [%violations/%max_violations%]"

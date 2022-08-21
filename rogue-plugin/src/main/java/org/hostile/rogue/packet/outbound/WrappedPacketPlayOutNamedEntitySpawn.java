@@ -4,6 +4,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
 import lombok.Getter;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.util.json.JsonChain;
 
 @Getter
 public class WrappedPacketPlayOutNamedEntitySpawn extends WrappedPacket {
@@ -20,5 +21,14 @@ public class WrappedPacketPlayOutNamedEntitySpawn extends WrappedPacket {
         this.posX = integers.read(1);
         this.posY = integers.read(2);
         this.posZ = integers.read(3);
+    }
+
+    @Override
+    public JsonChain serialize() {
+        return new JsonChain()
+                .addProperty("entityId", entityId)
+                .addProperty("posX", posX)
+                .addProperty("posY", posY)
+                .addProperty("posZ", posZ);
     }
 }
