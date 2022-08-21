@@ -13,6 +13,9 @@ class AutoClickerCheck(check.check_template.Check, ABC):
         
     def handle(self, event):
         timestamp = event.timestamp
+        
+        if event.type != 'in_animation':
+            pass
 
         if timestamp - self.last_click > 500:
             self.last_click = timestamp

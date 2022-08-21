@@ -22,7 +22,7 @@ def handle_checks(data, event):
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
-    data = request.json()
+    data = request.json
 
     if id not in player_data_manager:
         player_data = PlayerData(id)
