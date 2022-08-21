@@ -33,7 +33,7 @@ public class RogueWebClient {
     }
 
     public void sendPacket(PlayerData playerData, WrappedPacket packet) throws IOException {
-        URL url = new URL(host + ":" + port + "/players/" + playerData.getPlayer().getUniqueId().toString());
+        URL url = new URL("http://" + host + ":" + port + "/players/" + playerData.getPlayer().getUniqueId().toString());
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.addRequestProperty("user-agent", userAgent);
@@ -80,7 +80,7 @@ public class RogueWebClient {
     }
 
     public void sendQuit(UUID uuid) throws IOException {
-        URL url = new URL(host + ":" + port + "/players/" + uuid.toString());
+        URL url = new URL("http://" + host + ":" + port + "/players/" + uuid.toString());
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.addRequestProperty("user-agent", userAgent);

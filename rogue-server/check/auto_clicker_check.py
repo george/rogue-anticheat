@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from collections import deque
 
-import check
+import check.check_template
 
 
-class AutoClickerCheck(check.Check, ABC):
+class AutoClickerCheck(check.check_template.Check, ABC):
 
     def __init__(self, data):
         super().__init__(data)

@@ -1,15 +1,20 @@
 package org.hostile.rogue.data;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 import org.hostile.rogue.RoguePlugin;
 import org.hostile.rogue.data.tracker.impl.CollisionTracker;
 import org.hostile.rogue.data.tracker.impl.MovementTracker;
 import org.hostile.rogue.packet.WrappedPacket;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Getter
 public class PlayerData {
+
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(4);
 
     private final RoguePlugin instance = RoguePlugin.getInstance();
 
@@ -25,16 +30,26 @@ public class PlayerData {
         this.movementTracker = new MovementTracker(this);
     }
 
-    @SneakyThrows
     public void handlePacket(WrappedPacket packet) {
         movementTracker.handlePacket(packet);
         collisionTracker.handlePacket(packet);
 
-        instance.getRogueWebClient().sendPacket(this, packet);
+        EXECUTOR_SERVICE.execute(() -> {
+            try {
+                instance.getRogueWebClient().sendPacket(this, packet);
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        });
     }
 
-    @SneakyThrows
     public void handleQuit() {
-        instance.getRogueWebClient().sendQuit(player.getUniqueId());
+        EXECUTOR_SERVICE.execute(() -> {
+            try {
+                instance.getRogueWebClient().sendQuit(player.getUniqueId());
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        });
     }
 }

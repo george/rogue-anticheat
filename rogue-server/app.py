@@ -19,10 +19,10 @@ def handle_checks(data, event):
         check.handle(event)
 
 
-@app.route('/players/<id>/', methods=['POST'])
+@app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
-    data = request.get_json()
+    data = request.json()
 
     if id not in player_data_manager:
         player_data = PlayerData(id)

@@ -1,0 +1,5 @@
+main: org.hostile.rogue.RoguePlugin
+name: Rogue
+version: 1.0.0
+author: George
+depend: [ProtocolLib]

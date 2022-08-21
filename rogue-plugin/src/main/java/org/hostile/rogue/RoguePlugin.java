@@ -1,6 +1,7 @@
 package org.hostile.rogue;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import dev.thomazz.pledge.api.Pledge;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,12 +21,17 @@ public class RoguePlugin extends JavaPlugin {
     private RogueWebClient rogueWebClient;
     private ViolationHandler violationHandler;
 
+    private Pledge pledge;
+
     @Override
     public void onEnable() {
         instance = this;
 
         rogueWebClient = new RogueWebClient(getConfig());
         violationHandler = new ViolationHandler(getConfig());
+
+        pledge = Pledge.build().range(Short.MIN_VALUE, (short) -500);
+        pledge.start(this);
 
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener(this));
     }

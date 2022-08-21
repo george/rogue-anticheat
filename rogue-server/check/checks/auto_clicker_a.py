@@ -10,6 +10,9 @@ class AutoClickerA(AutoClickerCheck, ABC):
         if math_util.get_stdev(super().clicks) < .45:
             super().fail()
 
+    def get_size(self):
+        return 100
+    
     def get_check_name(self):
         return 'AutoClicker'
 
