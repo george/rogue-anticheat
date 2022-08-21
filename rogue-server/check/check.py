@@ -17,3 +17,6 @@ class Check:
     @abstractmethod
     def get_check_type(self):
         pass
+
+    def fail(self):
+        pass

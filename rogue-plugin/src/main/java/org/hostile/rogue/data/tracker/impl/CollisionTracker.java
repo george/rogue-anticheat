@@ -12,7 +12,6 @@ import org.hostile.rogue.data.tracker.Tracker;
 import org.hostile.rogue.location.CustomLocation;
 import org.hostile.rogue.packet.WrappedPacket;
 import org.hostile.rogue.util.collisions.Collisions;
-import org.hostile.rogue.util.math.MathUtil;
 import org.hostile.rogue.util.minecraft.AxisAlignedBB;
 import org.hostile.rogue.util.minecraft.MathHelper;
 
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 public class CollisionTracker extends Tracker {
 
     private static final int MATERIAL_MAX = Material.values().length; //every material in minecraft
+    private static final double DIVISOR = 1D / 64;
 
     private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[MATERIAL_MAX]; //the corresponding bounding box sizes
 
@@ -90,7 +90,7 @@ public class CollisionTracker extends Tracker {
         activeCollisions.setCollidedVertically(activeCollisions.isOnGround() || activeCollisions.isUnderBlock());
         activeCollisions.setInLava(collides(collisions, LAVA));
         activeCollisions.setInWater(collides(collisions, WATER));
-        activeCollisions.setMathematicallyOnGround(location.getY() % MathUtil.DIVISOR == 0);
+        activeCollisions.setMathematicallyOnGround(location.getY() % DIVISOR == 0);
 
         this.previousCollisions = this.collisions;
         this.collisions = activeCollisions;
