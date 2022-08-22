@@ -15,6 +15,9 @@ player_data_manager = {}
 
 
 def handle_checks(data, event):
+    for tracker in data.trackers:
+        tracker.handle(event)
+
     for check in data.checks:
         check.handle(event)
 
@@ -35,16 +38,12 @@ def handle_players_route(id):
 
     executor.submit(handle_checks, player_data, data)
 
+    violations = []
+    if player_data.has_violations():
+        violations = player_data.get_and_pop_violations()
+
     return Response(json.dumps({
-        'violations': [
-            {
-                'checkName': 'Test',
-                'action': 'flag',
-                'checkType': 'A',
-                'violations': 1,
-                'maxViolations': 2
-            }
-        ]
+        'violations': violations
     }), status=200)
 
 
