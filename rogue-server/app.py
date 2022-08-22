@@ -22,7 +22,8 @@ def handle_checks(data, event):
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
-    data = request.json
+    data = request.form
+    print(data)
 
     if id not in player_data_manager:
         player_data = PlayerData(id)
@@ -47,4 +48,4 @@ def handle_players_route(id):
 
 
 if __name__ == "__main__":
-    app.run(config.hostname, config.port)
+    app.run(config.hostname, config.port, debug=False)
