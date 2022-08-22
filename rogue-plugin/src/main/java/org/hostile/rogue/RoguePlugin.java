@@ -27,6 +27,8 @@ public class RoguePlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        saveDefaultConfig();
+
         rogueWebClient = new RogueWebClient(getConfig());
         violationHandler = new ViolationHandler(getConfig());
 

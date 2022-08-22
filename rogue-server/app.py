@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 from flask import Response
 
@@ -22,7 +22,7 @@ def handle_checks(data, event):
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
-    data = request.form
+    data = jsonify(request.form).get_json()
     print(data)
 
     if id not in player_data_manager:
@@ -36,14 +36,15 @@ def handle_players_route(id):
     executor.submit(handle_checks, player_data, data)
 
     return Response(json.dumps({
-        'violations': {
-            'a': {
+        'violations': [
+            {
                 'checkName': 'Test',
+                'action': 'flag',
                 'checkType': 'A',
                 'violations': 1,
                 'maxViolations': 2
             }
-        }
+        ]
     }), status=200)
 
 

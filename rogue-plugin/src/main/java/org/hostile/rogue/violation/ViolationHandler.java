@@ -23,15 +23,15 @@ public class ViolationHandler {
                 .forEach(section -> {
                     List<BiConsumer<JsonObject, PlayerData>> actions = new ArrayList<>();
 
-                    if (configuration.get(section + ".command") != null) {
-                        String command = configuration.getString(section + ".command");
+                    if (configuration.get("punishments." + section + ".command") != null) {
+                        String command = configuration.getString("punishments." + section + ".command");
 
                         actions.add((checkData, data) -> {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("%player%",
                                     data.getPlayer().getName()));
                         });
-                    } else if (configuration.get(section + ".message") != null) {
-                        String message = configuration.getString(section + ".message");
+                    } else if (configuration.get("punishments." + section + ".message") != null) {
+                        String message = configuration.getString("punishments." + section + ".message");
 
                         actions.add((checkData, data) -> {
                             String flagMessage = ChatColor.translateAlternateColorCodes('&',
