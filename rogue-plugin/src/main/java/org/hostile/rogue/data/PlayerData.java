@@ -8,13 +8,9 @@ import org.hostile.rogue.data.tracker.impl.MovementTracker;
 import org.hostile.rogue.packet.WrappedPacket;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Getter
 public class PlayerData {
-
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(4);
 
     private final RoguePlugin instance = RoguePlugin.getInstance();
 
@@ -34,22 +30,27 @@ public class PlayerData {
         movementTracker.handlePacket(packet);
         collisionTracker.handlePacket(packet);
 
-        EXECUTOR_SERVICE.execute(() -> {
+        /*
+        Since we're sending data through an HTTP request very quickly,
+        making a new thread every time we want to send data is more
+        advantageous than using an executor service.
+         */
+        new Thread(() -> {
             try {
                 instance.getRogueWebClient().sendPacket(this, packet);
             } catch (IOException exc) {
                 exc.printStackTrace();
             }
-        });
+        }).start();
     }
 
     public void handleQuit() {
-        EXECUTOR_SERVICE.execute(() -> {
+        new Thread(() -> {
             try {
                 instance.getRogueWebClient().sendQuit(player.getUniqueId());
             } catch (IOException exc) {
                 exc.printStackTrace();
             }
-        });
+        }).start();
     }
 }

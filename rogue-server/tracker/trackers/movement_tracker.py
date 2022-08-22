@@ -20,12 +20,18 @@ class MovementTracker(Tracker, ABC):
         self.teleports = []
         self.velocities = []
 
+        self.walk_speed = 0.2
+        self.gamemode = 'SURVIVAL'
+
     def handle(self, event):
         if event['type'] == 'in_flying':
             packet = event['packet']
 
             self.teleporting = False
             self.small_move = False
+
+            self.walk_speed = event['walk_speed']
+            self.gamemode = event['SURVIVAL']
 
             if not packet['moving'] and not packet['rotating']:
                 self.small_move = True
