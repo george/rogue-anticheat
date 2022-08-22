@@ -14,19 +14,18 @@ executor = ThreadPoolExecutor(config.threads)
 player_data_manager = {}
 
 
-def handle_checks(data, event):
-    for tracker in data.trackers:
-        tracker.handle(event)
-
-    for check in data.checks:
-        check.handle(event)
+def handle_checks(data, packet):
+    data.handle_packet(packet)
 
 
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
     data = jsonify(request.form).get_json()
-    print(data)
+
+    for i in data:
+        data = json.loads(i)['jsonObject']
+        break
 
     if id not in player_data_manager:
         player_data = PlayerData(id)

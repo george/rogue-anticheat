@@ -1,5 +1,6 @@
 from collections import deque
 
+from check.packet_check import PacketCheck
 from tracker.trackers.action_tracker import ActionTracker
 from tracker.trackers.collision_tracker import CollisionTracker
 from tracker.trackers.movement_tracker import MovementTracker
@@ -11,12 +12,20 @@ class PlayerData:
     def __init__(self, id):
         self.checks = {}
         self.id = id
+
         self.violations = deque()
+        self.ticks_existed = 0
+
+        self.action_tracker = ActionTracker(self)
+        self.ping_tracker = PingTracker(self)
+        self.movement_tracker = MovementTracker(self)
+        self.collision_tracker = CollisionTracker(self)
+
         self.trackers = [
-            ActionTracker(),
-            PingTracker(),
-            MovementTracker(),
-            CollisionTracker()
+            self.action_tracker,
+            self.ping_tracker,
+            self.movement_tracker,
+            self.collision_tracker
         ]
 
     def has_violations(self):
@@ -35,3 +44,15 @@ class PlayerData:
             'violations': violations,
             'maxViolations': max_violations
         })
+
+    def handle_packet(self, packet):
+        if packet['type'] == 'in_flying':
+            self.ticks_existed += 1
+
+        for tracker in self.trackers:
+            print(tracker)
+            tracker.handle(packet)
+
+        for check in self.checks:
+            if isinstance(check, PacketCheck):
+                check.handle(packet)

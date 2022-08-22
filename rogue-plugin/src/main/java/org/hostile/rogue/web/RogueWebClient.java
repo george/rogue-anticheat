@@ -8,6 +8,7 @@ import org.hostile.rogue.RoguePlugin;
 import org.hostile.rogue.data.PlayerData;
 import org.hostile.rogue.packet.PacketWrapper;
 import org.hostile.rogue.packet.WrappedPacket;
+import org.hostile.rogue.packet.inbound.WrappedPacketPlayInFlying;
 import org.hostile.rogue.util.json.JsonChain;
 
 import java.io.BufferedReader;
@@ -39,14 +40,19 @@ public class RogueWebClient {
         connection.addRequestProperty("user-agent", userAgent);
 
         if (packet != null) {
-            String payload = GSON.toJson(new JsonChain()
+            JsonChain jsonChain = new JsonChain()
                     .addProperty("packet", packet.serialize().getJsonObject())
                     .addProperty("type", packet.getName())
-                    .addProperty("collisions", playerData.getCollisionTracker().getCollisions().serialize())
-                    .addProperty("gamemode", playerData.getPlayer().getGameMode().name())
-                    .addProperty("walkSpeed", playerData.getPlayer().getWalkSpeed())
-                    .addProperty("timestamp", System.currentTimeMillis())
-            );
+                    .addProperty("timestamp", System.currentTimeMillis());
+
+            if (packet instanceof WrappedPacketPlayInFlying) {
+                jsonChain.addProperty("collisions", playerData.getCollisionTracker().getCollisions().serialize())
+                        .addProperty("gamemode", playerData.getPlayer().getGameMode().name())
+                        .addProperty("walkSpeed", playerData.getPlayer().getWalkSpeed())
+                        .addProperty("entityId", playerData.getPlayer().getEntityId());
+            }
+
+            String payload = GSON.toJson(jsonChain.getJsonObject());
 
             int payloadLength = payload.getBytes().length;
             byte[] payloadArray = payload.getBytes();

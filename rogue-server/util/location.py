@@ -1,4 +1,4 @@
-import math_util
+from util import math_util
 
 
 class Location:
@@ -11,4 +11,4 @@ class Location:
         self.pitch = pitch
 
     def distance(self, location):
-        return math_util.hypot()
+        return math_util.hypot(self, location)
