@@ -35,5 +35,4 @@ class ActionTracker(Tracker, ABC):
         return self.data.ticks_existed - self.last_attack < 1
 
     def is_digging(self):
-        print(self.digging)
         return self.digging

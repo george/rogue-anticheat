@@ -10,7 +10,6 @@ class AutoClickerA(AutoClickerCheck, ABC):
         super().__init__(data)
 
     def handle_check(self):
-        print(math_util.get_stdev(self.clicks))
         if math_util.get_stdev(self.clicks) < .45:
             self.fail()
 
