@@ -1,21 +1,22 @@
 from abc import ABC, abstractmethod
 from collections import deque
 
-import check.check_template
+from check.packet_check import PacketCheck
 
 
-class AutoClickerCheck(check.check_template.Check, ABC):
+class AutoClickerCheck(PacketCheck, ABC):
 
     def __init__(self, data):
         super().__init__(data)
+
         self.clicks = deque()
         self.last_click = 0
         
     def handle(self, event):
-        timestamp = event.timestamp
-        
-        if event.type != 'in_animation':
+        if event['type'] != 'in_animation':
             pass
+
+        timestamp = int(event['timestamp'])
 
         if timestamp - self.last_click > 500:
             self.last_click = timestamp

@@ -7,8 +7,11 @@ class ActionTracker(Tracker, ABC):
 
     def __init__(self, data):
         super().__init__(data)
+
         self.last_attack = 0
+
         self.sneaking = False
+        self.digging = False
 
     def handle(self, event):
         if event['type'] == 'in_use_entity':
@@ -20,6 +23,13 @@ class ActionTracker(Tracker, ABC):
                 self.sneaking = True
             elif action == 'STOP_SNEAKING':
                 self.sneaking = False
+        elif event['type'] == 'digType':
+            action = event['packet']['digType']
+
+            if action == 'START_DESTROY_BLOCK':
+                self.digging = True
+            elif action == 'STOP_DESTROY_BLOCK' or action == 'ABORT_DESTROY_BLOCK':
+                self.digging = False
         pass
 
     def is_attacking(self):

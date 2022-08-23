@@ -8,6 +8,10 @@ from data.player_data import PlayerData
 
 import config
 import json
+import logging
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 executor = ThreadPoolExecutor(config.threads)
@@ -30,7 +34,7 @@ def handle_players_route(id):
     if id not in player_data_manager:
         player_data = PlayerData(id)
         check_manager.load_checks(player_data)
-        
+
         player_data_manager[id] = player_data
     else:
         player_data = player_data_manager[id]

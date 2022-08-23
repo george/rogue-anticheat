@@ -2,6 +2,8 @@ from abc import ABC
 
 from check.movement_check import MovementCheck
 from check.rotation_check import RotationCheck
+from check.velocity_check import VelocityCheck
+
 from tracker.tracker_template import Tracker
 from util.location import Location
 
@@ -16,9 +18,12 @@ class MovementTracker(Tracker, ABC):
 
         self.small_move = False
         self.teleporting = False
+        self.can_fly = False
 
         self.teleports = []
         self.velocities = []
+        self.abilities = []
+        self.active_velocities = []
 
         self.walk_speed = 0.2
         self.gamemode = 'SURVIVAL'
@@ -92,6 +97,22 @@ class MovementTracker(Tracker, ABC):
             for check in super().data.checks:
                 if isinstance(check, MovementCheck):
                     check.handle(event)
+
+            event = {
+                'horizontal': self.get_velocity_horizontal(),
+                'vertical': self.get_velocity_vertical(),
+                'previous_location': self.current_location,
+                'current_location': location
+            }
+
+            for check in super().data.checks:
+                if isinstance(check, VelocityCheck):
+                    check.handle(event)
+
+            for velocity in self.active_velocities:
+                if super().data.ticks_existed >= velocity['completed_tick']:
+                    self.active_velocities.remove(velocity)
+
         elif event['type'] == 'out_position':
             packet = event['packet']
 
@@ -101,4 +122,53 @@ class MovementTracker(Tracker, ABC):
                 'z': packet['z'],
                 'transaction': super().data.ping_tracker.last_transaction
             })
+        elif event['type'] == 'out_entity_velocity':
+            packet = event['packet']
+
+            x = packet['x'] / 8000
+            y = packet['y'] / 8000
+            z = packet['z'] / 8000
+
+            self.velocities.append({
+                'x': x,
+                'y': y,
+                'z': z,
+                'transaction': super().data.ping_tracker.last_transaction
+            })
+        elif event['type'] == 'out_abilities':
+            packet = event['packet']
+
+            self.abilities.append({
+                'can_fly': packet['canFly'],
+                'transaction': super().data.ping_tracker.last_transaction
+            })
+        elif event['type'] == 'in_transaction':
+            packet = event['packet']
+
+            id = packet['transactionId']
+            
+            for velocity in self.velocities:
+                if velocity['transaction'] == id:
+                    self.velocities.remove(velocity)
+                    velocity['completed_tick'] = super().data.ticks_existed + ((velocity['horizontal'] / 2 + 2) * 15)
+                    self.active_velocities.append(velocity)
+
+            for abilities in self.abilities:
+                if abilities['transaction'] == id:
+                    self.abilities.remove(abilities)
+                    self.can_fly = abilities['can_fly']
         pass
+
+    def get_velocity_horizontal(self):
+        velocity = 0
+        for velocity in self.active_velocities:
+            velocity += velocity['horizontal']
+
+        return velocity
+
+    def get_velocity_vertical(self):
+        velocity = 0
+        for velocity in self.active_velocities:
+            velocity += velocity['vertical']
+
+        return velocity
