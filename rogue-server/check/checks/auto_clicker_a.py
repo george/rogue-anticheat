@@ -6,9 +6,13 @@ from check.auto_clicker_check import AutoClickerCheck
 
 class AutoClickerA(AutoClickerCheck, ABC):
 
+    def __init__(self, data):
+        super().__init__(data)
+
     def handle_check(self):
-        if math_util.get_stdev(super().clicks) < .45:
-            super().fail()
+        print(math_util.get_stdev(self.clicks))
+        if math_util.get_stdev(self.clicks) < .45:
+            self.fail()
 
     def get_size(self):
         return 100

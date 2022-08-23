@@ -20,7 +20,7 @@ class PotionTracker(Tracker, ABC):
         if event['type'] == 'out_entity_effect':
             packet = event['packet']
 
-            if int(packet['entityId']) is not super().data.entity_id:
+            if int(packet['entityId']) is not self.data.entity_id:
                 return
 
             effect = packet['effectId']
@@ -32,7 +32,7 @@ class PotionTracker(Tracker, ABC):
                 'effectId': effect,
                 'amplifier': packet['amplifier'],
                 'duration': packet['duration'],
-                'last_transaction': super().data.ping_tracker.last_transaction
+                'last_transaction': self.data.ping_tracker.last_transaction
             }
             self.pending_potions.append(potion)
         elif event['type'] == 'in_transaction':
@@ -44,16 +44,16 @@ class PotionTracker(Tracker, ABC):
                 if potion['last_transaction'] == id:
                     self.pending_potions.remove(potion)
 
-                    potion['end'] = super().data.ticks_existed + 20 * int((potion['duration']))
+                    potion['end'] = self.data.ticks_existed + 20 * int((potion['duration']))
                     self.active_potions.append(potion)
         elif event['type'] == 'in_flying':
             for potion in self.active_potions:
-                if super().data.ticks_existed >= potion['end']:
+                if self.data.ticks_existed >= potion['end']:
                     self.active_potions.remove(potion)
         elif event['type'] == 'out_remove_entity_effect':
             packet = event['packet']
 
-            if int(packet['entityId']) is not super().data.entity_id:
+            if int(packet['entityId']) is not self.data.entity_id:
                 return
 
             for potion in self.active_potions:

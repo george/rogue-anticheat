@@ -15,7 +15,7 @@ class ActionTracker(Tracker, ABC):
 
     def handle(self, event):
         if event['type'] == 'in_use_entity':
-            self.last_attack = super().data.ticks_existed
+            self.last_attack = self.data.ticks_existed
         elif event['type'] == 'in_entity_action':
             action = event['packet']['playerAction']
 
@@ -23,7 +23,7 @@ class ActionTracker(Tracker, ABC):
                 self.sneaking = True
             elif action == 'STOP_SNEAKING':
                 self.sneaking = False
-        elif event['type'] == 'digType':
+        elif event['type'] == 'in_dig':
             action = event['packet']['digType']
 
             if action == 'START_DESTROY_BLOCK':
@@ -32,4 +32,8 @@ class ActionTracker(Tracker, ABC):
                 self.digging = False
 
     def is_attacking(self):
-        return super().data.ticks_existed - self.last_attack < 1
+        return self.data.ticks_existed - self.last_attack < 1
+
+    def is_digging(self):
+        print(self.digging)
+        return self.digging

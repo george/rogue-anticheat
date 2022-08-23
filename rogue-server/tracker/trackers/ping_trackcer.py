@@ -39,4 +39,4 @@ class PingTracker(Tracker, ABC):
 
             for key in self.transaction_map:
                 if timestamp - key > 3000:
-                    super().data.add_violation('Tracker', 'B', 1)
+                    self.data.add_violation('Tracker', 'B', 1)
