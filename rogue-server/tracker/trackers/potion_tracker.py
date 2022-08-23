@@ -60,3 +60,9 @@ class PotionTracker(Tracker, ABC):
                 if potion['effectId'] == packet['effectId']:
                     self.active_potions.remove(potion)
         pass
+
+    def get_potion_level(self, potion_type):
+        for effect in self.active_potions:
+            if effect['effectId'] == potion_type.value:
+                return effect['amplifier']
+        return 0
