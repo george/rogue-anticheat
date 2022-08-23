@@ -30,7 +30,6 @@ class ActionTracker(Tracker, ABC):
                 self.digging = True
             elif action == 'STOP_DESTROY_BLOCK' or action == 'ABORT_DESTROY_BLOCK':
                 self.digging = False
-        pass
 
     def is_attacking(self):
         return super().data.ticks_existed - self.last_attack < 1

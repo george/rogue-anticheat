@@ -39,7 +39,7 @@ public class PlayerData {
             try {
                 instance.getRogueWebClient().sendPacket(this, packet);
             } catch (IOException exc) {
-                exc.printStackTrace();
+//                exc.printStackTrace();
             }
         }).start();
     }
@@ -49,7 +49,7 @@ public class PlayerData {
             try {
                 instance.getRogueWebClient().sendQuit(player.getUniqueId());
             } catch (IOException exc) {
-                exc.printStackTrace();
+//                exc.printStackTrace();
             }
         }).start();
     }

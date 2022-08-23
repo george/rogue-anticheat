@@ -10,4 +10,4 @@ punishments:
     command: "kick %s Unfair Advantage"
   flag:
     message:
-      contents: "&7[&b&l!&7] &e%player% &7flagged check &e%check% &7(Type &e%type%&7) [%violations/%max_violations%]"
+      contents: "&7[&b&l!&7] &e%player% &7flagged check &e%check% &7(Type &e%type%&7) [%violations%/%max_violations%]"

@@ -31,8 +31,8 @@ public class ViolationHandler {
                                     data.getPlayer().getName()));
                         });
                     } else if (configuration.get("punishments." + section + ".message") != null) {
-                        String message = configuration.getString("punishments." + section + ".message");
-
+                        String message = configuration.getString("punishments." + section + ".message.contents");
+                        
                         actions.add((checkData, data) -> {
                             String flagMessage = ChatColor.translateAlternateColorCodes('&',
                                     message.replaceAll("%player%", data.getPlayer().getName())

@@ -84,8 +84,8 @@ class MovementTracker(Tracker, ABC):
             if abs(location.x - self.current_location.x > 8) or abs(location.z - self.current_location.z > 8) \
                     or abs(location.y - self.current_location.y) > 8:
                 if not self.teleporting:
-                    super().data.add_violation('Tracker', 'A', 1, 1)
-                pass
+                    super().data.add_violation('Tracker', 'A', 1)
+                return
 
             event = {
                 'current': location,
@@ -146,7 +146,7 @@ class MovementTracker(Tracker, ABC):
             packet = event['packet']
 
             id = packet['transactionId']
-            
+
             for velocity in self.velocities:
                 if velocity['transaction'] == id:
                     self.velocities.remove(velocity)
@@ -157,7 +157,6 @@ class MovementTracker(Tracker, ABC):
                 if abilities['transaction'] == id:
                     self.abilities.remove(abilities)
                     self.can_fly = abilities['can_fly']
-        pass
 
     def get_velocity_horizontal(self):
         velocity = 0

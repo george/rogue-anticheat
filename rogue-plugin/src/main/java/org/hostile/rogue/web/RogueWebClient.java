@@ -76,13 +76,14 @@ public class RogueWebClient {
 
         JsonObject object = GSON.fromJson(builder.toString(), JsonObject.class);
 
-        if (object.has("violations")) {
-            JsonArray violations = object.get("violations").getAsJsonArray();
-
-            violations.forEach(violation -> {
-                RoguePlugin.getInstance().getViolationHandler().handle(playerData, violation.getAsJsonObject());
+        object.entrySet().forEach(element -> {
+            JsonArray array = element.getValue().getAsJsonArray();
+            array.forEach(jsonElement -> {
+                if (jsonElement.isJsonObject()) {
+                    RoguePlugin.getInstance().getViolationHandler().handle(playerData, jsonElement.getAsJsonObject());
+                }
             });
-        }
+        });
     }
 
     public void sendQuit(UUID uuid) throws IOException {

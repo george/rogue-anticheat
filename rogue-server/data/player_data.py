@@ -1,7 +1,10 @@
+import config
+
 from collections import deque
 
 from check.auto_clicker_check import AutoClickerCheck
 from check.packet_check import PacketCheck
+
 from tracker.trackers.action_tracker import ActionTracker
 from tracker.trackers.collision_tracker import CollisionTracker
 from tracker.trackers.movement_tracker import MovementTracker
@@ -39,15 +42,19 @@ class PlayerData:
     def get_and_pop_violations(self):
         violations = [len(self.violations)]
         for i in range(len(self.violations)):
-            violations[i] = self.violations[i]
-            self.violations.pop()
+            violations.append(self.violations[i])
+        self.violations.clear()
 
-    def add_violation(self, check_name, check_type, violations, max_violations):
+        return violations
+
+    def add_violation(self, check_name, check_type, violations):
+        data = config.get_check_data(check_name, check_type)
         self.violations.append({
+            'action': data['action'],
             'checkName': check_name,
             'checkType': check_type,
             'violations': violations,
-            'maxViolations': max_violations
+            'maxViolations': data['max_violations']
         })
 
     def handle_packet(self, event):

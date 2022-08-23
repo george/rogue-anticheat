@@ -21,12 +21,12 @@ class PotionTracker(Tracker, ABC):
             packet = event['packet']
 
             if int(packet['entityId']) is not super().data.entity_id:
-                pass
+                return
 
             effect = packet['effectId']
 
             if effect not in MONITORED_EFFECTS:
-                pass
+                return
 
             potion = {
                 'effectId': effect,
@@ -54,12 +54,11 @@ class PotionTracker(Tracker, ABC):
             packet = event['packet']
 
             if int(packet['entityId']) is not super().data.entity_id:
-                pass
+                return
 
             for potion in self.active_potions:
                 if potion['effectId'] == packet['effectId']:
                     self.active_potions.remove(potion)
-        pass
 
     def get_potion_level(self, potion_type):
         for effect in self.active_potions:

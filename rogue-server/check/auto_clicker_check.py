@@ -14,13 +14,14 @@ class AutoClickerCheck(PacketCheck, ABC):
         
     def handle(self, event):
         if event['type'] != 'in_animation':
-            pass
+            return
 
+        super().fail()
         timestamp = int(event['timestamp'])
 
         if timestamp - self.last_click > 500:
             self.last_click = timestamp
-            pass
+            return
         
         if len(self.clicks) == self.get_size():
             self.handle_check()

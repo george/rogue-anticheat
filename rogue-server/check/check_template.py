@@ -22,4 +22,4 @@ class Check:
     def fail(self):
         self.violations += 1
 
-        self.data.add_violation(self.get_check_name(), self.get_check_type(), self.violations, 10)
+        self.data.add_violation(self.get_check_name(), self.get_check_type(), self.violations)

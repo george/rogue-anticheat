@@ -25,11 +25,15 @@ def handle_checks(data, packet):
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
-    data = jsonify(request.form).get_json()
+    data = jsonify(request.form.to_dict()).get_json()
 
-    for i in data:
-        data = json.loads(i)['jsonObject']
+    for key in data:
+        data = json.loads(key)
         break
+
+    if 'action' in data:
+        player_data_manager.pop(id)
+        return
 
     if id not in player_data_manager:
         player_data = PlayerData(id)
@@ -44,7 +48,6 @@ def handle_players_route(id):
     violations = []
     if player_data.has_violations():
         violations = player_data.get_and_pop_violations()
-
     return Response(json.dumps({
         'violations': violations
     }), status=200)
