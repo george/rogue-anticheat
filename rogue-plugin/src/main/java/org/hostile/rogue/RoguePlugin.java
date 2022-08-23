@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import dev.thomazz.pledge.api.Pledge;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.hostile.rogue.listener.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hostile.rogue.data.PlayerData;
 import org.hostile.rogue.listener.PacketListener;
@@ -35,6 +36,7 @@ public class RoguePlugin extends JavaPlugin {
         pledge = Pledge.build().range(Short.MIN_VALUE, (short) -500);
         pledge.start(this);
 
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener(this));
     }
 
