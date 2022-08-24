@@ -87,21 +87,10 @@ public class RogueWebClient {
     }
 
     public void sendQuit(UUID uuid) throws IOException {
-        URL url = new URL("http://" + host + ":" + port + "/players/" + uuid.toString());
+        URL url = new URL("http://" + host + ":" + port + "/quit/" + uuid.toString());
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.addRequestProperty("user-agent", userAgent);
-        String payload = GSON.toJson(new JsonChain()
-                .addProperty("action", "quit")
-        );
-
-        int payloadLength = payload.getBytes().length;
-        byte[] payloadArray = payload.getBytes();
-
-        connection.setFixedLengthStreamingMode(payloadLength);
-        connection.setDoOutput(true);
-
         connection.connect();
-        connection.getOutputStream().write(payloadArray);
     }
 }

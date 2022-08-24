@@ -22,6 +22,11 @@ def handle_checks(data, packet):
     data.handle_packet(packet)
 
 
+@app.route('/quit/<id>')
+def handle_quit_route(id):
+    player_data_manager.pop(id)
+
+
 @app.route('/players/<id>', methods=['POST'])
 def handle_players_route(id):
     player_data = None
@@ -30,10 +35,6 @@ def handle_players_route(id):
     for key in data:
         data = json.loads(key)
         break
-
-    if 'action' in data:
-        player_data_manager.pop(id)
-        return
 
     if id not in player_data_manager:
         player_data = PlayerData(id)
