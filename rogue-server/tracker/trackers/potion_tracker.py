@@ -20,7 +20,7 @@ class PotionTracker(Tracker, ABC):
         if event['type'] == 'out_entity_effect':
             packet = event['packet']
 
-            if int(packet['entityId']) is not self.data.entity_id:
+            if int(packet['entityId']) != self.data.entity_id:
                 return
 
             effect = packet['effectId']
@@ -53,7 +53,7 @@ class PotionTracker(Tracker, ABC):
         elif event['type'] == 'out_remove_entity_effect':
             packet = event['packet']
 
-            if int(packet['entityId']) is not self.data.entity_id:
+            if int(packet['entityId']) != self.data.entity_id:
                 return
 
             for potion in self.active_potions:
