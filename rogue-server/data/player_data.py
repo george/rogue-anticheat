@@ -47,13 +47,18 @@ class PlayerData:
 
         return violations
 
-    def add_violation(self, check_name, check_type, violations):
+    def add_violation(self, check_name, check_type, violations, *args):
         data = config.get_check_data(check_name, check_type)
+        violation_data = []
+        for arg in args:
+            violation_data.append(arg)
+
         self.violations.append({
             'action': 'ban' if violations > data['max_violations'] else data['action'],
             'checkName': check_name,
             'checkType': check_type,
             'violations': violations,
+            'data': violation_data,
             'maxViolations': data['max_violations']
         })
 

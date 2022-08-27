@@ -85,7 +85,11 @@ class MovementTracker(Tracker, ABC):
                     or abs(location.y - self.current_location.y) > 8:
                 if not self.teleporting and self.data.ticks_existed > 20:
                     self.data.add_violation('Tracker', 'A', 1)
-                return
+
+                    self.previous_location = self.current_location
+                    self.current_location = location
+
+                    return
 
             event = {
                 'current': location,
@@ -94,9 +98,10 @@ class MovementTracker(Tracker, ABC):
                 'distanceY': abs(location.y - self.current_location.y)
             }
 
-            for check in self.data.checks:
-                if isinstance(check, MovementCheck):
-                    check.handle(event)
+            if (x != 0 or y != 0 or z != 0) and self.gamemode == 'SURVIVAL':
+                for check in self.data.checks:
+                    if isinstance(check, MovementCheck):
+                        check.handle(event)
 
             event = {
                 'horizontal': self.get_velocity_horizontal(),
@@ -113,6 +118,8 @@ class MovementTracker(Tracker, ABC):
                 if self.data.ticks_existed >= velocity['completed_tick']:
                     self.active_velocities.remove(velocity)
 
+            self.previous_location = self.current_location
+            self.current_location = location
         elif event['type'] == 'out_position':
             packet = event['packet']
 
