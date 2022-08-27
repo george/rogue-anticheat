@@ -56,7 +56,6 @@ public class ViolationHandler {
                             hoverComponentBuilder.append(header).append("\n");
 
                             JsonArray violationData = checkData.get("data").getAsJsonArray();
-                            System.out.println(violationData);
 
                             if (violationData.size() > 0) {
                                 for (int i = 0; i < violationData.size(); i++) {
