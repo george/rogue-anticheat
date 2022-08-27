@@ -3,6 +3,7 @@ package org.hostile.rogue.data.tracker.impl;
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -101,7 +102,7 @@ public class CollisionTracker extends Tracker {
 
         int minX = MathHelper.floor_double(boundingBox.minX);
         int maxX = MathHelper.floor_double(boundingBox.maxX);
-        int minY = MathHelper.floor_double(boundingBox.minY);
+        int minY = MathHelper.floor_double(boundingBox.minY - 0.1);
         int maxY = MathHelper.floor_double(boundingBox.maxY);
         int minZ = MathHelper.floor_double(boundingBox.minZ);
         int maxZ = MathHelper.floor_double(boundingBox.maxZ);
@@ -114,7 +115,6 @@ public class CollisionTracker extends Tracker {
 
                 for (int y = minY; y < maxY; y++) {
                     Block block = world.getBlockAt(new Location(world, x, y, z));
-
                     int id = block.getType().getId();
                     if (id == Material.AIR.getId()) {
                         continue;
@@ -164,7 +164,12 @@ public class CollisionTracker extends Tracker {
      */
     public boolean isCollidedBelow(Set<AxisAlignedBB> bbs, double targetY) {
         return bbs.stream()
-                .anyMatch(bb -> bb.minY <= targetY);
+                .anyMatch(bb -> {
+                    System.out.println("bb.minY=" + bb.minY);
+                    System.out.println("targetY=" + targetY);
+
+                    return bb.minY <= targetY;
+                });
     }
 
     /**
