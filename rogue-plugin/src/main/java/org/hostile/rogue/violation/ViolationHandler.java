@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.hostile.rogue.RoguePlugin;
 import org.hostile.rogue.data.PlayerData;
 
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class ViolationHandler {
     public void handle(PlayerData playerData, JsonObject flagData) {
         String action = flagData.get("action").getAsString();
 
-        actions.get(action).forEach(serverAction -> serverAction.accept(flagData, playerData));
+        Bukkit.getScheduler().runTask(RoguePlugin.getInstance(), () -> {
+            actions.get(action).forEach(serverAction -> serverAction.accept(flagData, playerData));
+        });
     }
 }

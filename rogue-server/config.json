@@ -12,13 +12,13 @@
     {
       "check_type": "Tracker",
       "check_name": "A",
-      "action": "kick",
+      "action": "flag",
       "max_violations": 1
     },
     {
       "check_type": "Tracker",
       "check_name": "B",
-      "action": "kick",
+      "action": "flag",
       "max_violations": 1
     }
   ]

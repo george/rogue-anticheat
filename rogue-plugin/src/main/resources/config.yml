@@ -5,9 +5,9 @@ flag-permission: "rogue.admin"
 
 punishments:
   ban:
-    command: "ban %s Unfair Advantage"
+    command: "ban %player% Unfair Advantage"
   kick:
-    command: "kick %s Unfair Advantage"
+    command: "kick %player% Unfair Advantage"
   flag:
     message:
       contents: "&7[&b&l!&7] &e%player% &7flagged check &e%check% &7(Type &e%type%&7) [%violations%/%max_violations%]"

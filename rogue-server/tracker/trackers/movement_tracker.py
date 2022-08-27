@@ -35,8 +35,8 @@ class MovementTracker(Tracker, ABC):
             self.teleporting = False
             self.small_move = False
 
-            self.walk_speed = event['walk_speed']
-            self.gamemode = event['SURVIVAL']
+            self.walk_speed = event['walkSpeed']
+            self.gamemode = event['gamemode']
 
             if not packet['moving'] and not packet['rotating']:
                 self.small_move = True
@@ -83,7 +83,7 @@ class MovementTracker(Tracker, ABC):
 
             if abs(location.x - self.current_location.x > 8) or abs(location.z - self.current_location.z > 8) \
                     or abs(location.y - self.current_location.y) > 8:
-                if not self.teleporting:
+                if not self.teleporting and self.data.ticks_existed > 20:
                     self.data.add_violation('Tracker', 'A', 1)
                 return
 
