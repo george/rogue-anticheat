@@ -41,7 +41,7 @@ class SpeedA(MovementCheck, ABC):
 
         if ratio > 1.0:
             if self.increment_buffer(1) > 5 and not self.data.movement_tracker.teleporting:
-                self.fail("ratio", ratio)
+                self.fail('ratio', ratio)
         else:
             self.decrement_buffer(0.25)
 

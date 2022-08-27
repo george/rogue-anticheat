@@ -11,3 +11,6 @@ punishments:
   flag:
     message:
       contents: "&7[&b&l!&7] &e%player% &7flagged check &e%check% &7(Type &e%type%&7) [%violations%/%max_violations%]"
+      component-header: "&7------------------------"
+      component-data: "&7%name% - &e%data%"
+      component-footer: "&7------------------------"
