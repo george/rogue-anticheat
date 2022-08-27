@@ -164,12 +164,7 @@ public class CollisionTracker extends Tracker {
      */
     public boolean isCollidedBelow(Set<AxisAlignedBB> bbs, double targetY) {
         return bbs.stream()
-                .anyMatch(bb -> {
-                    System.out.println("bb.minY=" + bb.minY);
-                    System.out.println("targetY=" + targetY);
-
-                    return bb.minY <= targetY;
-                });
+                .anyMatch(bb -> bb.minY <= targetY);
     }
 
     /**
