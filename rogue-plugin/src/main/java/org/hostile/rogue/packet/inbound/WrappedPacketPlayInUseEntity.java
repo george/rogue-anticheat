@@ -22,15 +22,26 @@ public class WrappedPacketPlayInUseEntity extends WrappedPacket {
 
     @Override
     public JsonChain serialize() {
-        return new JsonChain()
+        JsonChain jsonChain = new JsonChain()
                 .addProperty("entityId", entityId)
-                .addProperty("action", action.name())
-                .addProperty("vec", new JsonChain()
-                        .addProperty("x", hitVec.getX())
-                        .addProperty("y", hitVec.getY())
-                        .addProperty("z", hitVec.getZ())
-                        .getJsonObject()
-                );
+                .addProperty("action", action.name());
+        if (hitVec != null) {
+            jsonChain.addProperty("vec", new JsonChain()
+                    .addProperty("x", hitVec.getX())
+                    .addProperty("y", hitVec.getY())
+                    .addProperty("z", hitVec.getZ())
+                    .getJsonObject()
+            );
+        } else {
+            jsonChain.addProperty("vec", new JsonChain()
+                    .addProperty("x", 0)
+                    .addProperty("y", 0)
+                    .addProperty("z", 0)
+                    .getJsonObject()
+            );
+        }
+
+        return jsonChain;
     }
 
     @Override
