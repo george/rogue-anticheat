@@ -101,7 +101,7 @@ public class CollisionTracker extends Tracker {
 
         int minX = MathHelper.floor_double(boundingBox.minX);
         int maxX = MathHelper.floor_double(boundingBox.maxX);
-        int minY = MathHelper.floor_double(boundingBox.minY - 0.1);
+        int minY = MathHelper.floor_double(boundingBox.minY - 0.5);
         int maxY = MathHelper.floor_double(boundingBox.maxY);
         int minZ = MathHelper.floor_double(boundingBox.minZ);
         int maxZ = MathHelper.floor_double(boundingBox.maxZ);
