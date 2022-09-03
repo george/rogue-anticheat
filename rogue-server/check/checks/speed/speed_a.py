@@ -26,9 +26,10 @@ class SpeedA(MovementCheck, ABC):
             # will not work in the event that the player's sprinting state desyncs
 
             movement_speed *= 1.3
+            self.last_friction *= 0.91
             movement_speed *= 0.16277136 / math.pow(self.last_friction, 3)
 
-            if 0.001 < offset_y < jump_height:
+            if self.data.collision_tracker.previous_collisions['underBlock'] or 0.001 < offset_y < jump_height:
                 movement_speed += 0.2
         else:
             movement_speed = 0.026
@@ -39,21 +40,16 @@ class SpeedA(MovementCheck, ABC):
         movement_speed -= (0.15 * self.data.potion_tracker.get_potion_level(PotionEffectType.SLOWNESS))
 
         ratio = (offset_x - self.last_offset_x) / movement_speed
-        friction = self.data.collision_tracker.current_collisions['frictionFactor']
-        print(ratio)
-
-        if ratio > 1.0:
-            if self.increment_buffer(1) > 5 and not self.data.movement_tracker.teleporting:
+        
+        if ratio > 1.0 and not self.data.movement_tracker.teleporting:
+            if offset_x > 0.2 and self.increment_buffer(1) > 3 and not self.data.movement_tracker.teleporting:
                 self.fail('ratio', ratio, 'offset_x', offset_x, 'last', self.last_offset_x,
                           'movement_speed', movement_speed)
         else:
             self.decrement_buffer(0.25)
 
-        if not self.data.collision_tracker.current_collisions['onGround']:
-            self.last_offset_x = offset_x * (friction / 0.91)
-        else:
-            self.last_offset_x = offset_x
-        self.last_friction = friction
+        self.last_offset_x = offset_x * self.last_friction
+        self.last_friction = self.data.collision_tracker.previous_collisions['frictionFactor']
 
     def get_check_name(self):
         return 'Speed'

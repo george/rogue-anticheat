@@ -32,8 +32,8 @@ class PlayerData:
             self.action_tracker,
             self.ping_tracker,
             self.potion_tracker,
-            self.movement_tracker,
-            self.collision_tracker
+            self.collision_tracker,
+            self.movement_tracker
         ]
 
     def has_violations(self):
@@ -70,8 +70,6 @@ class PlayerData:
         })
 
     def handle_packet(self, event):
-        packet = event['packet']
-
         if event['type'] == 'in_flying':
             self.ticks_existed += 1
             self.entity_id = event['entityId']
