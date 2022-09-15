@@ -12,13 +12,6 @@ private:
     const std::string action;
     const int maxViolations;
 
-    CheckData(std::string checkType, std::string checkName, std::string action,
-              int maxViolations) :
-              checkType(std::move(checkType)),
-              checkName(std::move(checkName)),
-              action(std::move(action)),
-              maxViolations(maxViolations) {}
-
 
 public:
 
@@ -30,4 +23,10 @@ public:
 
     auto getMaxViolations() const -> int;
 
+    CheckData(std::string checkType, std::string checkName, std::string action,
+              int maxViolations) :
+              checkType(std::move(checkType)),
+              checkName(std::move(checkName)),
+              action(std::move(action)),
+              maxViolations(maxViolations) {}
 };
