@@ -12,7 +12,6 @@ private:
     const std::string action;
     const int maxViolations;
 
-
 public:
 
     auto getType() -> std::string;

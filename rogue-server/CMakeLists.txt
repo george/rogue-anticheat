@@ -28,5 +28,10 @@ add_executable(${PROJECT_NAME} ${SRCS} ${HDRS})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC Crow::Crow ${ASIO_LIBRARIES} nlohmann_json::nlohmann_json)
 
-set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 -lcrypt32 -ldnsapi ${CMAKE_CXX_STANDARD_LIBRARIES}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+if (NOT WIN32)
+    set(CMAKE_CXX_STANDARD_LIBRARIES " ${CMAKE_CXX_STANDARD_LIBRARIES}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl, -Wl")
+else()
+    set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 -lcrypt32 -ldnsapi ${CMAKE_CXX_STANDARD_LIBRARIES}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+endif()

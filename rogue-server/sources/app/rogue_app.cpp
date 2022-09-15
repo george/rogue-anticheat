@@ -9,7 +9,7 @@ RogueConfig rogue_app::config = RogueConfig();
 auto rogue_app::initialize() -> std::unique_ptr<crow::SimpleApp> {
     crow::SimpleApp app = crow::SimpleApp();
 
-    CROW_ROUTE(app, "/<string>")([](auto uuid){
+    CROW_ROUTE(app, "/")([](){
         return "Test";
     });
 
