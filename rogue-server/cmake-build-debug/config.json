@@ -1,0 +1,31 @@
+{
+  "hostname": "127.0.0.1",
+  "port": 3000,
+  "threads": 4,
+  "checks": [
+    {
+      "check_type": "AutoClicker",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 1
+    },
+    {
+      "check_type": "Speed",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 1000
+    },
+    {
+      "check_type": "Tracker",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 5
+    },
+    {
+      "check_type": "Tracker",
+      "check_name": "B",
+      "action": "flag",
+      "max_violations": 1
+    }
+  ]
+}
