@@ -1,7 +1,3 @@
-//
-// Created by PC on 9/14/2022.
-//
-
 #include "rogue_app.h"
 
 RogueConfig rogue_app::config = RogueConfig();
@@ -18,4 +14,9 @@ auto rogue_app::initialize() -> std::unique_ptr<crow::SimpleApp> {
 
 auto rogue_app::getCheckData(const std::string &checkIdentifier) -> CheckData {
     return config.getCheckData(checkIdentifier);
+}
+
+template<typename Base, typename U>
+auto checkInstance(const U *ptr) -> bool {
+    return dynamic_cast<const Base*>(ptr) != nullptr;
 }

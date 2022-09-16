@@ -12,4 +12,7 @@ namespace rogue_app {
 
     auto getCheckData(const std::string& checkIdentifier) -> CheckData;
 
+    template<typename Base, typename U>
+    auto checkInstance(const U *ptr) -> bool;
+
 }
