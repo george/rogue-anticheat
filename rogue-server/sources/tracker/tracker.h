@@ -4,6 +4,8 @@
 
 class Tracker {
 
-    void handle(PacketEvent *event);
+public:
+
+    virtual auto handle(PacketEvent *event) -> void = 0;
 
 };
