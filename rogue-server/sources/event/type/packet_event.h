@@ -1,20 +1,21 @@
 #pragma once
 
 #include "../event.h"
-#include "../../packet/packet.h"
+
+#include <utility>
 
 class PacketEvent : Event {
 
 private:
 
-    const Packet packet;
+    const nlohmann::json json;
 
 public:
     
-    PacketEvent(Packet packet) :
-        packet(packet) {}
+    explicit PacketEvent(nlohmann::json json) :
+        json(std::move(json)) {}
 
-    Packet getPacket() {
-        return this->packet;
+    auto getJson() -> nlohmann::json {
+        return this->json;
     }
 };

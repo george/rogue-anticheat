@@ -15,7 +15,7 @@ class PlayerData : public PlayerTemplate {
 private:
 
     std::vector<Tracker*> trackers{};
-//    std::vector<Check*> checks{};
+    std::vector<Check*> checks{};
     std::deque<Violation> violations{};
 
     int ticksExisted;

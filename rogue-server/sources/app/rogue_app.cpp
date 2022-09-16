@@ -6,9 +6,9 @@ auto rogue_app::initialize() -> std::unique_ptr<crow::SimpleApp> {
     crow::SimpleApp app = crow::SimpleApp();
 
     CROW_ROUTE(app, "/")([](){
-        return "Test";
+        return crow::response("Hello, world!");
     });
-
+    
     return std::make_unique<crow::SimpleApp>(app);
 }
 

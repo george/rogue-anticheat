@@ -1,3 +1,5 @@
+#define CROW_MAIN
+
 #include "app/rogue_app.h"
 
 #include <nlohmann/json.hpp>
