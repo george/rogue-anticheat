@@ -10,6 +10,7 @@ class RogueConfig {
 private:
 
     std::map<std::string, CheckData> checkData;
+    std::string hostname;
     int port;
 
 public:
@@ -18,7 +19,8 @@ public:
 
     auto getPort() const -> int;
 
-    auto getCheckData(const std::string &checkIdentifier) -> CheckData;
+    auto getHostname() const -> std::string;
 
+    auto getCheckData(const std::string &checkIdentifier) -> CheckData;
 
 };

@@ -17,6 +17,7 @@ auto main() -> int {
     log("Starting application on port " + std::to_string(rogue_app::config.getPort()));
 
     app->port(rogue_app::config.getPort())
+        .bindaddr(rogue_app::config.getHostname())
         .multithreaded()
         .run();
 }

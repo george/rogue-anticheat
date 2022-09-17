@@ -9,6 +9,7 @@ RogueConfig::RogueConfig() {
     json data = json::parse(file);
 
     this->port = data["port"];
+    this->hostname = data["hostname"];
 
     std::for_each(data["checks"].begin(), data["checks"].end(), [this](auto check) {
         std::string checkType = check["check_type"];
@@ -34,4 +35,8 @@ auto RogueConfig::getPort() const -> int {
 
 auto RogueConfig::getCheckData(const std::string &checkIdentifier) -> CheckData {
     return this->checkData.find(checkIdentifier)->second;
+}
+
+auto RogueConfig::getHostname() const -> std::string {
+    return this->hostname;
 }
