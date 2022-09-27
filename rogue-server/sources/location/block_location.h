@@ -8,6 +8,8 @@ class BlockLocation {
     const double posY;
     const double posZ;
 
+public:
+
     BlockLocation(nlohmann::json json);
 
     auto getX() -> double;
