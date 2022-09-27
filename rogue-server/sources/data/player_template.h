@@ -5,6 +5,8 @@
 
 class PlayerTemplate {
 
+public:
+
     virtual auto handlePacket(PacketEvent event) -> void = 0;
 
     virtual auto hasViolations() -> bool = 0;

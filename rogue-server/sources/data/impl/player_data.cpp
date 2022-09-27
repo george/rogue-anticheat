@@ -25,6 +25,7 @@ auto PlayerData::hasViolations() -> bool {
 
 auto PlayerData::getViolations() -> nlohmann::json {
     nlohmann::json json = nlohmann::json::array();
+
     while (!violations.empty()) {
         Violation violation = violations.front();
         json.push_back(violation.toJsonObject());
