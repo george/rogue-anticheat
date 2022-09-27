@@ -43,5 +43,5 @@ auto Violation::toJsonObject() -> nlohmann::json {
             {"maxViolations", checkData.getMaxViolations()}
     };
 
-    return data;
+    return json;
 }
