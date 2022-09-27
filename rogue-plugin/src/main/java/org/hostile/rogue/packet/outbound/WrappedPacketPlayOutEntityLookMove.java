@@ -7,4 +7,9 @@ public class WrappedPacketPlayOutEntityLookMove extends WrappedPacketPlayOutEnti
     public WrappedPacketPlayOutEntityLookMove(PacketContainer packetContainer) {
         super(packetContainer);
     }
+
+    @Override
+    public String getName() {
+        return "out_entity_look_move";
+    }
 }

@@ -50,7 +50,7 @@ public class PacketWrapper {
         PACKET_MAP.put(PacketType.Play.Server.KEEP_ALIVE, getConstructor(WrappedPacketPlayOutKeepAlive.class));
         PACKET_MAP.put(PacketType.Play.Server.NAMED_ENTITY_SPAWN, getConstructor(WrappedPacketPlayOutNamedEntitySpawn.class));
         PACKET_MAP.put(PacketType.Play.Server.POSITION, getConstructor(WrappedPacketPlayOutPosition.class));
-        PACKET_MAP.put(PacketType.Play.Server.REL_ENTITY_MOVE, getConstructor(WrappedPacketPlayOutRelMove.class));
+        PACKET_MAP.put(PacketType.Play.Server.REL_ENTITY_MOVE, getConstructor(WrappedPacketPlayOutEntityRelMove.class));
         PACKET_MAP.put(PacketType.Play.Server.REMOVE_ENTITY_EFFECT, getConstructor(WrappedPacketPlayOutRemoveEntityEffect.class));
         PACKET_MAP.put(PacketType.Play.Server.TRANSACTION, getConstructor(WrappedPacketPlayOutTransaction.class));
         PACKET_MAP.put(PacketType.Play.Server.ABILITIES, getConstructor(WrappedPacketPlayOutAbilities.class));

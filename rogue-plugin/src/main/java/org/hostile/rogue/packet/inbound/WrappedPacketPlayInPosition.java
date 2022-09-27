@@ -7,4 +7,9 @@ public class WrappedPacketPlayInPosition extends WrappedPacketPlayInFlying {
     public WrappedPacketPlayInPosition(PacketContainer packetContainer) {
         super(packetContainer);
     }
+
+    @Override
+    public String getName() {
+        return "in_position";
+    }
 }

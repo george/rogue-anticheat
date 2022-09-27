@@ -9,6 +9,8 @@ class PacketPlayInSetCreativeSlot : public Packet {
     const int slot;
     const std::string itemStack;
 
+public:
+
     PacketPlayInSetCreativeSlot(json json) :
         slot(json["slot"]),
         itemStack(json["material"])

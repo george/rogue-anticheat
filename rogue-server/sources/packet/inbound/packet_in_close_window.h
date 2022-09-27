@@ -2,13 +2,13 @@
 
 #include "../packet.h"
 
-class WrappedPacketPlayInCloseWindow : public Packet {
+class PacketPlayInCloseWindow : public Packet {
 
     const int windowId;
 
 public:
 
-    WrappedPacketPlayInCloseWindow(json json) :
+    PacketPlayInCloseWindow(json json) :
         windowId(json["windowId"])
     {}
 

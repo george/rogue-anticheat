@@ -7,4 +7,9 @@ public class WrappedPacketPlayInPositionLook extends WrappedPacketPlayInFlying {
     public WrappedPacketPlayInPositionLook(PacketContainer packetContainer) {
         super(packetContainer);
     }
+
+    @Override
+    public String getName() {
+        return "in_position_look";
+    }
 }
