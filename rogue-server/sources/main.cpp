@@ -42,6 +42,6 @@ auto main() -> int {
     app.port(rogue_app::config.getPort())
         .loglevel(crow::LogLevel::Warning)
         .bindaddr(rogue_app::config.getHostname())
-        .multithreaded()
+        .concurrency(rogue_app::config.getThreads())
         .run();
 }

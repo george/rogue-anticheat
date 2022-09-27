@@ -11,13 +11,17 @@ private:
 
     std::map<std::string, CheckData> checkData;
     std::string hostname;
+
     int port;
+    int threads;
 
 public:
 
     RogueConfig();
 
     auto getPort() const -> int;
+
+    auto getThreads() const -> int;
 
     auto getHostname() const -> std::string;
 

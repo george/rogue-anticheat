@@ -10,7 +10,7 @@ class PacketPlayInUseEntity : public Packet {
     const int entityId;
     const std::string action;
 
-    Vector hitVec{0, 0, 0};
+    Vector hitVec;
 
 public:
 

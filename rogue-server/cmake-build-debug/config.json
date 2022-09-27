@@ -1,7 +1,7 @@
 {
   "hostname": "127.0.0.1",
   "port": 3001,
-  "threads": 4,
+  "threads": 8,
   "checks": [
     {
       "check_type": "AutoClicker",

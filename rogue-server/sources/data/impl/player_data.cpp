@@ -1,4 +1,6 @@
 #include "player_data.h"
+#include "../../app/rogue_app.h"
+#include "../../check/type/packet_check.h"
 
 #include <utility>
 
@@ -38,5 +40,11 @@ auto PlayerData::getViolations() -> nlohmann::json {
 auto PlayerData::handlePacket(PacketEvent event) -> void {
     for(const auto &tracker : this->trackers) {
         tracker->handle(&event);
+    }
+
+    for(const auto &check : this->checks) {
+        if (dynamic_cast<const PacketCheck*>(check) != nullptr) {
+            ((PacketCheck*) check)->handle(&event);
+        }
     }
 }

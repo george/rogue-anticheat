@@ -5,6 +5,8 @@
 
 class MovementCheck : public Check {
 
+public:
+
     virtual auto handle(PositionUpdateEvent *event) -> void = 0;
 
 };

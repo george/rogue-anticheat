@@ -10,6 +10,7 @@ RogueConfig::RogueConfig() {
 
     this->port = data["port"];
     this->hostname = data["hostname"];
+    this->threads = data["threads"];
 
     std::for_each(data["checks"].begin(), data["checks"].end(), [this](auto check) {
         std::string checkType = check["check_type"];
@@ -39,4 +40,8 @@ auto RogueConfig::getCheckData(const std::string &checkIdentifier) -> CheckData 
 
 auto RogueConfig::getHostname() const -> std::string {
     return this->hostname;
+}
+
+auto RogueConfig::getThreads() const -> int {
+    return this->threads;
 }

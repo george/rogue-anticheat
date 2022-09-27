@@ -20,7 +20,4 @@ namespace rogue_app {
 
     auto removePlayerData(const std::string &uuid) -> void;
 
-    template<typename Base, typename U>
-    auto checkInstance(const U *ptr) -> bool;
-
 }

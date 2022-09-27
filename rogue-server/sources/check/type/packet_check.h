@@ -5,6 +5,8 @@
 
 class PacketCheck : public Check {
 
+public:
+
     virtual auto handle(PacketEvent *event) -> void = 0;
 
 };

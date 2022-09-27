@@ -30,8 +30,3 @@ auto rogue_app::removePlayerData(const std::string &uuid) -> void {
         rogue_app::playerDataMap.erase(iterator);
     }
 }
-
-template<typename Base, typename U>
-auto checkInstance(const U *ptr) -> bool {
-    return dynamic_cast<const Base*>(ptr) != nullptr;
-}
