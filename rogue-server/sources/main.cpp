@@ -1,5 +1,3 @@
-#define CROW_MAIN
-
 #include "app/rogue_app.h"
 
 #include <nlohmann/json.hpp>
@@ -12,6 +10,8 @@ auto log(const std::string &content) -> void {
 }
 
 auto main() -> int {
+    log("Initializing Rogue server");
+
     crow::SimpleApp app = crow::SimpleApp();
 
     CROW_ROUTE(app,"/quit/<string>")([](std::string uuid) {
@@ -29,11 +29,13 @@ auto main() -> int {
         data->handlePacket(PacketEvent(parsedContent));
 
         if (data->hasViolations()) {
-            return crow::response(to_string(data->getViolations()));
+            return crow::response("{violations: " + nlohmann::to_string(data->getViolations()) + "}");
         }
 
         return crow::response("{violations: []}");
     });
+
+    log("Starting on port " + std::to_string(rogue_app::config.getPort()) + "!");
 
     app.port(rogue_app::config.getPort())
         .loglevel(crow::LogLevel::Warning)
