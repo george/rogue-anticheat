@@ -43,7 +43,7 @@ public:
         return clickedItem;
     }
 
-    auto geTMode() -> int {
+    auto getMode() -> int {
         return mode;
     }
 };
