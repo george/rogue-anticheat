@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <iostream>
 #include <functional>
 #include <nlohmann/json.hpp>
 

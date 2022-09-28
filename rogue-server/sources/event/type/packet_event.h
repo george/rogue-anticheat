@@ -3,6 +3,7 @@
 #include "../event.h"
 #include "../../packet/packet.h"
 
+#include <iostream>
 #include <utility>
 
 class PacketEvent : Event {
@@ -10,17 +11,19 @@ class PacketEvent : Event {
 private:
 
     const nlohmann::json json;
-    const long timestamp;
+    long timestamp;
 
     Packet *packet;
 
 public:
     
-    explicit PacketEvent(nlohmann::json json, Packet *packet) :
-        json(std::move(json)),
-        timestamp(json["timestamp"]),
+    explicit PacketEvent(nlohmann::json *json, Packet *packet) :
+        json(*json),
         packet(packet)
-    {}
+    {
+        auto data = *json;
+        timestamp = data["timestamp"];
+    }
 
     auto getTimestamp() const -> long {
         return timestamp;

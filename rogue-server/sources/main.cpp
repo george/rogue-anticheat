@@ -27,10 +27,8 @@ auto main() -> int {
 
         auto packet = wrapPacket(parsedContent);
         auto data = rogue_app::getPlayerData(uuid);
-        
-        data->handlePacket(PacketEvent(parsedContent, &packet));
 
-        delete &packet;
+        data->handlePacket(PacketEvent(&parsedContent, &packet));
 
         if (data->hasViolations()) {
             return crow::response("{violations: " + nlohmann::to_string(data->getViolations()) + "}");
