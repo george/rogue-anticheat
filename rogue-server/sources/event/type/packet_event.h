@@ -2,6 +2,9 @@
 
 #include "../event.h"
 #include "../../packet/packet.h"
+#include "../../packet/inbound/packet_in_position.h"
+#include "../../packet/inbound/packet_in_position_look.h"
+#include "../../packet/inbound/packet_in_look.h"
 
 #include <iostream>
 #include <utility>
@@ -40,5 +43,13 @@ public:
     template<typename Base>
     auto checkInstance() -> bool {
         return dynamic_cast<const Base*>(packet) != nullptr;
+    }
+
+    auto isPosition() -> bool {
+        return checkInstance<PacketPlayInPosition>() || checkInstance<PacketPlayInPositionLook>();
+    }
+
+    auto isRotating() -> bool {
+        return checkInstance<PacketPlayInPositionLook>() || checkInstance<PacketPlayInLook>();
     }
 };
