@@ -25,7 +25,7 @@ auto main() -> int {
         auto content = req.body;
         auto parsedContent = json(content);
 
-        auto packet = wrapPacket(parsedContent["packet"]);
+        auto packet = wrapPacket(parsedContent);
         auto data = rogue_app::getPlayerData(uuid);
 
         data->handlePacket(PacketEvent(parsedContent, &packet));

@@ -163,5 +163,5 @@ const std::map<std::string, std::function<Packet(nlohmann::json json)>> map = {
 };
 
 Packet wrapPacket(nlohmann::json json) {
-    return map.at(json["type"])(json);
+    return map.at(json["type"])(json["packet"]);
 }
