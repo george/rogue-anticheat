@@ -33,4 +33,6 @@ public:
     auto getViolations() -> int;
 
     auto toJsonObject() -> nlohmann::json;
+
+    ~Violation();
 };

@@ -45,3 +45,7 @@ auto Violation::toJsonObject() -> nlohmann::json {
 
     return json;
 }
+
+Violation::~Violation() {
+    delete args;
+}

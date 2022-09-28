@@ -37,6 +37,7 @@ auto PlayerData::getViolations() -> nlohmann::json {
     while (!violations.empty()) {
         Violation violation = violations.front();
         json.push_back(violation.toJsonObject());
+
         violations.pop_front();
     }
 

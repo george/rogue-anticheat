@@ -20,4 +20,8 @@ public:
     explicit Check(PlayerTemplate *playerTemplate) {
         data = playerTemplate;
     }
+
+    auto fail(std::vector<std::string> args) -> void {
+        data->addViolation(Violation(getType(), getName(), &args, ++violations));
+    }
 };
