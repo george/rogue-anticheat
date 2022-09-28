@@ -4,6 +4,7 @@
 #include "../../tracker/impl/action_tracker.h"
 
 #include <utility>
+#include <iostream>
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {

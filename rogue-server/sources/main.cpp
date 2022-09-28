@@ -23,11 +23,11 @@ auto main() -> int {
     CROW_ROUTE(app,"/players/<string>").methods("POST"_method)
     ([&](const crow::request &req, std::string uuid) {
         auto content = req.body;
-        auto parsedContent = json(content);
+        auto parsedContent = json::parse(content);
 
         auto packet = wrapPacket(parsedContent);
         auto data = rogue_app::getPlayerData(uuid);
-
+        
         data->handlePacket(PacketEvent(parsedContent, &packet));
 
         delete &packet;
