@@ -18,8 +18,8 @@ private:
     std::vector<Check*> checks{};
     std::deque<Violation> violations{};
 
-    int ticksExisted;
-    int entityId;
+    int ticksExisted{};
+    int entityId{};
 
     std::string uuid;
 
@@ -28,6 +28,8 @@ public:
     explicit PlayerData(std::string uuid);
 
     auto hasViolations() -> bool override;
+
+    auto addViolation(Violation violation) -> void override;
 
     auto getViolations() -> nlohmann::json override;
 
@@ -39,4 +41,5 @@ public:
 
     auto getUuid() -> std::string override;
 
+    ~PlayerData();
 };

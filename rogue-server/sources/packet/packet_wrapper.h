@@ -12,7 +12,7 @@
 #include "./inbound/packet_in_client_command.h"
 #include "./inbound/packet_in_close_window.h"
 #include "./inbound/packet_in_custom_payload.h"
-#include "./inbound/packet_in_dig.h"
+#include "./inbound/packet_in_block_dig.h"
 #include "./inbound/packet_in_enchant_item.h"
 #include "./inbound/packet_in_entity_action.h"
 #include "./inbound/packet_in_flying.h"

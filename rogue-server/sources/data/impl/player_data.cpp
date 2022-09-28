@@ -1,14 +1,20 @@
 #include "player_data.h"
-#include "../../app/rogue_app.h"
 #include "../../check/type/packet_check.h"
+#include "../../packet/inbound/packet_in_flying.h"
+#include "../../tracker/impl/action_tracker.h"
 
 #include <utility>
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
 
-
+    trackers.push_back(new ActionTracker(this));
 }
+
+auto PlayerData::addViolation(Violation violation) -> void {
+    violations.push_back(violation);
+}
+
 auto PlayerData::getEntityId() -> int {
     return this->entityId;
 }
@@ -38,13 +44,27 @@ auto PlayerData::getViolations() -> nlohmann::json {
 }
 
 auto PlayerData::handlePacket(PacketEvent event) -> void {
+    if (event.checkInstance<PacketPlayInFlying>()) {
+        ++ticksExisted;
+    }
+
     for(const auto &tracker : this->trackers) {
         tracker->handle(&event);
     }
 
     for(const auto &check : this->checks) {
-        if (dynamic_cast<const PacketCheck*>(check) != nullptr) {
+        if (dynamic_cast<PacketCheck*>(check) != nullptr) {
             ((PacketCheck*) check)->handle(&event);
         }
+    }
+}
+
+PlayerData::~PlayerData() {
+    for(const auto &check : checks) {
+        delete &check;
+    }
+
+    for(const auto &tracker : trackers) {
+        delete &tracker;
     }
 }

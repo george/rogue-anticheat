@@ -4,4 +4,10 @@
 
 using nlohmann::json;
 
-class Packet {};
+class Packet {
+
+public:
+
+    virtual ~Packet() = default;
+
+};
