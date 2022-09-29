@@ -1,5 +1,4 @@
 #include "app/rogue_app.h"
-#include "packet/packet_wrapper.h"
 
 #include <nlohmann/json.hpp>
 #include <iostream>
@@ -25,10 +24,9 @@ auto main() -> int {
         auto content = req.body;
         auto parsedContent = json::parse(content);
 
-        auto packet = wrapPacket(parsedContent);
         auto data = rogue_app::getPlayerData(uuid);
 
-        data->handlePacket(PacketEvent(&parsedContent, &packet));
+        data->handlePacket(PacketEvent(&parsedContent));
 
         if (data->hasViolations()) {
             return crow::response("{violations: " + nlohmann::to_string(data->getViolations()) + "}");

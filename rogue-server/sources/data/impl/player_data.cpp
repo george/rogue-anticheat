@@ -1,6 +1,5 @@
 #include "player_data.h"
 #include "../../check/type/packet_check.h"
-#include "../../packet/inbound/packet_in_flying.h"
 #include "../../tracker/impl/action_tracker.h"
 
 #include <utility>
@@ -46,7 +45,7 @@ auto PlayerData::getViolations() -> nlohmann::json {
 }
 
 auto PlayerData::handlePacket(PacketEvent event) -> void {
-    if (event.checkInstance<PacketPlayInFlying>()) {
+    if (event.isFlying()) {
         ++ticksExisted;
     }
 

@@ -1,10 +1,6 @@
 #pragma once
 
 #include "../event.h"
-#include "../../packet/packet.h"
-#include "../../packet/inbound/packet_in_position.h"
-#include "../../packet/inbound/packet_in_position_look.h"
-#include "../../packet/inbound/packet_in_look.h"
 
 #include <iostream>
 #include <utility>
@@ -16,13 +12,10 @@ private:
     const nlohmann::json json;
     long timestamp;
 
-    Packet *packet;
-
 public:
     
-    explicit PacketEvent(nlohmann::json *json, Packet *packet) :
-        json(*json),
-        packet(packet)
+    explicit PacketEvent(nlohmann::json *json) :
+        json(*json)
     {
         auto data = *json;
         timestamp = data["timestamp"];
@@ -32,24 +25,17 @@ public:
         return timestamp;
     }
 
-    auto getJson() -> nlohmann::json {
-        return this->json;
+    auto getData() -> nlohmann::json {
+        return this->json["packet"];
     }
 
-    auto getPacket() -> Packet* {
-        return packet;
+    auto checkType(const std::string &name) -> bool {
+        return json["type"] == name;
     }
 
-    template<typename Base>
-    auto checkInstance() -> bool {
-        return dynamic_cast<const Base*>(packet) != nullptr;
+    auto isFlying() -> bool {
+        return checkType("in_flying") || checkType("in_position") ||
+                checkType("in_look") || checkType("in_position_look");
     }
 
-    auto isPosition() -> bool {
-        return checkInstance<PacketPlayInPosition>() || checkInstance<PacketPlayInPositionLook>();
-    }
-
-    auto isRotating() -> bool {
-        return checkInstance<PacketPlayInPositionLook>() || checkInstance<PacketPlayInLook>();
-    }
 };
