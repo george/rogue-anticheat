@@ -2,9 +2,6 @@
 
 #include "../tracker.h"
 #include "../../data/player_template.h"
-#include "../../packet/inbound/packet_in_use_entity.h"
-#include "../../packet/inbound/packet_in_entity_action.h"
-#include "../../packet/inbound/packet_in_block_dig.h"
 
 class ActionTracker : public Tracker {
 
@@ -21,20 +18,20 @@ public:
     {}
 
     auto handle(PacketEvent *event) -> void override {
-        if (event->checkInstance<PacketPlayInUseEntity>()) {
+        if (event->checkType("in_use_entity")) {
             lastAttack = playerData->getTicksExisted();
-        } else if (event->checkInstance<PacketPlayInEntityAction>()) {
-            auto packet = dynamic_cast<PacketPlayInEntityAction*>(event->getPacket());
-            auto action = packet->getAction();
+        } else if (event->checkType("in_entity_action")) {
+            auto packet = event->getData();
+            auto action = packet["playerAction"];
 
             if (action == "START_SNEAKING") {
                 sneaking = true;
             } else if (action == "STOP_SNEAKING") {
                 sneaking = false;
             }
-        } else if (event->checkInstance<PacketPlayInBlockDig>()) {
-            auto packet = dynamic_cast<PacketPlayInEntityAction*>(event->getPacket());
-            auto action = packet->getAction();
+        } else if (event->checkType("in_dig")) {
+            auto packet = event->getData();
+            auto action = packet["digType"];
 
             if (action == "START_DESTROY_BLOCK") {
                 digging = true;
