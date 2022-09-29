@@ -5,8 +5,6 @@
 
 class ActionTracker : public Tracker {
 
-    PlayerTemplate *playerData;
-
     long lastAttack{};
     bool sneaking{};
     bool digging{};
@@ -14,7 +12,7 @@ class ActionTracker : public Tracker {
 public:
 
     explicit ActionTracker(PlayerTemplate *playerData)
-        : playerData(playerData)
+        : Tracker(playerData)
     {}
 
     auto handle(PacketEvent *event) -> void override {
