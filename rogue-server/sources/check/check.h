@@ -10,6 +10,7 @@ class Check {
     PlayerTemplate *data;
 
     int violations{};
+    double buffer{};
 
 public:
 
@@ -23,5 +24,13 @@ public:
 
     auto fail(std::vector<std::string> args) -> void {
         data->addViolation(Violation(getType(), getName(), &args, ++violations));
+    }
+
+    auto incrementBuffer(double amount) -> double {
+        return buffer += amount;
+    }
+
+    auto decrementBuffer(double amount) -> double {
+        return buffer = std::max(0.0, buffer - amount);
     }
 };
