@@ -1,6 +1,4 @@
-    #pragma once
-
-#include <cmath>
+#pragma once
 
 #include "../event.h"
 #include "../../location/custom_location.h"
@@ -20,12 +18,7 @@ public:
     PositionUpdateEvent(CustomLocation previous, CustomLocation current) :
         previous(previous),
         current(current),
-        offsetX(
-                std::sqrt(
-                        std::pow(std::abs(previous.getPosX() - current.getPosX()), 2) +
-                        std::pow(std::abs(previous.getPosZ() - current.getPosZ()), 2)
-                 )
-        ),
+        offsetX(previous.getDistance(&current)),
 
         offsetY(std::abs(previous.getPosY() - current.getPosY()))
     {}

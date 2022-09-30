@@ -1,5 +1,7 @@
 #include "custom_location.h"
 
+#include <cmath>
+
 CustomLocation::CustomLocation(double posX, double posY, double posZ) :
     posX(posX),
     posY(posY),
@@ -32,4 +34,11 @@ auto CustomLocation::getYaw() -> float {
 
 auto CustomLocation::getPitch() -> float {
     return this->pitch;
+}
+
+auto CustomLocation::getDistance(CustomLocation *location) -> double {
+    return std::sqrt(
+            std::pow(std::abs(location->getPosX() - posX), 2) +
+            std::pow(std::abs(location->getPosZ() - posZ), 2)
+            );
 }

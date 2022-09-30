@@ -33,6 +33,14 @@ public:
         return this->json["collisions"];
     }
 
+    auto getGamemde() -> nlohmann::json {
+        return this->json["gamemode"];
+    }
+
+    auto getWalkSpeed() -> nlohmann::json {
+        return this->json["walkSpeed"];
+    }
+
     auto checkType(const std::string &name) -> bool {
         return json["type"] == name;
     }

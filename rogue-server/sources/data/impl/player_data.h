@@ -35,6 +35,8 @@ public:
 
     auto handlePacket(PacketEvent event) -> void override;
 
+    auto handlePositionUpdate(PositionUpdateEvent event) -> void override;
+
     auto getEntityId() -> int override;
 
     auto getTicksExisted() -> int override;
@@ -42,6 +44,10 @@ public:
     auto getUuid() -> std::string override;
 
     auto getActionTracker() -> ActionTracker* override;
+
+    auto getCollisionTracker() -> CollisionTracker* override;
+
+    auto getMovementTracker() -> MovementTracker* override;
 
     ~PlayerData();
 };

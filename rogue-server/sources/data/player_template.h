@@ -4,12 +4,15 @@
 
 #include "../violation/violation.h"
 #include "../event/type/packet_event.h"
+#include "../event/type/position_update_event.h"
 
 class PlayerTemplate {
 
 public:
 
     virtual auto handlePacket(PacketEvent event) -> void = 0;
+
+    virtual auto handlePositionUpdate(PositionUpdateEvent event) -> void = 0;
 
     virtual auto addViolation(Violation violation) -> void = 0;
 

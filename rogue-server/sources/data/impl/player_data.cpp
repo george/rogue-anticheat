@@ -1,20 +1,21 @@
 #include "player_data.h"
 
-#include "../../check/impl/badpackets_a.h"
-#include "../../tracker/impl/action_tracker.h"
-#include "../../tracker/impl/collision_tracker.h"
-
 #include <utility>
 #include <iostream>
 
+#include "../../check/impl/badpackets_a.h"
+#include "../../check/type/movement_check.h"
+
 ActionTracker *actionTracker;
 CollisionTracker *collisionTracker;
+MovementTracker *movementTracker;
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
 
     actionTracker = new ActionTracker(this);
     collisionTracker = new CollisionTracker(this);
+    movementTracker = new MovementTracker(this);
 
     checks.push_back(new BadPacketsA(this));
 }
@@ -38,6 +39,19 @@ auto PlayerData::getUuid() -> std::string {
 auto PlayerData::hasViolations() -> bool {
     return !this->violations.empty();
 }
+
+auto PlayerData::getActionTracker() -> ActionTracker* {
+    return actionTracker;
+}
+
+auto PlayerData::getCollisionTracker() -> CollisionTracker * {
+    return collisionTracker;
+}
+
+auto PlayerData::getMovementTracker() -> MovementTracker* {
+    return movementTracker;
+}
+
 
 auto PlayerData::getViolations() -> nlohmann::json {
     nlohmann::json json = nlohmann::json::array();
@@ -66,8 +80,12 @@ auto PlayerData::handlePacket(PacketEvent event) -> void {
     }
 }
 
-auto PlayerData::getActionTracker() -> ActionTracker* {
-    return actionTracker;
+auto PlayerData::handlePositionUpdate(PositionUpdateEvent event) -> void {
+    for(const auto &check : this->checks) {
+        if (dynamic_cast<MovementCheck*>(check) != nullptr) {
+            ((MovementCheck*) check)->handle(&event, this);
+        }
+    }
 }
 
 PlayerData::~PlayerData() {
@@ -76,4 +94,6 @@ PlayerData::~PlayerData() {
     }
 
     delete actionTracker;
+    delete collisionTracker;
+    delete movementTracker;
 }

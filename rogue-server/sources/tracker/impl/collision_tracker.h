@@ -22,6 +22,8 @@ public:
         if (event->isFlying()) {
             Collisions *collisions = new Collisions(event->getCollisions());
 
+            delete previousCollisions;
+
             previousCollisions = currentCollisions;
             currentCollisions = collisions;
         }

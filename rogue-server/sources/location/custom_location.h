@@ -27,5 +27,6 @@ public:
 
     auto getPitch() -> float;
 
+    auto getDistance(CustomLocation *location) -> double;
 
 };
