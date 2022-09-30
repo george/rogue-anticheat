@@ -9,14 +9,30 @@
 #include "../../location/custom_location.h"
 #include "../../event/type/position_update_event.h"
 
+struct Abilities {
+
+    bool canFly;
+    short transactionId;
+
+    bool shouldRemove;
+
+    Abilities(bool canFly, short transactionId) :
+        canFly(canFly),
+        transactionId(transactionId)
+    {}
+
+};
+
 struct Velocity {
 
-    const double x;
-    const double y;
-    const double z;
-    const short transactionId;
+    double x;
+    double y;
+    double z;
+    short transactionId;
 
-    int completedTick;
+    int completedTick{};
+
+    bool shouldRemove{};
 
     Velocity(double x, double y, double z, short transactionId) :
         x(x),
@@ -25,6 +41,9 @@ struct Velocity {
         transactionId(transactionId)
     {}
 
+    auto getHorizontal() const -> double {
+        return std::sqrt(std::pow(x, 2) + std::pow(z, 2));
+    }
 };
 
 class MovementTracker : public Tracker {
@@ -32,11 +51,14 @@ class MovementTracker : public Tracker {
     CustomLocation *previousLocation = new CustomLocation(0, 0, 0);
     CustomLocation *currentLocation = new CustomLocation(0, 0, 0);
 
-    bool smallMove;
-    bool teleporting;
-    bool canFly;
+    bool smallMove{};
+    bool teleporting{};
+    bool canFly{};
+
+    short lastTransaction;
 
     std::vector<Vector> teleports{};
+    std::vector<Abilities> pendingAbilities{};
 
     std::vector<Velocity> velocities{};
     std::vector<Velocity> activeVelocities{};
@@ -46,7 +68,7 @@ class MovementTracker : public Tracker {
 
 public:
 
-    MovementTracker(PlayerTemplate *playerTemplate) :
+    explicit MovementTracker(PlayerTemplate *playerTemplate) :
         Tracker(playerTemplate)
     {}
 
@@ -108,14 +130,58 @@ public:
                 playerData->handlePositionUpdate(PositionUpdateEvent(*currentLocation, location));
             }
 
-            for(const auto &velocity : velocities) {
-                if (playerData->getTicksExisted() >= velocity.completedTick) {
-                    std::remove(velocities.begin(), velocities.end(), velocity);
-                }
-            }
+            std::remove_if(velocities.begin(), velocities.end(), [this](auto velocity){
+                return playerData->getTicksExisted() >= velocity.completedTick;
+            });
 
             previousLocation = currentLocation;
             currentLocation = &location;
-        } else if ()
+        } else if (event->checkType("out_position")) {
+            auto data = event->getData();
+
+            teleports.emplace_back(data["x"], data["y"], data["z"]);
+        } else if (event->checkType("out_entity_velocity")) {
+            auto data = event->getData();
+
+            velocities.emplace_back(Velocity(
+                    data["x"].get<int>() / 8000.0,
+                    data["y"].get<int>() / 8000.0,
+                    data["z"].get<int>() / 8000.0,
+                            lastTransaction));
+        } else if (event->checkType("out_abilities")) {
+            auto data = event->getData();
+
+            pendingAbilities.emplace_back(Abilities(data["canFly"], lastTransaction));
+        } else if (event->checkType("in_transaction")) {
+            auto data = event->getData();
+            short id = data["transactionId"];
+
+            for(auto &velocity : velocities) {
+                if (velocity.transactionId == id) {
+                    velocity.completedTick = std::ceil(playerData->getTicksExisted() + ((velocity.getHorizontal() / 2 + 2) * 15));
+                    velocity.shouldRemove = true;
+
+                    activeVelocities.emplace_back(velocity);
+                }
+            }
+
+            for(auto abilities : pendingAbilities) {
+                if (abilities.transactionId == id) {
+                    abilities.shouldRemove = true;
+
+                    canFly = abilities.canFly;
+                }
+            }
+
+            std::remove_if(velocities.begin(), velocities.end(), [](auto velocity){
+                return velocity.shouldRemove;
+            });
+
+            std::remove_if(pendingAbilities.begin(), pendingAbilities.end(), [](auto abilities){
+                return abilities.shouldRemove;
+            });
+        } else if (event->checkType("out_transaction")) {
+            lastTransaction = event->getData()["transactionId"];
+        }
     }
 };
