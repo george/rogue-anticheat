@@ -8,11 +8,11 @@ protected:
 
     PlayerTemplate *playerData;
 
-    explicit Tracker(PlayerTemplate *playerData) :
-        playerData(playerData)
-    {}
-
 public:
+
+    explicit Tracker(PlayerTemplate *playerData) :
+            playerData(playerData)
+    {}
 
     virtual auto handle(PacketEvent *event) -> void = 0;
 

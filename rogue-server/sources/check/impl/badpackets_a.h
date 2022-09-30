@@ -11,8 +11,6 @@ public:
     {}
 
     auto handle(PacketEvent *event, TrackerProvider *provider) -> void override {
-        std::cout << provider->getActionTracker()->isDigging() << std::endl;
-
         if (event->isFlying()) {
             auto data = event->getData();
 

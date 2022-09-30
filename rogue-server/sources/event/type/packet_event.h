@@ -29,6 +29,10 @@ public:
         return this->json["packet"];
     }
 
+    auto getCollisions() -> nlohmann::json {
+        return this->json["collisions"];
+    }
+
     auto checkType(const std::string &name) -> bool {
         return json["type"] == name;
     }

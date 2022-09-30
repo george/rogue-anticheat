@@ -2,16 +2,19 @@
 
 #include "../../check/impl/badpackets_a.h"
 #include "../../tracker/impl/action_tracker.h"
+#include "../../tracker/impl/collision_tracker.h"
 
 #include <utility>
 #include <iostream>
 
 ActionTracker *actionTracker;
+CollisionTracker *collisionTracker;
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
 
     actionTracker = new ActionTracker(this);
+    collisionTracker = new CollisionTracker(this);
 
     checks.push_back(new BadPacketsA(this));
 }
