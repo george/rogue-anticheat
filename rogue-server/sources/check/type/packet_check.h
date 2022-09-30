@@ -7,6 +7,10 @@ class PacketCheck : public Check {
 
 public:
 
+    PacketCheck(PlayerTemplate *data) :
+        Check(data)
+    {}
+
     virtual auto handle(PacketEvent *event) -> void = 0;
 
 };

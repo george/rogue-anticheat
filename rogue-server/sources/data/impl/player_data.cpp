@@ -1,5 +1,6 @@
 #include "player_data.h"
-#include "../../check/type/packet_check.h"
+
+#include "../../check/impl/badpackets_a.h"
 #include "../../tracker/impl/action_tracker.h"
 
 #include <utility>
@@ -9,6 +10,8 @@ PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
 
     trackers.push_back(new ActionTracker(this));
+
+    checks.push_back(new BadPacketsA(this));
 }
 
 auto PlayerData::addViolation(Violation violation) -> void {
