@@ -9,12 +9,12 @@
 #include "../player_template.h"
 #include "../../tracker/tracker.h"
 #include "../../violation/violation.h"
+#include "../tracker_provider.h"
 
-class PlayerData : public PlayerTemplate {
+class PlayerData : public PlayerTemplate, public TrackerProvider {
 
 private:
 
-    std::vector<Tracker*> trackers{};
     std::vector<Check*> checks{};
     std::deque<Violation> violations{};
 
@@ -40,6 +40,8 @@ public:
     auto getTicksExisted() -> int override;
 
     auto getUuid() -> std::string override;
+
+    auto getActionTracker() -> ActionTracker* override;
 
     ~PlayerData();
 };

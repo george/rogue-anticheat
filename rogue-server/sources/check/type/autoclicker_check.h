@@ -7,7 +7,7 @@ class AutoClickerCheck : public PacketCheck {
 
     virtual auto handle(std::vector<long> *event) -> void = 0;
 
-    auto handle(PacketEvent *event) -> void override {
+    auto handle(PacketEvent *event, TrackerProvider *provider) -> void override {
 
     }
 };

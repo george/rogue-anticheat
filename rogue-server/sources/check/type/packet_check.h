@@ -11,6 +11,6 @@ public:
         Check(data)
     {}
 
-    virtual auto handle(PacketEvent *event) -> void = 0;
+    virtual auto handle(PacketEvent *event, TrackerProvider *provider) -> void = 0;
 
 };

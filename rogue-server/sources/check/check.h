@@ -3,9 +3,12 @@
 #include <string>
 
 #include "../data/player_template.h"
+#include "../data/tracker_provider.h"
 #include "../violation/violation.h"
 
 class Check {
+
+protected:
 
     PlayerTemplate *data;
 

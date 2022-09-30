@@ -10,10 +10,14 @@ public:
             PacketCheck(data)
     {}
 
-    auto handle(PacketEvent *event) -> void override {
+    auto handle(PacketEvent *event, TrackerProvider *provider) -> void override {
+        std::cout << provider->getActionTracker()->isDigging() << std::endl;
+
         if (event->isFlying()) {
-            if (std::abs(event->getData()["pitch"].get<float>()) > 90) {
-                fail({"pitch", event->getData()["pitch"]});
+            auto data = event->getData();
+
+            if (std::abs(data["pitch"].get<float>()) > 90) {
+                fail({"pitch", data["pitch"]});
             }
         }
     }

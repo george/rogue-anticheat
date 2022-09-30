@@ -6,10 +6,12 @@
 #include <utility>
 #include <iostream>
 
+ActionTracker *actionTracker;
+
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
 
-    trackers.push_back(new ActionTracker(this));
+    actionTracker = new ActionTracker(this);
 
     checks.push_back(new BadPacketsA(this));
 }
@@ -52,15 +54,17 @@ auto PlayerData::handlePacket(PacketEvent event) -> void {
         ++ticksExisted;
     }
 
-    for(const auto &tracker : this->trackers) {
-        tracker->handle(&event);
-    }
+    actionTracker->handle(&event);
 
     for(const auto &check : this->checks) {
         if (dynamic_cast<PacketCheck*>(check) != nullptr) {
-            ((PacketCheck*) check)->handle(&event);
+            ((PacketCheck*) check)->handle(&event, this);
         }
     }
+}
+
+auto PlayerData::getActionTracker() -> ActionTracker* {
+    return actionTracker;
 }
 
 PlayerData::~PlayerData() {
@@ -68,7 +72,5 @@ PlayerData::~PlayerData() {
         delete &check;
     }
 
-    for(const auto &tracker : trackers) {
-        delete &tracker;
-    }
+    delete actionTracker;
 }
