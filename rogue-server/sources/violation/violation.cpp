@@ -12,27 +12,33 @@ auto Violation::getName() -> std::string {
     return this->name;
 }
 
-auto Violation::getViolations() -> int {
+auto Violation::getViolations() const -> int {
     return this->violations;
 }
 
 auto Violation::getArgs() -> std::vector<std::string> {
-    return *this->args;
+    return this->args;
 }
 
 auto Violation::toJsonObject() -> nlohmann::json {
     CheckData checkData = rogue_app::getCheckData(type + name);
     nlohmann::json data = nlohmann::json::array();
 
-    for(int i = 0; i < args->size() / 2; i++) {
-        std::string name = args->at(i * 2);
-        std::string violationFlagData = args->at(i * 2 + 1);
+    for(int i = 0; i < args.size() / 2; i++) {
+        std::string name = args.at(i * 2);
+        std::string violationFlagData = args.at(i * 2 + 1);
+
+        std::cout << "a" << std::endl;
 
         data.push_back({
             {"name", name},
             {"data", violationFlagData}
         });
+
+        std::cout << "b" << std::endl;
     }
+
+    std::cout << "c" << std::endl;
 
     nlohmann::json json = {
             {"action", violations > checkData.getMaxViolations() ? "ban" : checkData.getAction()},
@@ -44,8 +50,4 @@ auto Violation::toJsonObject() -> nlohmann::json {
     };
 
     return json;
-}
-
-Violation::~Violation() {
-    delete args;
 }

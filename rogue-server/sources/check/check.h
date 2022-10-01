@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 #include "../data/player_template.h"
 #include "../data/tracker_provider.h"
@@ -26,7 +27,8 @@ public:
     }
 
     auto fail(std::vector<std::string> args) -> void {
-        data->addViolation(Violation(getType(), getName(), &args, ++violations));
+        std::cout << "a" << std::endl;
+        data->addViolation(Violation(getType(), getName(), std::move(args), ++violations));
     }
 
     auto incrementBuffer(double amount) -> double {

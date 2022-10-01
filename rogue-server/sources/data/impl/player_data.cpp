@@ -3,7 +3,7 @@
 #include <utility>
 #include <iostream>
 
-#include "../../check/impl/badpackets_a.h"
+#include "../../check/impl/badpackets/badpackets_a.h"
 #include "../../check/type/movement_check.h"
 
 ActionTracker *actionTracker;
@@ -21,7 +21,9 @@ PlayerData::PlayerData(std::string uuid)
 }
 
 auto PlayerData::addViolation(Violation violation) -> void {
+    std::cout << "e" << std::endl;
     violations.push_back(violation);
+    std::cout << "f" << std::endl;
 }
 
 auto PlayerData::getEntityId() -> int {
@@ -56,12 +58,11 @@ auto PlayerData::getMovementTracker() -> MovementTracker* {
 auto PlayerData::getViolations() -> nlohmann::json {
     nlohmann::json json = nlohmann::json::array();
 
-    while (!violations.empty()) {
-        Violation violation = violations.front();
+    for(auto &violation : violations) {
         json.push_back(violation.toJsonObject());
-
-        violations.pop_front();
     }
+
+    violations.clear();
 
     return json;
 }
