@@ -34,10 +34,12 @@ auto Violation::toJsonObject() -> nlohmann::json {
         });
     }
 
+    // Check name and type need to be inverted
+    
     nlohmann::json json = {
             {"action", violations > checkData.getMaxViolations() ? "ban" : checkData.getAction()},
-            {"checkName", checkData.getName()},
-            {"checkType", checkData.getType()},
+            {"checkName", checkData.getType()},
+            {"checkType", checkData.getName()},
             {"violations", violations},
             {"data", data},
             {"maxViolations", checkData.getMaxViolations()}
