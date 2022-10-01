@@ -7,7 +7,7 @@ class PacketCheck : public Check {
 
 public:
 
-    PacketCheck(PlayerTemplate *data) :
+    explicit PacketCheck(PlayerTemplate *data) :
         Check(data)
     {}
 

@@ -6,6 +6,7 @@
 #include "../../check/type/movement_check.h"
 
 #include "../../check/impl/badpackets/badpackets_a.h"
+#include "../../check/impl/speed/speed_a.h"
 
 ActionTracker *actionTracker;
 CollisionTracker *collisionTracker;
@@ -23,6 +24,7 @@ PlayerData::PlayerData(std::string uuid)
     potionTracker = new PotionTracker(this);
 
     checks.push_back(new BadPacketsA(this));
+    checks.push_back(new SpeedA(this));
 }
 
 auto PlayerData::addViolation(Violation violation) -> void {
@@ -60,6 +62,11 @@ auto PlayerData::getMovementTracker() -> MovementTracker* {
 auto PlayerData::getPingTracker() -> PingTracker* {
     return pingTracker;
 }
+
+auto PlayerData::getPotionTracker() -> PotionTracker * {
+    return potionTracker;
+}
+
 auto PlayerData::getViolations() -> nlohmann::json {
     nlohmann::json json = nlohmann::json::array();
 
