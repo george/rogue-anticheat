@@ -27,7 +27,6 @@ public:
     }
 
     auto fail(std::vector<std::string> args) -> void {
-        std::cout << "a" << std::endl;
         data->addViolation(Violation(getType(), getName(), std::move(args), ++violations));
     }
 

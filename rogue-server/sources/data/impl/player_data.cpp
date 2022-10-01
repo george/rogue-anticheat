@@ -21,9 +21,7 @@ PlayerData::PlayerData(std::string uuid)
 }
 
 auto PlayerData::addViolation(Violation violation) -> void {
-    std::cout << "e" << std::endl;
     violations.push_back(violation);
-    std::cout << "f" << std::endl;
 }
 
 auto PlayerData::getEntityId() -> int {

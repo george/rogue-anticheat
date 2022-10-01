@@ -28,17 +28,11 @@ auto Violation::toJsonObject() -> nlohmann::json {
         std::string name = args.at(i * 2);
         std::string violationFlagData = args.at(i * 2 + 1);
 
-        std::cout << "a" << std::endl;
-
         data.push_back({
             {"name", name},
             {"data", violationFlagData}
         });
-
-        std::cout << "b" << std::endl;
     }
-
-    std::cout << "c" << std::endl;
 
     nlohmann::json json = {
             {"action", violations > checkData.getMaxViolations() ? "ban" : checkData.getAction()},
