@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "nlohmann/json.hpp"
@@ -17,10 +18,10 @@ private:
 
 public:
 
-    Violation(std::string name, std::string type, std::vector<std::string> args, int violations) :
+    Violation(std::string type, std::string name, std::vector<std::string> args, int violations) :
         name(std::move(name)),
         type(std::move(type)),
-        args(args),
+        args(std::move(args)),
         violations(violations)
     {}
 

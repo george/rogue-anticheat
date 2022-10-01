@@ -10,6 +10,12 @@
       "max_violations": 1
     },
     {
+      "check_type": "BadPackets",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 1
+    },
+    {
       "check_type": "Speed",
       "check_name": "A",
       "action": "flag",
