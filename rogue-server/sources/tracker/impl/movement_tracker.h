@@ -14,8 +14,6 @@ struct Abilities {
     bool canFly;
     short transactionId;
 
-    bool shouldRemove;
-
     Abilities(bool canFly, short transactionId) :
         canFly(canFly),
         transactionId(transactionId)
@@ -31,8 +29,6 @@ struct Velocity {
     short transactionId;
 
     int completedTick{};
-
-    bool shouldRemove{};
 
     Velocity(double x, double y, double z, short transactionId) :
         x(x),
@@ -55,7 +51,7 @@ class MovementTracker : public Tracker {
     bool teleporting{};
     bool canFly{};
 
-    short lastTransaction;
+    short lastTransaction{};
 
     std::vector<Vector> teleports{};
     std::vector<Abilities> pendingAbilities{};
@@ -126,7 +122,7 @@ public:
                 }
             }
 
-            if (x != 0 || y != 0 || z != 0 && gamemode == "SURVIVAL") {
+            if (x != 0 || y != 0 || z != 0 && gamemode == "SURVIVAL" && !smallMove && !teleporting && !canFly) {
                 playerData->handlePositionUpdate(PositionUpdateEvent(*currentLocation, location));
             }
 
@@ -156,46 +152,62 @@ public:
             auto data = event->getData();
             short id = data["transactionId"];
 
-            for(auto &velocity : velocities) {
+            for(int i = 0; i < velocities.size(); i++) {
+                auto velocity = velocities.at(i);
+
                 if (velocity.transactionId == id) {
-                    velocity.completedTick = std::ceil(playerData->getTicksExisted() + ((velocity.getHorizontal() / 2 + 2) * 15));
-                    velocity.shouldRemove = true;
+                    velocity.completedTick = std::ceil(playerData->getTicksExisted() +
+                            ((velocity.getHorizontal() / 2 + 2) * 15));
 
                     activeVelocities.emplace_back(velocity);
+                    velocities.erase(velocities.begin() + i);
                 }
             }
 
-            for(auto abilities : pendingAbilities) {
+            for(int i = 0; i < pendingAbilities.size(); i++) {
+                auto abilities = pendingAbilities.at(i);
+
                 if (abilities.transactionId == id) {
-                    abilities.shouldRemove = true;
-
                     canFly = abilities.canFly;
+                    pendingAbilities.erase(pendingAbilities.begin() + i);
                 }
             }
-
-            std::remove_if(velocities.begin(), velocities.end(), [](auto velocity){
-                return velocity.shouldRemove;
-            });
-
-            std::remove_if(pendingAbilities.begin(), pendingAbilities.end(), [](auto abilities){
-                return abilities.shouldRemove;
-            });
         } else if (event->checkType("out_transaction")) {
             lastTransaction = event->getData()["transactionId"];
         }
     }
 
-    auto getHorizontalVelocity() {
+    auto getWalkSpeed() -> double {
+        return walkSpeed;
+    }
+
+    auto getCurrentLocation() -> CustomLocation* {
+        return currentLocation;
+    }
+
+    auto getPreviousLocation() -> CustomLocation* {
+        return previousLocation;
+    }
+
+    auto canToggleFly() const -> bool {
+        return canFly;
+    }
+
+    auto isSmallMove() const -> bool {
+        return smallMove;
+    }
+
+    auto getHorizontalVelocity() -> double {
         double totalVelocity = 0;
 
         for(auto &velocity : velocities) {
-            totalVelocity += velocity.getHorizontal():
+            totalVelocity += velocity.getHorizontal();
         }
 
         return totalVelocity;
     }
 
-    auto getVerticalVelocity() {
+    auto getVerticalVelocity() -> double {
         double totalVelocity = 0;
 
         for(auto &velocity : velocities) {
