@@ -3,12 +3,14 @@
 #include <utility>
 #include <iostream>
 
-#include "../../check/impl/badpackets/badpackets_a.h"
 #include "../../check/type/movement_check.h"
+
+#include "../../check/impl/badpackets/badpackets_a.h"
 
 ActionTracker *actionTracker;
 CollisionTracker *collisionTracker;
 MovementTracker *movementTracker;
+PingTracker *pingTracker;
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
@@ -16,6 +18,7 @@ PlayerData::PlayerData(std::string uuid)
     actionTracker = new ActionTracker(this);
     collisionTracker = new CollisionTracker(this);
     movementTracker = new MovementTracker(this);
+    pingTracker = new PingTracker(this);
 
     checks.push_back(new BadPacketsA(this));
 }
@@ -52,7 +55,9 @@ auto PlayerData::getMovementTracker() -> MovementTracker* {
     return movementTracker;
 }
 
-
+auto PlayerData::getPingTracker() -> PingTracker* {
+    return pingTracker;
+}
 auto PlayerData::getViolations() -> nlohmann::json {
     nlohmann::json json = nlohmann::json::array();
 
@@ -71,6 +76,9 @@ auto PlayerData::handlePacket(PacketEvent event) -> void {
     }
 
     actionTracker->handle(&event);
+    collisionTracker->handle(&event);
+    movementTracker->handle(&event);
+    pingTracker->handle(&event);
 
     for(const auto &check : this->checks) {
         if (dynamic_cast<PacketCheck*>(check) != nullptr) {
@@ -95,4 +103,5 @@ PlayerData::~PlayerData() {
     delete actionTracker;
     delete collisionTracker;
     delete movementTracker;
+    delete pingTracker;
 }

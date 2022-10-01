@@ -36,7 +36,7 @@ public:
         onGround(true)
     {}
 
-    Collisions(nlohmann::json json) :
+    explicit Collisions(nlohmann::json json) :
         climbing(json["climbing"]),
         cobweb(json["cobweb"]),
         inLava(json["lava"]),

@@ -7,9 +7,10 @@
 
 #include "../../check/check.h"
 #include "../player_template.h"
+#include "../tracker_provider.h"
 #include "../../tracker/tracker.h"
 #include "../../violation/violation.h"
-#include "../tracker_provider.h"
+#include "../../tracker/impl/ping_tracker.h"
 
 class PlayerData : public PlayerTemplate, public TrackerProvider {
 
@@ -48,6 +49,8 @@ public:
     auto getCollisionTracker() -> CollisionTracker* override;
 
     auto getMovementTracker() -> MovementTracker* override;
+
+    auto getPingTracker() -> PingTracker* override;
 
     ~PlayerData();
 };
