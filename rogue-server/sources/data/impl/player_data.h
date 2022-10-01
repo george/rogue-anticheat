@@ -52,5 +52,7 @@ public:
 
     auto getPingTracker() -> PingTracker* override;
 
+    auto getPotionTracker() -> PotionTracker* override;
+    
     ~PlayerData();
 };

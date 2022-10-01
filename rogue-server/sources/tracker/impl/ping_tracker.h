@@ -9,12 +9,12 @@ class PingTracker : public Tracker {
 
     std::map<short, long> transactionMap{};
 
-    short lastTransaction;
-    long lastPing;
+    short lastTransaction{};
+    long lastPing{};
 
 public:
 
-    PingTracker(PlayerTemplate *playerTemplate) :
+    explicit PingTracker(PlayerTemplate *playerTemplate) :
         Tracker(playerTemplate)
     {}
 
@@ -29,8 +29,8 @@ public:
                 return;
             }
 
-            lastPing = timestamp - transactionMap.find(transactionId);
-            std::remove(transactionMap.begin(), transactionMap.end(), transactionId);
+            lastPing = timestamp - transactionMap.find(transactionId)->second;
+            transactionMap.erase(transactionId);
         } else if (event->checkType("out_transaction")) {
             auto data = event->getData();
             auto transactionId = data["transactionId"];

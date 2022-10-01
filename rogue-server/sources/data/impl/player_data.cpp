@@ -11,6 +11,7 @@ ActionTracker *actionTracker;
 CollisionTracker *collisionTracker;
 MovementTracker *movementTracker;
 PingTracker *pingTracker;
+PotionTracker *potionTracker;
 
 PlayerData::PlayerData(std::string uuid)
     : uuid(std::move(uuid)) {
@@ -19,6 +20,7 @@ PlayerData::PlayerData(std::string uuid)
     collisionTracker = new CollisionTracker(this);
     movementTracker = new MovementTracker(this);
     pingTracker = new PingTracker(this);
+    potionTracker = new PotionTracker(this);
 
     checks.push_back(new BadPacketsA(this));
 }
@@ -79,6 +81,7 @@ auto PlayerData::handlePacket(PacketEvent event) -> void {
     collisionTracker->handle(&event);
     movementTracker->handle(&event);
     pingTracker->handle(&event);
+    potionTracker->handle(&event);
 
     for(const auto &check : this->checks) {
         if (dynamic_cast<PacketCheck*>(check) != nullptr) {
@@ -104,4 +107,5 @@ PlayerData::~PlayerData() {
     delete collisionTracker;
     delete movementTracker;
     delete pingTracker;
+    delete potionTracker;
 }

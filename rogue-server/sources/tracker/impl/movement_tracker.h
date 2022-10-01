@@ -184,4 +184,24 @@ public:
             lastTransaction = event->getData()["transactionId"];
         }
     }
+
+    auto getHorizontalVelocity() {
+        double totalVelocity = 0;
+
+        for(auto &velocity : velocities) {
+            totalVelocity += velocity.getHorizontal():
+        }
+
+        return totalVelocity;
+    }
+
+    auto getVerticalVelocity() {
+        double totalVelocity = 0;
+
+        for(auto &velocity : velocities) {
+            totalVelocity += velocity.y;
+        }
+
+        return totalVelocity;
+    }
 };
