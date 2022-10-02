@@ -112,8 +112,14 @@ public:
                 std::abs(location.getPosY() - currentLocation->getPosY()) > 8 ||
                 std::abs(location.getPosZ() - currentLocation->getPosZ()) > 8) {
 
-                if (!teleporting && playerData->getTicksExisted() > 20) {
-                    playerData->addViolation(Violation("Tracker", "A", {}, 1));
+                if (location.getPosX() != 0 && location.getPosY() != 0 && location.getPosZ() != 0) {
+                    if (!teleporting && data["moving"] && playerData->getTicksExisted() > 20) {
+                        playerData->addViolation(Violation("Tracker", "A", {
+                                "offsetX", std::to_string(std::abs(location.getPosX() - currentLocation->getPosX())),
+                                "offsetY", std::to_string(std::abs(location.getPosY() - currentLocation->getPosY())),
+                                "offsetZ", std::to_string(std::abs(location.getPosZ() - currentLocation->getPosZ()))
+                        }, 1));
+                    }
 
                     previousLocation = currentLocation;
                     currentLocation = &location;

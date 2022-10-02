@@ -40,7 +40,10 @@ public:
         } else if (event->isFlying()) {
             for(const auto &pair : transactionMap) {
                 if (timestamp - pair.second > 3000) {
-                    playerData->addViolation(Violation("Tracker", "B", {}, 1));
+                    playerData->addViolation(Violation("Tracker", "B", {
+                        "transactionId", std::to_string(pair.first),
+                        "delay", std::to_string(timestamp - pair.second)
+                    }, 1));
                 }
             }
         }
