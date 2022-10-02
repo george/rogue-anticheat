@@ -30,7 +30,7 @@ public:
             }
 
             lastPing = timestamp - transactionMap.find(transactionId)->second;
-            transactionMap.erase(transactionId);
+            transactionMap.erase(transactionMap.find(transactionId));
         } else if (event->checkType("out_transaction")) {
             auto data = event->getData();
             auto transactionId = data["transactionId"];
