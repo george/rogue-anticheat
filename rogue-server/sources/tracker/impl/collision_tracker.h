@@ -20,7 +20,7 @@ public:
 
     auto handle(PacketEvent *event) -> void override {
         if (event->isFlying()) {
-            auto *collisions = new Collisions(event->getCollisions());
+            auto collisions = new Collisions(event->getCollisions());
 
             delete previousCollisions;
 

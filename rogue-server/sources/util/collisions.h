@@ -49,47 +49,47 @@ public:
         onGround(json["onGround"])
     {}
 
-    auto isClimbing() -> bool {
+    auto isClimbing() const -> bool {
         return climbing;
     }
 
-    auto isInCobweb() -> bool {
+    auto isInCobweb() const -> bool {
         return cobweb;
     }
 
-    auto isInLiquid() -> bool {
+    auto isInLiquid() const -> bool {
         return inLava || inWater;
     }
 
-    auto isInLava() -> bool {
+    auto isInLava() const -> bool {
         return inLava;
     }
 
-    auto isInWater() -> bool {
+    auto isInWater() const -> bool {
         return inWater;
     }
 
-    auto isMathematicallyOnGround() -> bool {
+    auto isMathematicallyOnGround() const -> bool {
         return mathematicallyOnGround;
     }
 
-    auto isUnderBlock() -> bool {
+    auto isUnderBlock() const -> bool {
         return underBlock;
     }
 
-    auto isOnGround() -> bool {
+    auto isOnGround() const -> bool {
         return onGround;
     }
 
-    auto isCollidedHorizontally() -> bool {
+    auto isCollidedHorizontally() const -> bool {
         return collidedHorizontally;
     }
 
-    auto isCollidedVertically() -> bool {
+    auto isCollidedVertically() const -> bool {
         return collidedVertically;
     }
 
-    auto getFrictionFactor() -> float {
+    auto getFrictionFactor() const -> float {
         return frictionFactor;
     }
 };
