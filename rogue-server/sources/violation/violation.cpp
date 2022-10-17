@@ -25,8 +25,8 @@ auto Violation::toJsonObject() -> nlohmann::json {
     nlohmann::json data = nlohmann::json::array();
 
     for(int i = 0; i < args.size() / 2; i++) {
-        std::string name = args.at(i * 2);
-        std::string violationFlagData = args.at(i * 2 + 1);
+        auto name = args.at(i * 2);
+        auto violationFlagData = args.at(i * 2 + 1);
 
         data.push_back({
             {"name", name},

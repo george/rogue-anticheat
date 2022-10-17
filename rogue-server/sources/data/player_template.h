@@ -10,7 +10,7 @@ class PlayerTemplate {
 
 public:
 
-    virtual auto handlePacket(PacketEvent event) -> void = 0;
+    virtual auto handlePacket(PacketEvent *event) -> void = 0;
 
     virtual auto handlePositionUpdate(PositionUpdateEvent event) -> void = 0;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <mutex>
 
 #include "../tracker.h"
 #include "../../data/player_template.h"
@@ -8,6 +9,7 @@
 class PingTracker : public Tracker {
 
     std::map<short, long> transactionMap{};
+    std::mutex mutex;
 
     short lastTransaction{};
     long lastPing{};
@@ -30,13 +32,19 @@ public:
             }
 
             lastPing = timestamp - transactionMap.find(transactionId)->second;
+
+            mutex.lock();
             transactionMap.erase(transactionMap.find(transactionId));
+            mutex.unlock();
         } else if (event->checkType("out_transaction")) {
             auto data = event->getData();
             auto transactionId = data["transactionId"];
 
             lastTransaction = transactionId;
+
+            mutex.lock();
             transactionMap.insert(std::make_pair(transactionId, timestamp));
+            mutex.unlock();
         } else if (event->isFlying()) {
             for(const auto &pair : transactionMap) {
                 if (timestamp - pair.second > 3000) {

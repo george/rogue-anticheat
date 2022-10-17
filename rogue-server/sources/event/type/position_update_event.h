@@ -10,7 +10,7 @@ private:
     CustomLocation previous;
     CustomLocation current;
 
-    const double offsetX;
+    const double offsetXZ;
     const double offsetY;
 
 public:
@@ -18,7 +18,7 @@ public:
     PositionUpdateEvent(CustomLocation previous, CustomLocation current) :
         previous(previous),
         current(current),
-        offsetX(previous.getDistance(&current)),
+        offsetXZ(previous.getDistance(&current)),
 
         offsetY(std::abs(previous.getPosY() - current.getPosY()))
     {}
@@ -31,11 +31,11 @@ public:
         return this->current;
     }
 
-    auto getOffsetX() -> double {
-        return this->offsetX;
+    auto getOffsetXZ() const -> double {
+        return this->offsetXZ;
     }
 
-    auto getOffsetY() -> double {
+    auto getOffsetY() const -> double {
         return this->offsetY;
     }
 };

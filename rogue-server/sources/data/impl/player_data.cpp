@@ -79,21 +79,27 @@ auto PlayerData::getViolations() -> nlohmann::json {
     return json;
 }
 
-auto PlayerData::handlePacket(PacketEvent event) -> void {
-    if (event.isFlying()) {
-        ++ticksExisted;
-    }
-
-    actionTracker->handle(&event);
-    collisionTracker->handle(&event);
-    movementTracker->handle(&event);
-    pingTracker->handle(&event);
-    potionTracker->handle(&event);
-
-    for(const auto &check : this->checks) {
-        if (dynamic_cast<PacketCheck*>(check) != nullptr) {
-            ((PacketCheck*) check)->handle(&event, this);
+auto PlayerData::handlePacket(PacketEvent *event) -> void {
+    try {
+        if (event->isFlying()) {
+            ++ticksExisted;
         }
+
+        actionTracker->handle(event);
+        collisionTracker->handle(event);
+        movementTracker->handle(event);
+        pingTracker->handle(event);
+        potionTracker->handle(event);
+
+        for (const auto &check: this->checks) {
+            if (dynamic_cast<PacketCheck *>(check) != nullptr) {
+                ((PacketCheck *) check)->handle(event, this);
+            }
+        }
+    } catch (std::exception &exc) {
+        std::cout << "Error!" << std::endl;
+        std::cout << exc.what() << std::endl;
+        std::cout << event->getData() << std::endl;
     }
 }
 

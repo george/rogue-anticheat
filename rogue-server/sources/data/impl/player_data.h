@@ -34,7 +34,7 @@ public:
 
     auto getViolations() -> nlohmann::json override;
 
-    auto handlePacket(PacketEvent event) -> void override;
+    auto handlePacket(PacketEvent *event) -> void override;
 
     auto handlePositionUpdate(PositionUpdateEvent event) -> void override;
 
