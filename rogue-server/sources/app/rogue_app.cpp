@@ -3,10 +3,15 @@
 #include "../data/impl/player_data.h"
 
 RogueConfig rogue_app::config = RogueConfig();
+std::mutex rogue_app::mutex{};
 std::map<std::string, PlayerTemplate*> rogue_app::playerDataMap = {};
 
 auto rogue_app::getCheckData(const std::string &checkIdentifier) -> CheckData {
-    return config.getCheckData(checkIdentifier);
+    mutex.lock();
+    auto checkData = config.getCheckData(checkIdentifier);
+    mutex.unlock();
+
+    return checkData;
 }
 
 auto rogue_app::getPlayerData(const std::string &uuid) -> PlayerTemplate* {

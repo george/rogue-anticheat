@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <mutex>
 
 #include "../config/rogue_config.h"
 #include "../config/data/check_data.h"
@@ -11,7 +12,7 @@
 namespace rogue_app {
 
     extern std::map<std::string, PlayerTemplate*> playerDataMap;
-
+    extern std::mutex mutex;
     extern RogueConfig config;
 
     auto getCheckData(const std::string &checkIdentifier) -> CheckData;

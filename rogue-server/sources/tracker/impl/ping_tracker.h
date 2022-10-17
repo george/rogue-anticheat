@@ -34,7 +34,7 @@ public:
             lastPing = timestamp - transactionMap.find(transactionId)->second;
 
             mutex.lock();
-            transactionMap.erase(transactionMap.find(transactionId));
+            transactionMap.erase(std::distance(transactionMap.begin(), transactionMap.find(transactionId)));
             mutex.unlock();
         } else if (event->checkType("out_transaction")) {
             auto data = event->getData();

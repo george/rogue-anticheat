@@ -8,8 +8,8 @@ private:
     double posY;
     double posZ;
 
-    float yaw;
-    float pitch;
+    float yaw{};
+    float pitch{};
 
 public:
 
@@ -17,16 +17,16 @@ public:
 
     CustomLocation(double posX, double posY, double posZ, float yaw, float pitch);
 
-    auto getPosX() -> double;
+    auto getPosX() const -> double;
 
-    auto getPosY() -> double;
+    auto getPosY() const -> double;
 
-    auto getPosZ() -> double;
+    auto getPosZ() const -> double;
 
-    auto getYaw() -> float;
+    auto getYaw() const -> float;
 
-    auto getPitch() -> float;
+    auto getPitch() const -> float;
 
-    auto getDistance(CustomLocation *location) -> double;
+    auto getDistance(CustomLocation *location) const -> double;
 
 };

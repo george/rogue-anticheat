@@ -39,7 +39,7 @@ public:
         movementSpeed -= (0.15 * provider->getPotionTracker()->getAmplifier(PotionEffectType::SLOWNESS));
 
         double ratio = (offsetXZ - lastOffsetXZ) / movementSpeed;
-        std::cout << std::to_string(ratio) << std::endl;
+//        std::cout << std::to_string(ratio) << std::endl;
 
         lastOffsetXZ = offsetXZ * lastFriction;
         lastFriction = provider->getCollisionTracker()->getPreviousCollisions()->getFrictionFactor();

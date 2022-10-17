@@ -120,21 +120,16 @@ public:
                                 "offsetZ", std::to_string(std::abs(location.getPosZ() - currentLocation->getPosZ()))
                         }, 1));
                     }
-
-                    previousLocation = currentLocation;
-                    currentLocation = &location;
-
-                    return;
                 }
-            }
+            } else {
+                if (x != 0 || y != 0 || z != 0 && gamemode == "SURVIVAL" && !smallMove && !teleporting && !canFly) {
+                    playerData->handlePositionUpdate(PositionUpdateEvent(*currentLocation, location));
+                }
 
-            if (x != 0 || y != 0 || z != 0 && gamemode == "SURVIVAL" && !smallMove && !teleporting && !canFly) {
-                playerData->handlePositionUpdate(PositionUpdateEvent(*currentLocation, location));
+                std::remove_if(velocities.begin(), velocities.end(), [this](auto velocity){
+                    return playerData->getTicksExisted() >= velocity.completedTick;
+                });
             }
-
-            std::remove_if(velocities.begin(), velocities.end(), [this](auto velocity){
-                return playerData->getTicksExisted() >= velocity.completedTick;
-            });
 
             previousLocation = currentLocation;
             currentLocation = &location;
