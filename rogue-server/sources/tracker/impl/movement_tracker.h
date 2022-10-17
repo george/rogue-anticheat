@@ -183,7 +183,7 @@ public:
         }
     }
 
-    auto getWalkSpeed() -> double {
+    auto getWalkSpeed() const -> double {
         return walkSpeed;
     }
 
