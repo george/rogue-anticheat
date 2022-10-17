@@ -9,7 +9,7 @@
 class PingTracker : public Tracker {
 
     std::map<short, long> transactionMap{};
-    std::mutex mutex;
+    std::mutex mutex{};
 
     short lastTransaction{};
     long lastPing{};
