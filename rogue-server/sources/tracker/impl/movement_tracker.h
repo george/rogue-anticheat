@@ -131,8 +131,8 @@ public:
                 });
             }
 
-            previousLocation = currentLocation;
-            currentLocation = &location;
+            this->previousLocation = std::move(currentLocation);
+            this->currentLocation = &location;
         } else if (event->checkType("out_position")) {
             auto data = event->getData();
 
