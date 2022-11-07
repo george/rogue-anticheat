@@ -1,10 +1,14 @@
 #pragma once
 
+#include <mutex>
+
 #include "../tracker.h"
 #include "../../data/player_template.h"
 #include "../../util/collisions.h"
 
 class CollisionTracker : public Tracker {
+
+    std::mutex mutex{};
 
     Collisions *currentCollisions;
     Collisions *previousCollisions;
@@ -22,7 +26,9 @@ public:
         if (event->isFlying()) {
             auto collisions = new Collisions(event->getCollisions());
 
+            mutex.lock();
             delete previousCollisions;
+            mutex.unlock();
 
             previousCollisions = currentCollisions;
             currentCollisions = collisions;
