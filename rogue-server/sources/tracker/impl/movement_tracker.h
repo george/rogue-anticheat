@@ -140,11 +140,13 @@ public:
         } else if (event->checkType("out_entity_velocity")) {
             auto data = event->getData();
 
-            velocities.emplace_back(Velocity(
-                    data["x"].get<int>() / 8000.0,
-                    data["y"].get<int>() / 8000.0,
-                    data["z"].get<int>() / 8000.0,
-                            lastTransaction));
+            if (data["entityId"] == event->getEntityId()) {
+                velocities.emplace_back(Velocity(
+                        data["x"].get<int>() / 8000.0,
+                        data["y"].get<int>() / 8000.0,
+                        data["z"].get<int>() / 8000.0,
+                        lastTransaction));
+            }
         } else if (event->checkType("out_abilities")) {
             auto data = event->getData();
 

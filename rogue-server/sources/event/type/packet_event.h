@@ -41,6 +41,10 @@ public:
         return this->json["walkSpeed"];
     }
 
+    auto getEntityId() -> int {
+        return this->json["entityId"];
+    }
+
     auto checkType(const std::string &name) -> bool {
         return json["type"] == name;
     }

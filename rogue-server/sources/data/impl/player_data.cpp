@@ -99,6 +99,8 @@ auto PlayerData::handlePacket(PacketEvent *event) -> void {
             ((PacketCheck *) check)->handle(event, this);
         }
     }
+
+    delete event;
 }
 
 auto PlayerData::handlePositionUpdate(PositionUpdateEvent event) -> void {
