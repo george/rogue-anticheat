@@ -24,4 +24,4 @@ Rogue is designed to be installed as a normal plugin, while the server requires 
 
 ## Credits
 
-Thanks to sim0n for allowing me to use checks and utilities from Nemesis AntiCheat.
+Thanks to sim0n for allowing me to use some checks, trackers, utilities from Nemesis AntiCheat.

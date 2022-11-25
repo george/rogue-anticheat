@@ -2,6 +2,8 @@ package org.hostile.anticheat.util;
 
 import lombok.experimental.UtilityClass;
 import org.hostile.anticheat.location.CustomLocation;
+import org.hostile.anticheat.util.minecraft.MathHelper;
+import org.hostile.anticheat.util.minecraft.Vec3;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -181,5 +183,15 @@ public class MathUtil {
         return -numbers.values().stream()
                 .mapToDouble(value -> value / size)
                 .map(value -> value * LOG_TWO).sum();
+    }
+
+    public Vec3 getVectorForRotation(float pitch, float yaw) {
+        float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
+        float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
+
+        float f2 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f3 = MathHelper.sin(-pitch * 0.017453292F);
+
+        return new Vec3(f1 * f2, f3, f * f2);
     }
 }

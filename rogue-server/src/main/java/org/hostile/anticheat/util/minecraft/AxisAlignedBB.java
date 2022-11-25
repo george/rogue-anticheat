@@ -17,6 +17,11 @@ public class AxisAlignedBB {
                 customLocation.getX() + .3, customLocation.getY() + 1.8, customLocation.getZ() + .3);
     }
 
+    public AxisAlignedBB(Vector vector) {
+        this(vector.getPosX() - .3, vector.getPosY(), vector.getPosZ() - .3,
+                vector.getPosX() + .3, vector.getPosY() + 1.8, vector.getPosZ() + .3);
+    }
+
     public AxisAlignedBB(double x1, double y1, double z1, double x2, double y2, double z2) {
         this.minX = Math.min(x1, x2);
         this.minY = Math.min(y1, y2);

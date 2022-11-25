@@ -1,5 +1,6 @@
 package org.hostile.anticheat.manager;
 
+import org.hostile.anticheat.check.impl.reach.ReachA;
 import org.hostile.anticheat.check.impl.speed.SpeedA;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;
@@ -12,6 +13,8 @@ import java.util.stream.Collectors;
 public class CheckManager {
 
     private static final List<Constructor<? extends Check<?>>> CHECK_CONSTRUCTORS = Arrays.asList(
+            ReachA.class,
+
             SpeedA.class
     ).stream().map(clazz -> {
         try {

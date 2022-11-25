@@ -16,6 +16,7 @@ public abstract class Check<T> {
 
     protected final ActionTracker actionTracker;
     protected final CollisionTracker collisionTracker;
+    protected final EntityTracker entityTracker;
     protected final MovementTracker movementTracker;
     protected final PingTracker pingTracker;
     protected final PotionTracker potionTracker;
@@ -36,6 +37,7 @@ public abstract class Check<T> {
 
         this.actionTracker = data.getActionTracker();
         this.collisionTracker = data.getCollisionTracker();
+        this.entityTracker = data.getEntityTracker();
         this.movementTracker = data.getMovementTracker();
         this.pingTracker = data.getPingTracker();
         this.potionTracker = data.getPotionTracker();

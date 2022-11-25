@@ -21,9 +21,9 @@ public class WrappedPacketPlayOutEntityTeleport extends WrappedPacket {
         StructureModifier<Integer> integers = packetContainer.getIntegers();
 
         this.entityId = integers.read(0);
-        this.posX = integers.read(0);
-        this.posY = integers.read(1);
-        this.posZ = integers.read(2);
+        this.posX = integers.read(1);
+        this.posY = integers.read(2);
+        this.posZ = integers.read(3);
         this.yaw = bytes.read(0);
         this.pitch = bytes.read(1);
     }
