@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.hostile.anticheat.config.ServerConfiguration;
 import org.hostile.anticheat.data.PlayerData;
-import org.hostile.anticheat.data.manager.PlayerDataManager;
+import org.hostile.anticheat.manager.PlayerDataManager;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;

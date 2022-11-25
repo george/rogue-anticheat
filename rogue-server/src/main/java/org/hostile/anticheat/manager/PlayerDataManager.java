@@ -1,4 +1,4 @@
-package org.hostile.anticheat.data.manager;
+package org.hostile.anticheat.manager;
 
 import org.hostile.anticheat.data.PlayerData;
 
