@@ -61,7 +61,9 @@ public class ReachA extends PacketCheck {
                 }
             }
 
-            if (reach > 3.001) {
+            debug("reach", reach);
+
+            if (reach > (movementTracker.isSmallMove() ? 3.03 : 3.001)) {
                 if (incrementBuffer(1) > 3) {
                     fail("reach", reach);
                 }
