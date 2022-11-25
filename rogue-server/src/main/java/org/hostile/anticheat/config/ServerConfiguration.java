@@ -22,6 +22,8 @@ public class ServerConfiguration {
     private final int port;
     private final int threads;
 
+    private final long maxPing;
+
     @SneakyThrows
     public ServerConfiguration(AntiCheatServer server) {
         Path configPath = Paths.get("config.json");
@@ -48,7 +50,8 @@ public class ServerConfiguration {
         this.hostname = configuration.get("hostname").getAsString();
 
         this.port = configuration.get("port").getAsInt();
-
         this.threads = configuration.get("threads").getAsInt();
+
+        this.maxPing = configuration.get("maxPing").getAsLong();
     }
 }

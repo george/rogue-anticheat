@@ -2,6 +2,7 @@
   "hostname": "127.0.0.1",
   "port": 3001,
   "threads": 4,
+  "maxPing": 30000,
   "checks": [
     {
       "check_type": "AutoClicker",

@@ -13,6 +13,7 @@ import org.hostile.anticheat.data.manager.PlayerDataManager;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;
+import org.hostile.anticheat.manager.CheckManager;
 
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -33,6 +34,7 @@ public class AntiCheatServer {
             .setLogTimestamps(true)
     );
 
+    private final CheckManager checkManager = new CheckManager();
     private final PlayerDataManager playerDataManager = new PlayerDataManager();
     private final ServerConfiguration serverConfiguration = new ServerConfiguration(this);
 
@@ -68,8 +70,11 @@ public class AntiCheatServer {
             data.handle(event);
 
             JsonArray violations = data.getViolations();
+            JsonObject responseObject = new JsonObject();
 
-            String response = gson.toJson(violations);
+            responseObject.add("violations", violations);
+
+            String response = gson.toJson(responseObject);
             byte[] bytes = response.getBytes();
 
             req.sendResponseHeaders(200, bytes.length);

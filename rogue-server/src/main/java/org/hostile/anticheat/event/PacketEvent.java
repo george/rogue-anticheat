@@ -17,7 +17,8 @@ public class PacketEvent {
     public PacketEvent(JsonObject jsonObject) {
         this.timestamp = jsonObject.get("timestamp").getAsLong();
         this.jsonObject = jsonObject;
-        this.packet = PacketWrapper.wrapPacket(jsonObject.get("type").getAsString(),
+        this.packet = PacketWrapper.wrapPacket(
+                jsonObject.get("type").getAsString(),
                 jsonObject.get("packet").getAsJsonObject()
         );
     }
