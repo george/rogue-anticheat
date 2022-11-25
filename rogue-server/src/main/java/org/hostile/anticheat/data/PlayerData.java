@@ -72,4 +72,8 @@ public class PlayerData {
 
         return array;
     }
+
+    public void addViolation(JsonObject jsonObject) {
+        this.violations.add(jsonObject);
+    }
 }
