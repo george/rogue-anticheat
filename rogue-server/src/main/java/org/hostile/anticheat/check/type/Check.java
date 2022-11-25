@@ -4,10 +4,7 @@ import org.hostile.anticheat.check.annotation.CheckMetadata;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;
-import org.hostile.anticheat.tracker.impl.ActionTracker;
-import org.hostile.anticheat.tracker.impl.CollisionTracker;
-import org.hostile.anticheat.tracker.impl.MovementTracker;
-import org.hostile.anticheat.tracker.impl.PingTracker;
+import org.hostile.anticheat.tracker.impl.*;
 
 public abstract class Check<T> {
 
@@ -21,6 +18,7 @@ public abstract class Check<T> {
     protected final CollisionTracker collisionTracker;
     protected final MovementTracker movementTracker;
     protected final PingTracker pingTracker;
+    protected final PotionTracker potionTracker;
 
     protected final CheckMetadata checkMetadata;
     protected final PlayerData data;
@@ -40,6 +38,7 @@ public abstract class Check<T> {
         this.collisionTracker = data.getCollisionTracker();
         this.movementTracker = data.getMovementTracker();
         this.pingTracker = data.getPingTracker();
+        this.potionTracker = data.getPotionTracker();
     }
 
     public abstract void handle(T event);

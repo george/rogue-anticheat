@@ -9,10 +9,7 @@ import org.hostile.anticheat.check.type.impl.PacketCheck;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.Packet;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
-import org.hostile.anticheat.tracker.impl.ActionTracker;
-import org.hostile.anticheat.tracker.impl.CollisionTracker;
-import org.hostile.anticheat.tracker.impl.MovementTracker;
-import org.hostile.anticheat.tracker.impl.PingTracker;
+import org.hostile.anticheat.tracker.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,9 @@ public class PlayerData {
     private final CollisionTracker collisionTracker;
     private final MovementTracker movementTracker;
     private final PingTracker pingTracker;
+    private final PotionTracker potionTracker;
 
+    private int entityId;
     private int ticksExisted;
 
     public PlayerData(UUID uuid) {
@@ -40,21 +39,24 @@ public class PlayerData {
         this.collisionTracker = new CollisionTracker(this);
         this.movementTracker = new MovementTracker(this);
         this.pingTracker = new PingTracker(this);
+        this.potionTracker = new PotionTracker(this);
 
         this.checks.addAll(AntiCheatServer.getInstance().getCheckManager().getChecks(this));
     }
 
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
-            ++ticksExisted;
+            ++this.ticksExisted;
+            this.entityId = event.getJsonObject().get("entityId").getAsInt();
         }
 
-        actionTracker.handle(event);
-        collisionTracker.handle(event);
-        movementTracker.handle(event);
-        pingTracker.handle(event);
+        this.actionTracker.handle(event);
+        this.collisionTracker.handle(event);
+        this.movementTracker.handle(event);
+        this.pingTracker.handle(event);
+        this.potionTracker.handle(event);
 
-        checks.stream()
+        this.checks.stream()
                 .filter(check -> check instanceof PacketCheck)
                 .forEach(check -> ((PacketCheck) check).handle(event));
     }
@@ -62,8 +64,8 @@ public class PlayerData {
     public JsonArray getViolations() {
         JsonArray array = new JsonArray();
 
-        violations.forEach(array::add);
-        violations.clear();
+        this.violations.forEach(array::add);
+        this.violations.clear();
 
         return array;
     }
