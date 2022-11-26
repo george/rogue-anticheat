@@ -38,6 +38,7 @@ public class ReachA extends PacketCheck {
 
             CustomLocation location = movementTracker.getCurrentLocation();
             AxisAlignedBB playerBb = new AxisAlignedBB(location);
+
             Vec3 vec3 = playerBb.getEyePosition().toVec3();
             Vec3 vec31 = MathUtil.getVectorForRotation(location.getPitch(), location.getYaw());
             Vec3 vec32 = vec3.addVector(vec31.xCoord * 6.0D, vec31.yCoord * 6.0D, vec31.zCoord * 6.0D);
@@ -63,7 +64,7 @@ public class ReachA extends PacketCheck {
 
             debug("reach", reach);
 
-            if (reach > (movementTracker.isSmallMove() ? 3.03 : 3.001)) {
+            if (reach > (movementTracker.isSmallMove() ? 3.03 : 3.001) && reach < 6) {
                 if (incrementBuffer(1) > 3) {
                     fail("reach", reach);
                 }

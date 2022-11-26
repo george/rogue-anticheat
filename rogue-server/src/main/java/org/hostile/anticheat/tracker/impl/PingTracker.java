@@ -9,15 +9,15 @@ import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInTransaction;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutTransaction;
 import org.hostile.anticheat.tracker.Tracker;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class PingTracker extends Tracker {
 
     private final long maxPing = AntiCheatServer.getInstance().getServerConfiguration().getMaxPing();
 
-    private final Map<Short, Long> transactionMap = new HashMap<>();
+    private final Map<Short, Long> transactionMap = new ConcurrentHashMap<>();
 
     private short lastTransaction;
 

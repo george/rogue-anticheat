@@ -13,13 +13,15 @@ import org.hostile.anticheat.tracker.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Getter
 public class PlayerData {
 
     private final List<Check<?>> checks = new ArrayList<>();
-    private final List<JsonObject> violations = new ArrayList<>();
+    private final Queue<JsonObject> violations = new ConcurrentLinkedQueue<>();
 
     private final UUID uuid;
 

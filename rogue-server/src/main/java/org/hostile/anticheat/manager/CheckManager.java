@@ -1,5 +1,6 @@
 package org.hostile.anticheat.manager;
 
+import org.hostile.anticheat.check.impl.autoclicker.AutoClickerA;
 import org.hostile.anticheat.check.impl.reach.ReachA;
 import org.hostile.anticheat.check.impl.speed.SpeedA;
 import org.hostile.anticheat.check.type.Check;
@@ -13,6 +14,8 @@ import java.util.stream.Collectors;
 public class CheckManager {
 
     private static final List<Constructor<? extends Check<?>>> CHECK_CONSTRUCTORS = Arrays.asList(
+            AutoClickerA.class,
+
             ReachA.class,
 
             SpeedA.class

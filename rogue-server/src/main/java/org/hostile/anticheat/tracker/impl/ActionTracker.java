@@ -1,13 +1,14 @@
 package org.hostile.anticheat.tracker.impl;
 
+import lombok.Getter;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
-import org.hostile.anticheat.packet.Packet;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInBlockDig;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInEntityAction;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInUseEntity;
 import org.hostile.anticheat.tracker.Tracker;
 
+@Getter
 public class ActionTracker extends Tracker {
 
     private int lastAttack;
@@ -22,8 +23,6 @@ public class ActionTracker extends Tracker {
     @Override
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInUseEntity) {
-            WrappedPacketPlayInUseEntity packet = (WrappedPacketPlayInUseEntity) event.getPacket();
-
             this.lastAttack = data.getTicksExisted();
         } else if (event.getPacket() instanceof WrappedPacketPlayInEntityAction) {
             WrappedPacketPlayInEntityAction packet = (WrappedPacketPlayInEntityAction) event.getPacket();
@@ -49,5 +48,9 @@ public class ActionTracker extends Tracker {
                     break;
             }
         }
+    }
+
+    public boolean isAttacking() {
+        return data.getTicksExisted() == lastAttack;
     }
 }
