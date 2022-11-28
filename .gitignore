@@ -1,6 +1,11 @@
+# IntelliJ Files
 .idea/
-target/
-rogue-server/venv/
 
-*.pyc
+# Build files
+target/
+
+# Server configuration file
+config.json
+
+# IntelliJ Files
 *.iml

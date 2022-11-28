@@ -64,7 +64,7 @@ public class ReachA extends PacketCheck {
 
             debug("reach", reach);
 
-            if (reach > 3.05 && reach < 6) {
+            if (reach > 3.1 && reach < 6) {
                 if (incrementBuffer(1) > 3) {
                     fail("reach", reach);
                 }

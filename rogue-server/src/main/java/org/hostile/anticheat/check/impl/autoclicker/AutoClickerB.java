@@ -5,28 +5,28 @@ import org.hostile.anticheat.check.type.impl.AutoClickerCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.util.MathUtil;
 
-@CheckMetadata(type = "AutoClicker", name = "A")
-public class AutoClickerA extends AutoClickerCheck {
+@CheckMetadata(type = "AutoClicker", name = "B")
+public class AutoClickerB extends AutoClickerCheck {
 
-    public AutoClickerA(PlayerData playerData) {
+    public AutoClickerB(PlayerData playerData) {
         super(playerData);
     }
 
     @Override
     public void handle() {
-        double cps = MathUtil.getCps(clicks);
+        double kurtosis = MathUtil.getKurtosis(clicks);
 
-        if (cps > 30) { //kick for excessively high CPS
+        if (kurtosis < 0) {
             if (incrementBuffer(1) > 3) {
-                fail("cps", cps);
+                fail("kurtosis", kurtosis);
             }
         } else {
-            decrementBuffer(0.5);
+            decrementBuffer(0.25);
         }
     }
 
     @Override
     public int getSampleSize() {
-        return 100;
+        return 400;
     }
 }
