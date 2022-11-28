@@ -43,20 +43,20 @@ public class SpeedA extends PositionUpdateCheck {
 
         if (previousCollisions.isOnGround()) {
             movementSpeed *= SPRINTING_MODIFIER;
-            friction *= 0.91F;
+
             movementSpeed *= LAND_MOVEMENT_FACTOR / Math.pow(friction, 3);
         } else {
             movementSpeed = AIR_MOVE_SPEED;
             friction = AIR_FRICTION;
         }
 
-        if (!collisions.isOnGround() || collisions.isCollidedVertically() || offsetY > 0.2 && offsetY <= jumpHeight) {
+        if (collisions.isCollidedVertically() || (offsetY > 0.2 && offsetY <= jumpHeight)) {
             movementSpeed += JUMP_BOOST;
         }
 
         movementSpeed += movementTracker.getVelocityXZ();
         movementSpeed += (0.2 * potionTracker.getPotionLevel(PotionEffectType.SPEED));
-        movementSpeed -= (0.15 * potionTracker.getPotionLevel(PotionEffectType.JUMP_BOOST));
+        movementSpeed -= (0.15 * potionTracker.getPotionLevel(PotionEffectType.SLOWNESS));
 
         if (collisions.isWater()) {
             movementSpeed *= WATER_MOVEMENT_MODIFIER;
@@ -80,6 +80,6 @@ public class SpeedA extends PositionUpdateCheck {
         }
 
         this.lastOffsetXZ = offsetXZ * friction;
-        this.lastFriction = collisions.getFrictionFactor() / (collisions.getFrictionFactor() == 0.91F ? 1 : 0.91F);
+        this.lastFriction = collisions.getFrictionFactor();
     }
 }
