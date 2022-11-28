@@ -32,7 +32,6 @@ public class TimerA extends PacketCheck {
             if (!movementTracker.isTeleporting() && this.delays.size() >= 30) {
                 double averageDelay = MathUtil.getAverage(delays);
                 double difference = Math.abs(50 - averageDelay);
-                debug("difference", difference);
 
                 if (difference > 3) {
                     if (incrementBuffer(1) > 5) {

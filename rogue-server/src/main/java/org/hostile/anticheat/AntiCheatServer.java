@@ -50,6 +50,19 @@ public class AntiCheatServer {
         );
         this.httpServer.setExecutor(Executors.newFixedThreadPool(serverConfiguration.getThreads()));
 
+        this.httpServer.createContext("/quit/", (req) -> {
+            UUID uuid;
+
+            try {
+                uuid = UUID.fromString(req.getRequestURI().getPath().replace("/players/", ""));
+            } catch (Exception exc) { // an invalid UUID was sent
+                exc.printStackTrace();
+                return;
+            }
+
+            this.playerDataManager.handleQuit(uuid);
+        });
+
         this.httpServer.createContext("/players/", (req) -> {
             UUID uuid;
 

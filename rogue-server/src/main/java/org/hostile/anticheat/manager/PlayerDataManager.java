@@ -11,6 +11,10 @@ public class PlayerDataManager {
     private final Map<UUID, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
     public PlayerData getData(UUID uuid) {
-        return playerDataMap.computeIfAbsent(uuid, PlayerData::new);
+        return this.playerDataMap.computeIfAbsent(uuid, PlayerData::new);
+    }
+
+    public void handleQuit(UUID uuid) {
+        this.playerDataMap.remove(uuid);
     }
 }

@@ -114,9 +114,22 @@ public class CollisionTracker extends Tracker {
 
                 for (int y = minY; y < maxY; y++) {
                     Block block = world.getBlockAt(new Location(world, x, y, z));
+
                     int id = block.getType().getId();
+
                     if (id == Material.AIR.getId()) {
                         continue;
+                    }
+
+                    /*
+                     * If the player is in a liquid, we want to perform a more strict collision check
+                     */
+                    if ((id == Material.WATER.getId() || id == Material.LAVA.getId())) {
+                        int posY = (int) Math.ceil(minY);
+
+                        if (!world.getBlockAt(x, posY, z).getType().equals(block.getType())) {
+                            continue;
+                        }
                     }
 
                     AxisAlignedBB bb = BOUNDING_BOXES[id];
