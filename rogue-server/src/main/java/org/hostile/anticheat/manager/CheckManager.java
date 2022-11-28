@@ -5,6 +5,7 @@ import org.hostile.anticheat.check.impl.autoclicker.AutoClickerB;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerC;
 import org.hostile.anticheat.check.impl.reach.ReachA;
 import org.hostile.anticheat.check.impl.speed.SpeedA;
+import org.hostile.anticheat.check.timer.TimerA;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;
 
@@ -20,7 +21,9 @@ public class CheckManager {
 
             ReachA.class,
 
-            SpeedA.class
+            SpeedA.class,
+
+            TimerA.class
     ).stream().map(clazz -> {
         try {
             return clazz.getDeclaredConstructor(PlayerData.class);

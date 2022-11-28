@@ -33,7 +33,13 @@
       "check_type": "Speed",
       "check_name": "A",
       "action": "flag",
-      "max_violations": 1000
+      "max_violations": 10
+    },
+    {
+      "check_type": "Timer",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 5
     },
     {
       "check_type": "Tracker",
