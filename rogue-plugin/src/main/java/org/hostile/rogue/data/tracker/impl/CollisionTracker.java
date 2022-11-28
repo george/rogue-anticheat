@@ -30,7 +30,7 @@ public class CollisionTracker extends Tracker {
     private static final List<Integer> WATER = Arrays.asList(8, 9); //water IDs
     private static final List<Integer> LAVA = Arrays.asList(10, 11); //lava IDs
 
-    private static final Map<Integer, Float> IRREGULAR__FRICTION = ImmutableMap.of( //all blocks that have some form of irregular friction
+    private static final Map<Integer, Float> IRREGULAR_FRICTION = ImmutableMap.of( //all blocks that have some form of irregular friction
             Material.ICE.getId(), 0.98F,
             Material.PACKED_ICE.getId(), 0.98F,
             Material.SLIME_BLOCK.getId(), 0.8F
@@ -190,7 +190,7 @@ public class CollisionTracker extends Tracker {
                 Math.floor(location.getY() - 1), Math.floor(location.getZ()));
         int id = bukkitLocation.getBlock().getType().getId();
 
-        return IRREGULAR__FRICTION.getOrDefault(id, 0.6F) * 0.91F;
+        return IRREGULAR_FRICTION.getOrDefault(id, 0.6F) * 0.91F;
     }
 
     @Getter

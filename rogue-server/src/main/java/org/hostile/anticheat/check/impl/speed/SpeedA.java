@@ -4,13 +4,25 @@ import org.hostile.anticheat.check.annotation.CheckMetadata;
 import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PositionUpdateEvent;
+import org.hostile.anticheat.util.Collisions;
 import org.hostile.anticheat.util.PotionEffectType;
 
 @CheckMetadata(type = "Speed", name = "A")
 public class SpeedA extends PositionUpdateCheck {
 
+    private static final double WATER_MOVEMENT_MODIFIER = 0.800000011920929D;
+    private static final double LAVA_MOVEMENT_MODIFIER = 0.5D;
+
+    private static final double JUMP_BOOST = 0.2D;
+    private static final double SPEED_THRESHOLD = 1D;
+    private static final double AIR_MOVE_SPEED = 0.026D;
+    private static final double SPRINTING_MODIFIER = 1.3D;
+    private static final double LAND_MOVEMENT_FACTOR = .16277136F;
+
+    private static final float AIR_FRICTION = 0.91F;
+
     private double lastOffsetXZ;
-    private double lastFriction = 0.91F;
+    private float lastFriction = 0.91F;
 
     public SpeedA(PlayerData playerData) {
         super(playerData);
@@ -21,39 +33,53 @@ public class SpeedA extends PositionUpdateCheck {
         double offsetXZ = event.getOffsetXZ();
         double offsetY = event.getOffsetY();
 
-        double movementSpeed = movementTracker.getWalkSpeed();
+        Collisions previousCollisions = collisionTracker.getPreviousCollisions();
+        Collisions collisions = collisionTracker.getCollisions();
+
+        double movementSpeed = movementTracker.getWalkSpeed() / 2;
         double jumpHeight = 0.42F + (potionTracker.getPotionLevel(PotionEffectType.JUMP_BOOST) * 0.1);
 
-        if (collisionTracker.getPreviousCollisions().isOnGround()) {
-            movementSpeed *= 1.3;
+        float friction = this.lastFriction;
 
-            this.lastFriction *= 0.91F;
-
-            movementSpeed *= 0.16277136 / Math.pow(this.lastFriction, 3);
-
-            if (collisionTracker.getPreviousCollisions().isUnderBlock() || 0.001 < offsetY && (offsetY <= jumpHeight)) {
-                movementSpeed += 0.2;
-            }
+        if (previousCollisions.isOnGround()) {
+            movementSpeed *= SPRINTING_MODIFIER;
+            friction *= 0.91F;
+            movementSpeed *= LAND_MOVEMENT_FACTOR / Math.pow(friction, 3);
         } else {
-            movementSpeed = 0.026;
-            this.lastFriction = 0.91F;
+            movementSpeed = AIR_MOVE_SPEED;
+            friction = AIR_FRICTION;
+        }
+
+        if (!collisions.isOnGround() || collisions.isCollidedVertically() || offsetY > 0.2 && offsetY <= jumpHeight) {
+            movementSpeed += JUMP_BOOST;
         }
 
         movementSpeed += movementTracker.getVelocityXZ();
         movementSpeed += (0.2 * potionTracker.getPotionLevel(PotionEffectType.SPEED));
         movementSpeed -= (0.15 * potionTracker.getPotionLevel(PotionEffectType.JUMP_BOOST));
 
-        double ratio = (offsetXZ - lastOffsetXZ) / movementSpeed;
-
-        if (ratio > 1.0 && !movementTracker.isTeleporting()) {
-            if (offsetXZ > 0.2 && incrementBuffer(1) > 3) {
-                debug("ratio", ratio, "offsetXZ", offsetXZ);
-            }
-        } else {
-            decrementBuffer(0.25);
+        if (collisions.isWater()) {
+            movementSpeed *= WATER_MOVEMENT_MODIFIER;
+        } else if (collisions.isLava()) {
+            movementSpeed *= LAVA_MOVEMENT_MODIFIER;
         }
 
-        this.lastOffsetXZ = offsetXZ * this.lastFriction;
-        this.lastFriction *= data.getCollisionTracker().getPreviousCollisions().getFrictionFactor();
+        if (actionTracker.isAttacking()) {
+            movementSpeed *= 0.6D;
+        }
+
+        double ratio = (offsetXZ - this.lastOffsetXZ) / movementSpeed;
+        debug("ratio", ratio);
+
+        if (ratio > SPEED_THRESHOLD && !movementTracker.isTeleporting()) {
+            if (offsetXZ > 0.2 && incrementBuffer(1) > 3) {
+                fail("ratio", ratio, "offsetXZ", offsetXZ);
+            }
+        } else {
+            decrementBuffer(0.05);
+        }
+
+        this.lastOffsetXZ = offsetXZ * friction;
+        this.lastFriction = collisions.getFrictionFactor() / (collisions.getFrictionFactor() == 0.91F ? 1 : 0.91F);
     }
 }
