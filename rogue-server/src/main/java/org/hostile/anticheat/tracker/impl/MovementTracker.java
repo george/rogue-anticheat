@@ -3,6 +3,7 @@ package org.hostile.anticheat.tracker.impl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
@@ -16,19 +17,19 @@ import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutEntityVelocity;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutPosition;
 import org.hostile.anticheat.tracker.Tracker;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Getter
 public class MovementTracker extends Tracker {
 
     private Abilities abilities = new Abilities();
 
-    private final List<Vector> activeVelocities = new ArrayList<>();
+    private final Queue<Vector> activeVelocities = new ConcurrentLinkedQueue<>();
 
-    private final List<Abilities> pendingAbilities = new ArrayList<>();
-    private final List<Velocity> pendingVelocities = new ArrayList<>();
-    private final List<Vector> pendingTeleports = new ArrayList<>();
+    private final Queue<Abilities> pendingAbilities = new ConcurrentLinkedQueue<>();
+    private final Queue<Velocity> pendingVelocities = new ConcurrentLinkedQueue<>();
+    private final Queue<Vector> pendingTeleports = new ConcurrentLinkedQueue<>();
 
     private CustomLocation previousLocation = new CustomLocation(0, 0, 0, 0F, 0F, true);
     private CustomLocation currentLocation = new CustomLocation(0, 0, 0, 0F, 0F, true);

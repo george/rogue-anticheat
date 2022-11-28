@@ -14,9 +14,12 @@ import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;
 import org.hostile.anticheat.manager.CheckManager;
+import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
@@ -53,6 +56,7 @@ public class AntiCheatServer {
             try {
                 uuid = UUID.fromString(req.getRequestURI().getPath().replace("/players/", ""));
             } catch (Exception exc) { // an invalid UUID was sent
+                exc.printStackTrace();
                 return;
             }
 
@@ -74,18 +78,24 @@ public class AntiCheatServer {
 
             responseObject.add("violations", violations);
 
-            String response = gson.toJson(responseObject);
+            String response = this.gson.toJson(responseObject);
             byte[] bytes = response.getBytes();
 
+            req.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
             req.sendResponseHeaders(200, bytes.length);
-            req.getResponseBody().write(bytes);
+
+            OutputStream outputStream = req.getResponseBody();
+
+            outputStream.write(bytes);
+            outputStream.close();
         });
     }
 
     public void start() {
-        logger.log("Starting server on http://" + serverConfiguration.getHostname() + ":" + serverConfiguration.getPort() + "/");
+        this.logger.log("Starting server on http://" + this.serverConfiguration.getHostname() + ":" +
+                this.serverConfiguration.getPort() + "/");
 
-        httpServer.start();
+        this.httpServer.start();
     }
 
     public static void main(String[] args) {

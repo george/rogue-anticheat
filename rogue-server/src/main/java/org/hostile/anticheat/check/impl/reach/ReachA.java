@@ -64,12 +64,18 @@ public class ReachA extends PacketCheck {
 
             debug("reach", reach);
 
-            if (reach > (movementTracker.isSmallMove() ? 3.03 : 3.001) && reach < 6) {
+            if (reach > 3.05 && reach < 6) {
                 if (incrementBuffer(1) > 3) {
                     fail("reach", reach);
                 }
             } else {
-                decrementBuffer(0.2);
+                if (reach == Double.MAX_VALUE) {
+                    if (incrementBuffer(1) > 10) {
+                        fail("missedIntercept", true);
+                    }
+                } else {
+                    decrementBuffer(0.2);
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package org.hostile.anticheat.check.type.impl;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInArmAnimation;
+import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public abstract class AutoClickerCheck extends PacketCheck {
     protected final List<Integer> clicks = new ArrayList<>();
 
     private long lastAttack = System.currentTimeMillis();
+
     private long sampleSize = getSampleSize();
 
     public AutoClickerCheck(PlayerData playerData) {
@@ -37,7 +39,9 @@ public abstract class AutoClickerCheck extends PacketCheck {
                 return;
             }
 
-            this.clicks.add((int) timeOffset);
+            int ticks = (int) Math.floorDiv(timeOffset, 50);
+
+            this.clicks.add(ticks);
 
             if (this.clicks.size() >= this.sampleSize) {
                 this.handle();

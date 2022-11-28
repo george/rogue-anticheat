@@ -14,7 +14,15 @@ public class AutoClickerA extends AutoClickerCheck {
 
     @Override
     public void handle() {
-        debug("stDev", MathUtil.getStandardDeviation(clicks));
+        double stDev = MathUtil.getStandardDeviation(clicks);
+
+        if (0.45 > stDev) {
+            if (incrementBuffer(1) > 2) {
+                fail("stDev", stDev);
+            }
+        } else {
+            decrementBuffer(0.25);
+        }
     }
 
     @Override
