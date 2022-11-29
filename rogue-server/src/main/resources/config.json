@@ -29,6 +29,12 @@
       "max_violations": 10
     },
     {
+      "check_type": "KillAura",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
       "check_type": "Reach",
       "check_name": "A",
       "action": "flag",
@@ -58,6 +64,12 @@
       "check_name": "B",
       "action": "flag",
       "max_violations": 1
+    },
+    {
+      "check_type": "Velocity",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 10
     }
   ]
 }

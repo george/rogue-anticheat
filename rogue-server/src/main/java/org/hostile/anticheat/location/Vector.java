@@ -9,23 +9,23 @@ import org.hostile.anticheat.util.minecraft.Vec3;
 @AllArgsConstructor
 public class Vector {
 
-    private double posX;
-    private double posY;
-    private double posZ;
+    private double x;
+    private double y;
+    private double z;
 
     public Vector clone() {
-        return new Vector(this.posX, this.posY, this.posZ);
+        return new Vector(this.x, this.y, this.z);
     }
 
     public Vector add(Vector vector) {
-        this.posX += vector.getPosX();
-        this.posY += vector.getPosY();
-        this.posZ += vector.getPosZ();
+        this.x += vector.getX();
+        this.y += vector.getY();
+        this.z += vector.getZ();
 
         return this;
     }
 
     public Vec3 toVec3() {
-        return new Vec3(posX, posY, posZ);
+        return new Vec3(x, y, z);
     }
 }

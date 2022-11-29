@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
+import org.hostile.anticheat.check.type.impl.VelocityCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.event.PositionUpdateEvent;
+import org.hostile.anticheat.event.VelocityEvent;
 import org.hostile.anticheat.location.CustomLocation;
 import org.hostile.anticheat.location.Vector;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
@@ -25,7 +27,7 @@ public class MovementTracker extends Tracker {
 
     private Abilities abilities = new Abilities();
 
-    private final Queue<Vector> activeVelocities = new ConcurrentLinkedQueue<>();
+    private final Queue<Velocity> activeVelocities = new ConcurrentLinkedQueue<>();
 
     private final Queue<Abilities> pendingAbilities = new ConcurrentLinkedQueue<>();
     private final Queue<Velocity> pendingVelocities = new ConcurrentLinkedQueue<>();
@@ -81,7 +83,7 @@ public class MovementTracker extends Tracker {
             CustomLocation location = new CustomLocation(x, y, z, yaw, pitch, packet.isOnGround());
 
             for(Vector teleport : this.pendingTeleports) {
-                if (teleport.getPosX() == x && teleport.getPosY() == y && teleport.getPosZ() == z) {
+                if (teleport.getX() == x && teleport.getY() == y && teleport.getZ() == z) {
                     this.pendingTeleports.remove(teleport);
                     this.teleporting = true;
 
@@ -105,8 +107,20 @@ public class MovementTracker extends Tracker {
                         .forEach(check -> ((PositionUpdateCheck) check).handle(positionUpdateEvent));
             }
 
+            this.activeVelocities.stream()
+                    .filter(velocity -> velocity.getStartTick() == data.getTicksExisted())
+                    .forEach(velocity -> {
+                        VelocityEvent velocityEvent = new VelocityEvent(currentLocation, location, velocity.toVector());
+
+                        data.getChecks().stream()
+                                .filter(check -> check instanceof VelocityCheck)
+                                .forEach(check -> ((VelocityCheck) check).handle(velocityEvent));
+                    });
+
+            this.activeVelocities.removeIf(velocity -> velocity.getCompletedTick() >= data.getTicksExisted());
             this.previousLocation = this.currentLocation;
             this.currentLocation = location;
+
         } else if (event.getPacket() instanceof WrappedPacketPlayOutPosition) {
             WrappedPacketPlayOutPosition packet = (WrappedPacketPlayOutPosition) event.getPacket();
 
@@ -139,11 +153,12 @@ public class MovementTracker extends Tracker {
 
             this.pendingVelocities.removeIf((velocity) -> {
                 if (transactionId == velocity.getTransactionId()) {
-                    pendingVelocities.add(velocity);
-
+                    velocity.setStartTick(data.getTicksExisted() + 1);
                     velocity.setCompletedTick(data.getTicksExisted() + (int)
                             ((Math.hypot(velocity.getVelocityX(), velocity.getVelocityZ()) / 2 + 2) * 15)
                     );
+
+                    this.activeVelocities.add(velocity);
 
                     return true;
                 }
@@ -168,13 +183,13 @@ public class MovementTracker extends Tracker {
 
     public double getVelocityXZ() {
         return activeVelocities.stream()
-                .mapToDouble(velocity -> Math.hypot(velocity.getPosX(), velocity.getPosZ()))
+                .mapToDouble(velocity -> Math.hypot(velocity.getVelocityX(), velocity.getVelocityZ()))
                 .sum();
     }
 
     public double getVelocityY() {
         return activeVelocities.stream()
-                .mapToDouble(Vector::getPosY)
+                .mapToDouble(Velocity::getVelocityY)
                 .sum();
     }
 
@@ -194,12 +209,15 @@ public class MovementTracker extends Tracker {
     }
 
     @Getter
-    private static class Velocity {
+    public static class Velocity {
 
         private final double velocityX;
         private final double velocityY;
         private final double velocityZ;
         private final short transactionId;
+
+        @Setter private int completedTick;
+        @Setter private int startTick;
 
         public Velocity(double velocityX, double velocityY, double velocityZ, short transactionId) {
             this.velocityX = velocityX;
@@ -208,6 +226,8 @@ public class MovementTracker extends Tracker {
             this.transactionId = transactionId;
         }
 
-        @Setter private int completedTick;
+        public Vector toVector() {
+            return new Vector(velocityX, velocityY, velocityZ);
+        }
     }
 }

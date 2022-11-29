@@ -6,6 +6,8 @@ import org.hostile.anticheat.check.impl.autoclicker.AutoClickerC;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerD;
 import org.hostile.anticheat.check.impl.reach.ReachA;
 import org.hostile.anticheat.check.impl.speed.SpeedA;
+import org.hostile.anticheat.check.impl.velocity.VelocityA;
+import org.hostile.anticheat.check.killaura.KillAuraA;
 import org.hostile.anticheat.check.timer.TimerA;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;
@@ -20,11 +22,15 @@ public class CheckManager {
     private static final List<Constructor<? extends Check<?>>> CHECK_CONSTRUCTORS = Arrays.asList(
             AutoClickerA.class, AutoClickerB.class, AutoClickerC.class, AutoClickerD.class,
 
+            KillAuraA.class,
+
             ReachA.class,
 
             SpeedA.class,
 
-            TimerA.class
+            TimerA.class,
+
+            VelocityA.class
     ).stream().map(clazz -> {
         try {
             return clazz.getDeclaredConstructor(PlayerData.class);

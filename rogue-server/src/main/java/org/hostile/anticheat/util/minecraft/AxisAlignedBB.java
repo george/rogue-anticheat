@@ -18,8 +18,8 @@ public class AxisAlignedBB {
     }
 
     public AxisAlignedBB(Vector vector) {
-        this(vector.getPosX() - .3, vector.getPosY(), vector.getPosZ() - .3,
-                vector.getPosX() + .3, vector.getPosY() + 1.8, vector.getPosZ() + .3);
+        this(vector.getX() - .3, vector.getY(), vector.getZ() - .3,
+                vector.getX() + .3, vector.getY() + 1.8, vector.getZ() + .3);
     }
 
     public AxisAlignedBB(double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -370,7 +370,7 @@ public class AxisAlignedBB {
 
     public Vector getEyePosition() {
         Vector vector = toVector();
-        vector.setPosY(getEyeHeight() + minY);
+        vector.setY(getEyeHeight() + minY);
 
         return vector;
     }

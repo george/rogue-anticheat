@@ -45,6 +45,9 @@ public class SpeedA extends PositionUpdateCheck {
             movementSpeed *= SPRINTING_MODIFIER;
 
             movementSpeed *= LAND_MOVEMENT_FACTOR / Math.pow(friction, 3);
+
+            movementSpeed += (0.2 * potionTracker.getPotionLevel(PotionEffectType.SPEED));
+            movementSpeed -= (0.15 * potionTracker.getPotionLevel(PotionEffectType.SLOWNESS));
         } else {
             movementSpeed = AIR_MOVE_SPEED;
             friction = AIR_FRICTION;
@@ -55,8 +58,6 @@ public class SpeedA extends PositionUpdateCheck {
         }
 
         movementSpeed += movementTracker.getVelocityXZ();
-        movementSpeed += (0.2 * potionTracker.getPotionLevel(PotionEffectType.SPEED));
-        movementSpeed -= (0.15 * potionTracker.getPotionLevel(PotionEffectType.SLOWNESS));
 
         if (collisions.isWater()) {
             movementSpeed *= WATER_MOVEMENT_MODIFIER;

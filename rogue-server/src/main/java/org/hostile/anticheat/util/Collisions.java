@@ -57,4 +57,8 @@ public class Collisions {
 
         this.frictionFactor = 0.91F;
     }
+
+    public boolean isInLiquid() {
+        return this.lava || this.water;
+    }
 }
