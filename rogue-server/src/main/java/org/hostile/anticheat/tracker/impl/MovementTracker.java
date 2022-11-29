@@ -40,6 +40,7 @@ public class MovementTracker extends Tracker {
     private boolean teleporting;
 
     private double walkSpeed = 0.2;
+
     private String gamemode = "SURVIVAL";
 
     public MovementTracker(PlayerData data) {
@@ -82,6 +83,9 @@ public class MovementTracker extends Tracker {
 
             CustomLocation location = new CustomLocation(x, y, z, yaw, pitch, packet.isOnGround());
 
+            this.previousLocation = this.currentLocation;
+            this.currentLocation = location;
+
             for(Vector teleport : this.pendingTeleports) {
                 if (teleport.getX() == x && teleport.getY() == y && teleport.getZ() == z) {
                     this.pendingTeleports.remove(teleport);
@@ -98,9 +102,7 @@ public class MovementTracker extends Tracker {
                     //TODO: Handle large movements
                 }
             } else if (!canFly()) {
-                PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(
-                        location, this.currentLocation
-                );
+                PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(location, this.previousLocation);
 
                 data.getChecks().stream()
                         .filter(check -> check instanceof PositionUpdateCheck)
@@ -110,7 +112,7 @@ public class MovementTracker extends Tracker {
             this.activeVelocities.stream()
                     .filter(velocity -> velocity.getStartTick() == data.getTicksExisted())
                     .forEach(velocity -> {
-                        VelocityEvent velocityEvent = new VelocityEvent(currentLocation, location, velocity.toVector());
+                        VelocityEvent velocityEvent = new VelocityEvent(location, this.previousLocation, velocity.toVector());
 
                         data.getChecks().stream()
                                 .filter(check -> check instanceof VelocityCheck)
@@ -120,7 +122,6 @@ public class MovementTracker extends Tracker {
             this.activeVelocities.removeIf(velocity -> velocity.getCompletedTick() >= data.getTicksExisted());
             this.previousLocation = this.currentLocation;
             this.currentLocation = location;
-
         } else if (event.getPacket() instanceof WrappedPacketPlayOutPosition) {
             WrappedPacketPlayOutPosition packet = (WrappedPacketPlayOutPosition) event.getPacket();
 
@@ -131,6 +132,10 @@ public class MovementTracker extends Tracker {
             ));
         } else if (event.getPacket() instanceof WrappedPacketPlayOutEntityVelocity) {
             WrappedPacketPlayOutEntityVelocity packet = (WrappedPacketPlayOutEntityVelocity) event.getPacket();
+
+            if (packet.getEntityId() != data.getEntityId()) {
+                return;
+            }
 
             this.pendingVelocities.add(new Velocity(
                     packet.getVelocityX() / 8000D,

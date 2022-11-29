@@ -10,7 +10,11 @@ import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;
 import org.hostile.anticheat.tracker.impl.*;
 
+import java.text.DecimalFormat;
+
 public abstract class Check<T> {
+
+    protected static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.####");
 
     protected static final Logger logger = new Logger(
             new LoggerConfiguration()
@@ -87,7 +91,9 @@ public abstract class Check<T> {
         StringBuilder debugBuilder = new StringBuilder();
 
         for(int i = 0; i < data.length; i += 2) {
-            debugBuilder.append(data[i]).append("=").append(data[i + 1]).append(" ");
+            Object value = data[i + 1];
+
+            debugBuilder.append(data[i]).append("=").append(value instanceof Number ? DECIMAL_FORMAT.format(value) : value).append(" ");
         }
 
         logger.log("[" + checkMetadata.type() + checkMetadata.name() + "] " + debugBuilder.toString());

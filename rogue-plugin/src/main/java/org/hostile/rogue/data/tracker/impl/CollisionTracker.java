@@ -71,7 +71,8 @@ public class CollisionTracker extends Tracker {
         World world = data.getPlayer().getWorld();
 
         CustomLocation location = data.getMovementTracker().getCurrentLocation();
-        AxisAlignedBB bb = location.toBoundingBox(data.getMovementTracker().isSneaking());
+        AxisAlignedBB bb = location.toBoundingBox(data.getMovementTracker().isSneaking())
+                .expand(0.01, 0.01, 0.01);
 
         Set<Collision> collisions = getCollidingBoundingBoxes(world, bb);
         Set<AxisAlignedBB> collisionBoxes = collisions.stream()
@@ -101,7 +102,7 @@ public class CollisionTracker extends Tracker {
 
         int minX = MathHelper.floor_double(boundingBox.minX);
         int maxX = MathHelper.floor_double(boundingBox.maxX);
-        int minY = MathHelper.floor_double(boundingBox.minY - 0.5);
+        int minY = MathHelper.floor_double(boundingBox.minY);
         int maxY = MathHelper.floor_double(boundingBox.maxY);
         int minZ = MathHelper.floor_double(boundingBox.minZ);
         int maxZ = MathHelper.floor_double(boundingBox.maxZ);
@@ -203,7 +204,7 @@ public class CollisionTracker extends Tracker {
                 Math.floor(location.getY() - 1), Math.floor(location.getZ()));
         int id = bukkitLocation.getBlock().getType().getId();
 
-        return IRREGULAR_FRICTION.getOrDefault(id, 0.6F) * 0.91F;
+        return IRREGULAR_FRICTION.getOrDefault(id, 0.6F);
     }
 
     @Getter
