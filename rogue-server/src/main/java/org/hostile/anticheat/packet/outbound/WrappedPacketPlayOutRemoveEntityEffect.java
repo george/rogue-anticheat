@@ -8,10 +8,10 @@ import org.hostile.anticheat.packet.Packet;
 public class WrappedPacketPlayOutRemoveEntityEffect extends Packet {
 
     private final int entityId;
-    private final byte effectId;
+    private final int effectId;
 
     public WrappedPacketPlayOutRemoveEntityEffect(JsonObject object) {
         this.entityId = object.get("entityId").getAsInt();
-        this.effectId = object.get("effectId").getAsByte();
+        this.effectId = object.get("effectId").getAsInt();
     }
 }
