@@ -19,14 +19,26 @@ public class WrappedPacketPlayInTabComplete extends WrappedPacket {
 
     @Override
     public JsonChain serialize() {
-        return new JsonChain()
-                .addProperty("message", message)
-                .addProperty("targetPosition", new JsonChain()
-                        .addProperty("x", targetPosition.getX())
-                        .addProperty("y", targetPosition.getY())
-                        .addProperty("z", targetPosition.getZ())
-                        .getJsonObject()
-                );
+        JsonChain jsonChain = new JsonChain()
+                .addProperty("message", message);
+
+        if (targetPosition != null) {
+            jsonChain.addProperty("targetPosition", new JsonChain()
+                    .addProperty("x", targetPosition.getX())
+                    .addProperty("y", targetPosition.getY())
+                    .addProperty("z", targetPosition.getZ())
+                    .getJsonObject()
+            );
+        } else {
+            jsonChain.addProperty("targetPosition", new JsonChain()
+                    .addProperty("x", 0)
+                    .addProperty("y", 0)
+                    .addProperty("z", 0)
+                    .getJsonObject()
+            );
+        }
+
+        return jsonChain;
     }
 
     @Override

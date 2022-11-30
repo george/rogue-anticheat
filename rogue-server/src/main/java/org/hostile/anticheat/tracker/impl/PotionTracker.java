@@ -14,6 +14,8 @@ import org.hostile.anticheat.util.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class PotionTracker extends Tracker {
@@ -22,8 +24,8 @@ public class PotionTracker extends Tracker {
             .map(PotionEffectType::getPotionId)
             .collect(Collectors.toList());
 
-    private final List<Potion> activePotions = new ArrayList<>();
-    private final List<Potion> pendingPotions = new ArrayList<>();
+    private final Queue<Potion> activePotions = new ConcurrentLinkedQueue<>();
+    private final Queue<Potion> pendingPotions = new ConcurrentLinkedQueue<>();
 
     public PotionTracker(PlayerData data) {
         super(data);
@@ -59,7 +61,7 @@ public class PotionTracker extends Tracker {
                 return false;
             });
         } else if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
-            this.activePotions.removeIf(potion -> potion.getExpiresAt() > data.getTicksExisted());
+            this.activePotions.removeIf(potion -> potion.getExpiresAt() <= data.getTicksExisted());
         } else if (event.getPacket() instanceof WrappedPacketPlayOutRemoveEntityEffect) {
             WrappedPacketPlayOutRemoveEntityEffect packet = (WrappedPacketPlayOutRemoveEntityEffect) event.getPacket();
 

@@ -33,7 +33,7 @@ public class TimerA extends PacketCheck {
                 double averageDelay = MathUtil.getAverage(delays);
                 double difference = Math.abs(50 - averageDelay);
 
-                if (difference > 3) {
+                if (difference > 3 && averageDelay < 50) {
                     if (incrementBuffer(1) > 5) {
                         fail("averageDelay", averageDelay, "difference", difference);
                     }

@@ -50,13 +50,13 @@ public class SpeedA extends PositionUpdateCheck {
             if (offsetY > 0.01) { // this can be abused easily
                 movementSpeed += JUMP_BOOST;
             }
-
-            movementSpeed += (SPEED_MODIFIER * potionTracker.getPotionLevel(PotionEffectType.SPEED));
-            movementSpeed -= (SLOWNESS_MODIFIER * potionTracker.getPotionLevel(PotionEffectType.SLOWNESS));
         } else {
             movementSpeed = AIR_MOVE_SPEED;
             lastFriction = AIR_FRICTION;
         }
+
+        movementSpeed += (SPEED_MODIFIER * potionTracker.getPotionLevel(PotionEffectType.SPEED));
+        movementSpeed -= (SLOWNESS_MODIFIER * potionTracker.getPotionLevel(PotionEffectType.SLOWNESS));
 
         Collisions collisions = collisionTracker.getCollisions();
 
@@ -80,7 +80,7 @@ public class SpeedA extends PositionUpdateCheck {
                 fail("ratio", ratio, "offsetY", offsetY);
             }
         } else {
-            decrementBuffer(0.25);
+            decrementBuffer(0.5);
         }
 
         this.lastOffsetXZ = offsetXZ * lastFriction;
