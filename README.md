@@ -8,7 +8,7 @@ Rogue was designed to allow AntiCheat checks to be processed remotely. Rogue col
 
 ## Libraries Used
 
-The Rogue plugin was designed using the Spigot API for Minecraft 1.8.8, though it's compatible with previous and newer versions. The plugin is built using Pledge and ProtocolLib, while the server uses Flask.
+The Rogue plugin was designed using the Spigot API for Minecraft 1.8.8, though it's compatible with previous and newer versions. The plugin is built using Pledge and ProtocolLib.
 
 ## Other Important Information
 
@@ -25,3 +25,10 @@ Rogue is designed to be installed as a normal plugin, while the server requires 
 ## Credits
 
 Thanks to sim0n for allowing me to use some checks, trackers, utilities from Nemesis AntiCheat.
+
+## Known Bugs
+
+- Speed A false flags occasionally
+- Velocity tracking breaks sometimes
+- Velocity A falses under blocks
+- AutoClicker D does not work as intended

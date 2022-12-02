@@ -5,10 +5,7 @@ import org.hostile.anticheat.location.CustomLocation;
 import org.hostile.anticheat.util.minecraft.MathHelper;
 import org.hostile.anticheat.util.minecraft.Vec3;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -183,6 +180,23 @@ public class MathUtil {
         return -numbers.values().stream()
                 .mapToDouble(value -> value / size)
                 .map(value -> value * LOG_TWO).sum();
+    }
+
+    public double getMode(Collection<? extends Number> collection) {
+        if (collection.size() == 0) {
+            return 0;
+        }
+
+        Map<Number, Integer> occurrences = new HashMap<>();
+
+        collection.forEach(number -> {
+            occurrences.put(number, occurrences.getOrDefault(number, 0));
+        });
+
+        return occurrences.entrySet().stream()
+                .max(Comparator.comparingInt(Map.Entry::getValue))
+                .get()
+                .getKey().doubleValue();
     }
 
     public Vec3 getVectorForRotation(float pitch, float yaw) {

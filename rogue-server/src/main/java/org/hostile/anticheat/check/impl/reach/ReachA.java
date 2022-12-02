@@ -69,13 +69,7 @@ public class ReachA extends PacketCheck {
                     fail("reach", reach);
                 }
             } else {
-                if (reach == Double.MAX_VALUE) {
-                    if (incrementBuffer(1) > 10) {
-                        fail("missedIntercept", true);
-                    }
-                } else {
-                    decrementBuffer(0.2);
-                }
+                decrementBuffer(0.2);
             }
         }
     }

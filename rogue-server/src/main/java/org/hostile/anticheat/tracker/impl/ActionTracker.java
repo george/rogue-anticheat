@@ -23,7 +23,7 @@ public class ActionTracker extends Tracker {
     @Override
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInUseEntity) {
-            this.lastAttack = data.getTicksExisted();
+            this.lastAttack = data.getTicksExisted() + 1;
         } else if (event.getPacket() instanceof WrappedPacketPlayInEntityAction) {
             WrappedPacketPlayInEntityAction packet = (WrappedPacketPlayInEntityAction) event.getPacket();
 
@@ -51,6 +51,6 @@ public class ActionTracker extends Tracker {
     }
 
     public boolean isAttacking() {
-        return data.getTicksExisted() == lastAttack;
+        return data.getTicksExisted() <= lastAttack;
     }
 }

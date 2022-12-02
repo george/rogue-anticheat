@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.hostile.anticheat.AntiCheatServer;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.check.type.impl.PacketCheck;
+import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.Packet;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Getter
 public class PlayerData {
@@ -77,5 +80,13 @@ public class PlayerData {
 
     public void addViolation(JsonObject jsonObject) {
         this.violations.add(jsonObject);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Check<?>> List<T> getChecks(Predicate<Check<?>> predicate) {
+        return checks.stream()
+                .filter(predicate)
+                .map(check -> (T) check)
+                .collect(Collectors.toList());
     }
 }
