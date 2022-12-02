@@ -1,4 +1,4 @@
-package org.hostile.anticheat.check.timer;
+package org.hostile.anticheat.check.impl.timer;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
 import org.hostile.anticheat.check.type.impl.PacketCheck;

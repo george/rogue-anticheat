@@ -1,4 +1,4 @@
-package org.hostile.anticheat.check.killaura;
+package org.hostile.anticheat.check.impl.killaura;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
 import org.hostile.anticheat.check.type.impl.PacketCheck;

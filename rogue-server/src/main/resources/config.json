@@ -5,6 +5,24 @@
   "maxPing": 30000,
   "checks": [
     {
+      "check_type": "AimAssist",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
+      "check_type": "AimAssist",
+      "check_name": "B",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
+      "check_type": "AimAssist",
+      "check_name": "C",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
       "check_type": "AutoClicker",
       "check_name": "A",
       "action": "flag",
@@ -40,7 +58,6 @@
       "action": "flag",
       "max_violations": 10
     },
-
     {
       "check_type": "Speed",
       "check_name": "A",

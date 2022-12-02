@@ -1,5 +1,8 @@
 package org.hostile.anticheat.manager;
 
+import org.hostile.anticheat.check.impl.aimassist.AimAssistA;
+import org.hostile.anticheat.check.impl.aimassist.AimAssistB;
+import org.hostile.anticheat.check.impl.aimassist.AimAssistC;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerA;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerB;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerC;
@@ -7,8 +10,8 @@ import org.hostile.anticheat.check.impl.autoclicker.AutoClickerD;
 import org.hostile.anticheat.check.impl.reach.ReachA;
 import org.hostile.anticheat.check.impl.speed.SpeedA;
 import org.hostile.anticheat.check.impl.velocity.VelocityA;
-import org.hostile.anticheat.check.killaura.KillAuraA;
-import org.hostile.anticheat.check.timer.TimerA;
+import org.hostile.anticheat.check.impl.killaura.KillAuraA;
+import org.hostile.anticheat.check.impl.timer.TimerA;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;
 
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class CheckManager {
 
     private static final List<Constructor<? extends Check<?>>> CHECK_CONSTRUCTORS = Arrays.asList(
+            AimAssistA.class, AimAssistB.class, AimAssistC.class,
+
             AutoClickerA.class, AutoClickerB.class, AutoClickerC.class, AutoClickerD.class,
 
             KillAuraA.class,

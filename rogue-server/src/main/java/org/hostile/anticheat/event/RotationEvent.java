@@ -12,6 +12,9 @@ public class RotationEvent {
     private final float deltaYaw;
     private final float deltaPitch;
 
+    private final float lastDeltaYaw;
+    private final float lastDeltaPitch;
+
     private final float accelerationYaw;
     private final float accelerationPitch;
 

@@ -6,9 +6,11 @@ import lombok.Setter;
 
 import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
 import org.hostile.anticheat.check.type.impl.VelocityCheck;
+import org.hostile.anticheat.check.type.impl.rotation.RotationCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.event.PositionUpdateEvent;
+import org.hostile.anticheat.event.RotationEvent;
 import org.hostile.anticheat.event.VelocityEvent;
 import org.hostile.anticheat.location.CustomLocation;
 import org.hostile.anticheat.location.Vector;
@@ -18,6 +20,8 @@ import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutAbilities;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutEntityVelocity;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutPosition;
 import org.hostile.anticheat.tracker.Tracker;
+import org.hostile.anticheat.util.EvictingList;
+import org.hostile.anticheat.util.MathUtil;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,10 +31,15 @@ public class MovementTracker extends Tracker {
 
     private Abilities abilities = new Abilities();
 
-    private final Queue<Velocity> activeVelocities = new ConcurrentLinkedQueue<>();
+    private final Queue<Double> sensitivitySamplesYaw = new EvictingList<>(50);
+    private final Queue<Double> sensitivitySamplesPitch = new EvictingList<>(50);
 
+    private final Queue<Vector> pendingFirstTickVelocities = new ConcurrentLinkedQueue<>();
+
+    private final Queue<Velocity> activeVelocities = new ConcurrentLinkedQueue<>();
     private final Queue<Abilities> pendingAbilities = new ConcurrentLinkedQueue<>();
     private final Queue<Velocity> pendingVelocities = new ConcurrentLinkedQueue<>();
+
     private final Queue<Vector> pendingTeleports = new ConcurrentLinkedQueue<>();
 
     private CustomLocation previousLocation = new CustomLocation(0, 0, 0, 0F, 0F, true);
@@ -79,6 +88,40 @@ public class MovementTracker extends Tracker {
             if (packet.isRotating()) {
                 yaw = packet.getYaw();
                 pitch = packet.getPitch();
+
+                float deltaYaw = Math.abs(yaw - this.currentLocation.getYaw());
+                float deltaPitch = Math.abs(pitch - this.currentLocation.getPitch());
+
+                float lastDeltaYaw = Math.abs(this.currentLocation.getYaw() - this.previousLocation.getYaw());
+                float lastDeltaPitch = Math.abs(this.currentLocation.getPitch() - this.previousLocation.getPitch());
+
+                float accelerationYaw = Math.abs(deltaYaw - lastDeltaYaw);
+                float accelerationPitch = Math.abs(deltaPitch - lastDeltaPitch);
+
+                double gcd = MathUtil.gcd(deltaPitch, lastDeltaPitch);
+
+                float gcdX = (float) MathUtil.gcd(deltaPitch, lastDeltaPitch);
+                float gcdY = (float) MathUtil.gcd(deltaYaw, lastDeltaYaw);
+
+                double sensitivityModX = Math.cbrt(0.8333 * gcdX);
+                double sensTwoX = (1.666 * sensitivityModX) - 0.3333;
+
+                double sensitivityModY = Math.cbrt(0.8333 * gcdY);
+                double sensTwoY = (1.666 * sensitivityModY) - 0.3333;
+
+                this.sensitivitySamplesPitch.add(sensTwoX * 200);
+                this.sensitivitySamplesYaw.add(sensTwoY * 200);
+
+                double sensitivityX = MathUtil.getMode(this.sensitivitySamplesPitch);
+                double sensitivityY = MathUtil.getMode(this.sensitivitySamplesYaw);
+
+                RotationEvent rotationEvent = new RotationEvent(
+                        yaw, pitch, deltaYaw, deltaPitch, lastDeltaYaw, lastDeltaPitch, accelerationYaw,
+                        accelerationPitch, gcd, sensitivityX, sensitivityY
+                );
+
+                data.getChecks(check -> check instanceof RotationCheck)
+                        .forEach(check -> ((RotationCheck) check).handle(rotationEvent));
             }
 
             CustomLocation location = new CustomLocation(x, y, z, yaw, pitch, packet.isOnGround());
@@ -104,24 +147,19 @@ public class MovementTracker extends Tracker {
             } else if (!canFly()) {
                 PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(location, this.previousLocation);
 
-                data.getChecks().stream()
-                        .filter(check -> check instanceof PositionUpdateCheck)
+                data.getChecks(check -> check instanceof PositionUpdateCheck)
                         .forEach(check -> ((PositionUpdateCheck) check).handle(positionUpdateEvent));
             }
 
-            this.activeVelocities.stream()
-                    .filter(velocity -> velocity.getStartTick() == data.getTicksExisted())
-                    .forEach(velocity -> {
-                        VelocityEvent velocityEvent = new VelocityEvent(location, this.previousLocation, velocity.toVector());
+            this.pendingFirstTickVelocities.removeIf(velocity -> {
+                VelocityEvent velocityEvent = new VelocityEvent(location, this.previousLocation, velocity);
 
-                        data.getChecks().stream()
-                                .filter(check -> check instanceof VelocityCheck)
-                                .forEach(check -> ((VelocityCheck) check).handle(velocityEvent));
-                    });
+                data.getChecks(check -> check instanceof VelocityCheck)
+                        .forEach(check -> ((VelocityCheck) check).handle(velocityEvent));
+                return true;
+            });
 
             this.activeVelocities.removeIf(velocity -> velocity.getCompletedTick() >= data.getTicksExisted());
-            this.previousLocation = this.currentLocation;
-            this.currentLocation = location;
         } else if (event.getPacket() instanceof WrappedPacketPlayOutPosition) {
             WrappedPacketPlayOutPosition packet = (WrappedPacketPlayOutPosition) event.getPacket();
 
@@ -158,12 +196,14 @@ public class MovementTracker extends Tracker {
 
             this.pendingVelocities.removeIf((velocity) -> {
                 if (transactionId == velocity.getTransactionId()) {
-                    velocity.setStartTick(data.getTicksExisted() + 1);
                     velocity.setCompletedTick(data.getTicksExisted() + (int)
                             ((Math.hypot(velocity.getVelocityX(), velocity.getVelocityZ()) / 2 + 2) * 15)
                     );
 
                     this.activeVelocities.add(velocity);
+                    this.pendingFirstTickVelocities.add(
+                            new Vector(velocity.getVelocityX(), velocity.getVelocityY(), velocity.getVelocityZ())
+                    );
 
                     return true;
                 }
