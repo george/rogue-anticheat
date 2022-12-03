@@ -26,8 +26,6 @@ public class SpeedA extends PositionUpdateCheck {
     private static final double SPEED_MODIFIER = 0.2D;
     private static final double SLOWNESS_MODIFIER = 0.15D;
 
-    private static final double ATTACK_MODIFIER = 0.6D;
-
     private double lastOffsetXZ;
     private double lastFriction = 0.91F;
 
@@ -64,10 +62,6 @@ public class SpeedA extends PositionUpdateCheck {
             movementSpeed *= WATER_MOVEMENT_MODIFIER;
         } else if (collisions.isLava()) {
             movementSpeed *= LAVA_MOVEMENT_MODIFIER;
-        }
-
-        if (actionTracker.isAttacking()) {
-            movementSpeed *= ATTACK_MODIFIER;
         }
 
         movementSpeed += movementTracker.getVelocityXZ();

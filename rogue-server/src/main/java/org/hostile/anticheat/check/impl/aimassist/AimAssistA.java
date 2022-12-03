@@ -14,6 +14,10 @@ public class AimAssistA extends AttackCheck {
 
     @Override
     public void handleRotation(RotationEvent event) {
+        if (!actionTracker.isAttacking()) {
+            return;
+        }
+
         double sensitivityX = event.getSensitivityX();
         double sensitivityY = event.getSensitivityY();
 
@@ -21,6 +25,8 @@ public class AimAssistA extends AttackCheck {
             if (incrementBuffer(1) > 10) {
                 fail("sensitivityX", sensitivityX, "sensitivityY", sensitivityY);
             }
+        } else {
+            decrementBuffer(0.25);
         }
 
         debug("sensitivity", sensitivityX);

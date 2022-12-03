@@ -53,6 +53,12 @@
       "max_violations": 10
     },
     {
+      "check_type": "Fly",
+      "check_name": "A",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
       "check_type": "KillAura",
       "check_name": "A",
       "action": "flag",
