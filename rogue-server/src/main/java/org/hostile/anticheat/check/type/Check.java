@@ -46,7 +46,7 @@ public abstract class Check<T> {
 
     public Check(PlayerData playerData) {
         Class<?> clazz = getClass();
-        if (clazz.isAnnotationPresent(CheckMetadata.class)) {
+        if (!clazz.isAnnotationPresent(CheckMetadata.class)) {
             logger.log("Check " + clazz.getName() + " was not annotated with check metadata!");
             throw new RuntimeException();
         }

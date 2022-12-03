@@ -60,7 +60,7 @@ public class AntiCheatServer {
                 return;
             }
 
-            this.playerDataManager.handleQuit(uuid);
+            playerDataManager.handleQuit(uuid);
         });
 
         this.httpServer.createContext("/players/", (req) -> {
@@ -91,7 +91,7 @@ public class AntiCheatServer {
 
             responseObject.add("violations", violations);
 
-            String response = this.gson.toJson(responseObject);
+            String response = gson.toJson(responseObject);
             byte[] bytes = response.getBytes();
 
             req.getResponseHeaders().add("Content-Type", "application/json; charset=UTF-8");
