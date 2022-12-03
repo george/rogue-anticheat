@@ -27,7 +27,6 @@ public class AimAssistC extends AttackCheck {
     @Override
     public void handleRotation(RotationEvent event) {
         debug("size", this.pitchDeltas.size());
-
         float deltaPitch = event.getDeltaPitch();
         float deltaYaw = event.getDeltaYaw();
 
@@ -38,7 +37,10 @@ public class AimAssistC extends AttackCheck {
             long roundedPitchDeltas = pitchDeltas.stream().filter(roundingCheckFunction).count();
             long roundedYawDeltas = yawDeltas.stream().filter(roundingCheckFunction).count();
 
-            fail("pitchRatio", 50 / roundedPitchDeltas, "yawRatio", 50 / roundedYawDeltas);
+            double pitchRatio = roundedPitchDeltas / 50D;
+            double yawRatio = roundedYawDeltas / 50D;
+
+            fail("pitchRatio", roundedPitchDeltas / 50D, "yawRatio", roundedYawDeltas / 50D);
 
             pitchDeltas.clear();
             yawDeltas.clear();

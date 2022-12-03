@@ -146,7 +146,7 @@ public class MovementTracker extends Tracker {
                 if (previousLocation.getX() != 0 || previousLocation.getY() != 0 || previousLocation.getZ() != 0) {
                     //TODO: Handle large movements
                 }
-            } else if (!canFly() && !inVehicle) {
+            } else if (!canFly() && !inVehicle && packet.isMoving()) {
                 PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(location, previousLocation);
 
                 data.getChecks(check -> check instanceof PositionUpdateCheck)
