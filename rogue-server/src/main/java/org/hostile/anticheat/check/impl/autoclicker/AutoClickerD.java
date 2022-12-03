@@ -28,10 +28,10 @@ public class AutoClickerD extends PacketCheck {
     @Override
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying && data.getTicksExisted() % 20 == 0) {
-            int cps = this.ticks.size();
+            int cps = ticks.size();
 
             if (cps >= 16) {
-                double distinct = this.ticks.stream().distinct().count();
+                double distinct = ticks.stream().distinct().count();
                 double doubleClicks = cps - distinct;
                 double ratio = distinct / doubleClicks;
 
@@ -44,10 +44,9 @@ public class AutoClickerD extends PacketCheck {
                 }
             }
 
-            this.ticks.clear();
+            ticks.clear();
         } else if (event.getPacket() instanceof WrappedPacketPlayInArmAnimation && !actionTracker.isDigging()) {
-            this.ticks.add(data.getTicksExisted());
-            System.out.println(data.getTicksExisted());
+            ticks.add(data.getTicksExisted());
         }
     }
 }

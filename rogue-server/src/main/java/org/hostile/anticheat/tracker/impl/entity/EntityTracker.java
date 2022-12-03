@@ -1,4 +1,4 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.entity;
 
 import lombok.Getter;
 import org.hostile.anticheat.data.PlayerData;
@@ -28,7 +28,7 @@ public class EntityTracker extends Tracker {
         if (event.getPacket() instanceof WrappedPacketPlayOutEntity) {
             WrappedPacketPlayOutEntity packet = (WrappedPacketPlayOutEntity) event.getPacket();
 
-            TrackedEntity entity = this.trackedEntities.get(packet.getEntityId());
+            TrackedEntity entity = trackedEntities.get(packet.getEntityId());
 
             if (entity == null) {
                 return;
@@ -42,7 +42,7 @@ public class EntityTracker extends Tracker {
         } else if (event.getPacket() instanceof WrappedPacketPlayOutEntityTeleport) {
             WrappedPacketPlayOutEntityTeleport packet = (WrappedPacketPlayOutEntityTeleport) event.getPacket();
 
-            TrackedEntity entity = this.trackedEntities.computeIfAbsent(packet.getEntityId(), (id) -> new TrackedEntity());
+            TrackedEntity entity = trackedEntities.computeIfAbsent(packet.getEntityId(), (id) -> new TrackedEntity());
 
             double x = (double) packet.getPosX() / 32D;
             double y = (double) packet.getPosY() / 32D;
@@ -52,7 +52,7 @@ public class EntityTracker extends Tracker {
         } else if (event.getPacket() instanceof WrappedPacketPlayOutNamedEntitySpawn) {
             WrappedPacketPlayOutNamedEntitySpawn packet = (WrappedPacketPlayOutNamedEntitySpawn) event.getPacket();
 
-            TrackedEntity entity = this.trackedEntities.computeIfAbsent(packet.getEntityId(), (id) -> new TrackedEntity());
+            TrackedEntity entity = trackedEntities.computeIfAbsent(packet.getEntityId(), (id) -> new TrackedEntity());
 
             double x = packet.getPosX() / 32D;
             double y = packet.getPosY() / 32D;
@@ -62,7 +62,7 @@ public class EntityTracker extends Tracker {
         } else if (event.getPacket() instanceof WrappedPacketPlayOutDestroyEntities) {
             WrappedPacketPlayOutDestroyEntities packet = (WrappedPacketPlayOutDestroyEntities) event.getPacket();
 
-            packet.getEntities().forEach(this.trackedEntities::remove);
+            packet.getEntities().forEach(trackedEntities::remove);
         }
     }
 }

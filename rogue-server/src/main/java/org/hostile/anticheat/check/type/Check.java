@@ -8,7 +8,12 @@ import org.hostile.anticheat.check.data.CheckData;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.logger.Logger;
 import org.hostile.anticheat.logger.factory.LoggerConfiguration;
-import org.hostile.anticheat.tracker.impl.*;
+import org.hostile.anticheat.tracker.impl.entity.EntityTracker;
+import org.hostile.anticheat.tracker.impl.movement.CollisionTracker;
+import org.hostile.anticheat.tracker.impl.movement.MovementTracker;
+import org.hostile.anticheat.tracker.impl.player.ActionTracker;
+import org.hostile.anticheat.tracker.impl.player.PingTracker;
+import org.hostile.anticheat.tracker.impl.player.PotionTracker;
 
 import java.text.DecimalFormat;
 
@@ -40,12 +45,13 @@ public abstract class Check<T> {
     protected int violations;
 
     public Check(PlayerData playerData) {
-        if (!getClass().isAnnotationPresent(CheckMetadata.class)) {
-            logger.log("Check " + getClass().getName() + " was not annotated with check metadata!");
+        Class<?> clazz = getClass();
+        if (clazz.isAnnotationPresent(CheckMetadata.class)) {
+            logger.log("Check " + clazz.getName() + " was not annotated with check metadata!");
             throw new RuntimeException();
         }
 
-        this.checkMetadata = getClass().getDeclaredAnnotation(CheckMetadata.class);
+        this.checkMetadata = clazz.getDeclaredAnnotation(CheckMetadata.class);
         this.checkData = AntiCheatServer.getInstance().getServerConfiguration()
                 .getCheckData().get(checkMetadata.type() + checkMetadata.name());
 

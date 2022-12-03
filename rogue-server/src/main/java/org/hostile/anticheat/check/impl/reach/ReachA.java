@@ -29,8 +29,8 @@ public class ReachA extends PacketCheck {
         if (event.getPacket() instanceof WrappedPacketPlayInUseEntity) {
             WrappedPacketPlayInUseEntity packet = (WrappedPacketPlayInUseEntity) event.getPacket();
 
-            this.lastAttackedEntity = packet.getEntityId();
-            this.attackTicks = 0;
+            lastAttackedEntity = packet.getEntityId();
+            attackTicks = 0;
         } else if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
             if (++attackTicks != 1) {
                 return;
@@ -44,7 +44,7 @@ public class ReachA extends PacketCheck {
             Vec3 vec32 = vec3.addVector(vec31.xCoord * 6.0D, vec31.yCoord * 6.0D, vec31.zCoord * 6.0D);
             Vec3 vec33 = null;
 
-            TrackedEntity entity = entityTracker.getTrackedEntities().get(this.lastAttackedEntity);
+            TrackedEntity entity = entityTracker.getTrackedEntities().get(lastAttackedEntity);
             double reach = Double.MAX_VALUE;
 
             for (TrackedPosition position : entity.getPositions(pingTracker.getLastPing())) {

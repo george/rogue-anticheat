@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @CheckMetadata(type = "Timer", name = "A")
 public class TimerA extends PacketCheck {
 
-    private Queue<Long> delays = new ConcurrentLinkedQueue<>();
+    private final Queue<Long> delays = new ConcurrentLinkedQueue<>();
 
     private long lastFlying = System.currentTimeMillis();
 
@@ -41,9 +41,9 @@ public class TimerA extends PacketCheck {
                     decrementBuffer(0.25);
                 }
 
-                this.delays.clear();
+                delays.clear();
             }
-            this.lastFlying = timestamp;
+            lastFlying = timestamp;
         }
     }
 }

@@ -83,7 +83,7 @@ public class SpeedA extends PositionUpdateCheck {
             decrementBuffer(0.5);
         }
 
-        this.lastOffsetXZ = offsetXZ * lastFriction;
-        this.lastFriction = collisionTracker.getPreviousCollisions().getFrictionFactor() * AIR_FRICTION;
+        lastOffsetXZ = offsetXZ * lastFriction;
+        lastFriction = collisionTracker.getPreviousCollisions().getFrictionFactor() * AIR_FRICTION;
     }
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.hostile.rogue.RoguePlugin;
 import org.hostile.rogue.data.PlayerData;
 import org.hostile.rogue.packet.PacketWrapper;
@@ -46,10 +47,13 @@ public class RogueWebClient {
                     .addProperty("timestamp", System.currentTimeMillis());
 
             if (packet instanceof WrappedPacketPlayInFlying) {
+                Player player = playerData.getPlayer();
+
                 jsonChain.addProperty("collisions", playerData.getCollisionTracker().getCollisions().serialize())
-                        .addProperty("gamemode", playerData.getPlayer().getGameMode().name())
-                        .addProperty("walkSpeed", playerData.getPlayer().getWalkSpeed())
-                        .addProperty("entityId", playerData.getPlayer().getEntityId());
+                        .addProperty("gamemode", player.getGameMode().name())
+                        .addProperty("walkSpeed", player.getWalkSpeed())
+                        .addProperty("entityId", player.getEntityId())
+                        .addProperty("inVehicle", player.getVehicle() != null);
             }
 
             String payload = GSON.toJson(jsonChain.getJsonObject());

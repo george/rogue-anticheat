@@ -6,11 +6,14 @@ import lombok.Getter;
 import org.hostile.anticheat.AntiCheatServer;
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.check.type.impl.PacketCheck;
-import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
 import org.hostile.anticheat.event.PacketEvent;
-import org.hostile.anticheat.packet.Packet;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
-import org.hostile.anticheat.tracker.impl.*;
+import org.hostile.anticheat.tracker.impl.entity.EntityTracker;
+import org.hostile.anticheat.tracker.impl.movement.CollisionTracker;
+import org.hostile.anticheat.tracker.impl.movement.MovementTracker;
+import org.hostile.anticheat.tracker.impl.player.ActionTracker;
+import org.hostile.anticheat.tracker.impl.player.PingTracker;
+import org.hostile.anticheat.tracker.impl.player.PotionTracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,18 +56,18 @@ public class PlayerData {
 
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
-            ++this.ticksExisted;
-            this.entityId = event.getJsonObject().get("entityId").getAsInt();
+            ++ticksExisted;
+            entityId = event.getJsonObject().get("entityId").getAsInt();
         }
 
-        this.actionTracker.handle(event);
-        this.collisionTracker.handle(event);
-        this.entityTracker.handle(event);
-        this.movementTracker.handle(event);
-        this.pingTracker.handle(event);
-        this.potionTracker.handle(event);
+        actionTracker.handle(event);
+        collisionTracker.handle(event);
+        entityTracker.handle(event);
+        movementTracker.handle(event);
+        pingTracker.handle(event);
+        potionTracker.handle(event);
 
-        this.checks.stream()
+        checks.stream()
                 .filter(check -> check instanceof PacketCheck)
                 .forEach(check -> ((PacketCheck) check).handle(event));
     }
@@ -72,8 +75,8 @@ public class PlayerData {
     public JsonArray getViolations() {
         JsonArray array = new JsonArray();
 
-        this.violations.forEach(array::add);
-        this.violations.clear();
+        violations.forEach(array::add);
+        violations.clear();
 
         return array;
     }

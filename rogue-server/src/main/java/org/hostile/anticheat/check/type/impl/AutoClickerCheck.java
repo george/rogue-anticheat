@@ -32,23 +32,23 @@ public abstract class AutoClickerCheck extends PacketCheck {
             }
 
             long timestamp = event.getTimestamp();
-            long timeOffset = timestamp - this.lastAttack;
+            long timeOffset = timestamp - lastAttack;
 
             if (timeOffset > 500) {
-                this.lastAttack = timestamp;
+                lastAttack = timestamp;
                 return;
             }
 
             int ticks = (int) Math.floorDiv(timeOffset, 50);
 
-            this.clicks.add(ticks);
+            clicks.add(ticks);
 
-            if (this.clicks.size() >= this.sampleSize) {
-                this.handle();
-                this.clicks.clear();
+            if (clicks.size() >= sampleSize) {
+                handle();
+                clicks.clear();
             }
 
-            this.lastAttack = timestamp;
+            lastAttack = timestamp;
         }
     }
 }

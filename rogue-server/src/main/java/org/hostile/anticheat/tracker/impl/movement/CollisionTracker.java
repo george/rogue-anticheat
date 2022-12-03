@@ -1,4 +1,4 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.movement;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;

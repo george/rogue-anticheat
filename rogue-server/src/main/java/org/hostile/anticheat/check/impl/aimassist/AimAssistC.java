@@ -31,17 +31,17 @@ public class AimAssistC extends AttackCheck {
         float deltaPitch = event.getDeltaPitch();
         float deltaYaw = event.getDeltaYaw();
 
-        this.pitchDeltas.add(deltaPitch);
-        this.yawDeltas.add(deltaYaw);
+        pitchDeltas.add(deltaPitch);
+        yawDeltas.add(deltaYaw);
 
-        if (this.pitchDeltas.size() >= 50) {
-            long roundedPitchDeltas = this.pitchDeltas.stream().filter(roundingCheckFunction).count();
-            long roundedYawDeltas = this.yawDeltas.stream().filter(roundingCheckFunction).count();
+        if (pitchDeltas.size() >= 50) {
+            long roundedPitchDeltas = pitchDeltas.stream().filter(roundingCheckFunction).count();
+            long roundedYawDeltas = yawDeltas.stream().filter(roundingCheckFunction).count();
 
             fail("pitchRatio", 50 / roundedPitchDeltas, "yawRatio", 50 / roundedYawDeltas);
 
-            this.pitchDeltas.clear();
-            this.yawDeltas.clear();
+            pitchDeltas.clear();
+            yawDeltas.clear();
         }
     }
 }

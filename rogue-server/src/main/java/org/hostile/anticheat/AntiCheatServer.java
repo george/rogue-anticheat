@@ -105,10 +105,10 @@ public class AntiCheatServer {
     }
 
     public void start() {
-        this.logger.log("Starting server on http://" + this.serverConfiguration.getHostname() + ":" +
-                this.serverConfiguration.getPort() + "/");
+        logger.log("Starting server on http://" + serverConfiguration.getHostname() + ":" +
+                serverConfiguration.getPort() + "/");
 
-        this.httpServer.start();
+        httpServer.start();
     }
 
     public static void main(String[] args) {

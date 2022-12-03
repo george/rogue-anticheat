@@ -12,15 +12,15 @@ public class TrackedEntity {
     private final Deque<TrackedPosition> trackedPositions = new LinkedList<>();
 
     public void addPosition(Vector position) {
-        this.trackedPositions.add(new TrackedPosition(position));
+        trackedPositions.add(new TrackedPosition(position));
 
-        if (this.trackedPositions.size() > 20) {
-            this.trackedPositions.removeFirst();
+        if (trackedPositions.size() > 20) {
+            trackedPositions.removeFirst();
         }
     }
 
     public void handleRelMove(double x, double y, double z) {
-        this.addPosition(trackedPositions.peekLast().getLocation().clone().add(new Vector(x, y, z)));
+        addPosition(trackedPositions.peekLast().getLocation().clone().add(new Vector(x, y, z)));
     }
 
     public List<TrackedPosition> getPositions(long ping) {
@@ -29,12 +29,12 @@ public class TrackedEntity {
         long time = System.currentTimeMillis();
         long offset = time - ping - 200L;
 
-        this.trackedPositions.stream()
+        trackedPositions.stream()
                 .filter(position -> position.getTimestamp() - offset > 0L)
                 .forEach(positions::add);
 
         if (positions.isEmpty()) {
-            positions.add(this.trackedPositions.peekLast());
+            positions.add(trackedPositions.peekLast());
         }
 
         return positions;

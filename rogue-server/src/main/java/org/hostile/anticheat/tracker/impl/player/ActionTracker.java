@@ -1,4 +1,4 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.player;
 
 import lombok.Getter;
 import org.hostile.anticheat.data.PlayerData;
@@ -29,16 +29,16 @@ public class ActionTracker extends Tracker {
                 return;
             }
 
-            this.lastAttack = data.getTicksExisted() + 1;
+            lastAttack = data.getTicksExisted() + 1;
         } else if (event.getPacket() instanceof WrappedPacketPlayInEntityAction) {
             WrappedPacketPlayInEntityAction packet = (WrappedPacketPlayInEntityAction) event.getPacket();
 
             switch (packet.getAction()) {
                 case START_SNEAKING:
-                    this.sneaking = true;
+                    sneaking = true;
                     break;
                 case STOP_SNEAKING:
-                    this.sneaking = false;
+                    sneaking = false;
                     break;
             }
         } else if (event.getPacket() instanceof WrappedPacketPlayInBlockDig) {
@@ -46,11 +46,11 @@ public class ActionTracker extends Tracker {
 
             switch (packet.getPlayerDigType()) {
                 case START_DESTROY_BLOCK:
-                    this.digging = true;
+                    digging = true;
                     break;
                 case STOP_DESTROY_BLOCK:
                 case ABORT_DESTROY_BLOCK:
-                    this.digging = false;
+                    digging = false;
                     break;
             }
         }
@@ -58,5 +58,9 @@ public class ActionTracker extends Tracker {
 
     public boolean isAttacking() {
         return data.getTicksExisted() == lastAttack;
+    }
+
+    public boolean hasAttackedRecently() {
+        return Math.abs(data.getTicksExisted() - lastAttack) <= 3;
     }
 }

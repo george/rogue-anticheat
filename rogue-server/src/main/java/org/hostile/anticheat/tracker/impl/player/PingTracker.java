@@ -1,4 +1,4 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.player;
 
 import lombok.Getter;
 import org.hostile.anticheat.AntiCheatServer;
@@ -36,21 +36,21 @@ public class PingTracker extends Tracker {
 
             short transactionId = packet.getTransactionId();
 
-            if (!this.transactionMap.containsKey(transactionId)) {
+            if (!transactionMap.containsKey(transactionId)) {
                 return;
             }
 
-            long sentAt = this.transactionMap.get(transactionId);
+            long sentAt = transactionMap.get(transactionId);
 
-            this.lastPing = timestamp - sentAt;
-            this.transactionMap.remove(transactionId);
+            lastPing = timestamp - sentAt;
+            transactionMap.remove(transactionId);
         } else if (event.getPacket() instanceof WrappedPacketPlayOutTransaction) {
             WrappedPacketPlayOutTransaction packet = (WrappedPacketPlayOutTransaction) event.getPacket();
 
             short transactionId = packet.getTransactionId();
 
-            this.lastTransaction = transactionId;
-            this.transactionMap.put(transactionId, timestamp);
+            lastTransaction = transactionId;
+            transactionMap.put(transactionId, timestamp);
         } else if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
             transactionMap.forEach((transactionId, packetTimestamp) -> {
                 if (timestamp - packetTimestamp > maxPing) {

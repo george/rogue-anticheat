@@ -24,7 +24,7 @@ public class KillAuraA extends PacketCheck {
     @Override
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
-            this.sameTick = false;
+            sameTick = false;
         } else if (event.getPacket() instanceof WrappedPacketPlayInUseEntity) {
             WrappedPacketPlayInUseEntity packet = (WrappedPacketPlayInUseEntity) event.getPacket();
 
@@ -32,14 +32,14 @@ public class KillAuraA extends PacketCheck {
                 return;
             }
 
-            int entityId = packet.getEntityId();
+            int packetEntityId = packet.getEntityId();
 
-            if (this.sameTick && (entityId != this.entityId)) {
-                fail("entityId", entityId, "previousEntityId", this.entityId);
+            if (sameTick && (packetEntityId != entityId)) {
+                fail("entityId", packetEntityId, "previousEntityId", entityId);
             }
 
-            this.entityId = entityId;
-            this.sameTick = true;
+            sameTick = true;
+            entityId = packetEntityId;
         }
     }
 }

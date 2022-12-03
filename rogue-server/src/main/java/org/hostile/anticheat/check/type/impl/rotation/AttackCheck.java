@@ -13,7 +13,7 @@ public abstract class AttackCheck extends RotationCheck {
 
     @Override
     public void handle(RotationEvent event) {
-        if (!actionTracker.isAttacking()) {
+        if (!actionTracker.hasAttackedRecently()) {
             return;
         }
 

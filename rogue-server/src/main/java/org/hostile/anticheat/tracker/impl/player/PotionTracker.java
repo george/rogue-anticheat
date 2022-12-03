@@ -1,4 +1,4 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.player;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,7 +40,7 @@ public class PotionTracker extends Tracker {
                 return;
             }
 
-            this.pendingPotions.add(new Potion(
+            pendingPotions.add(new Potion(
                     PotionEffectType.of(packet.getEffectId()),
                     packet.getAmplifier(),
                     packet.getDuration(),
@@ -51,7 +51,7 @@ public class PotionTracker extends Tracker {
 
             short transactionId = packet.getTransactionId();
 
-            this.pendingPotions.removeIf(potion -> {
+            pendingPotions.removeIf(potion -> {
                 if (potion.getTransactionId() == transactionId) {
                     potion.setExpiresAt(data.getTicksExisted() + (20 * potion.getDuration()));
                     this.activePotions.add(potion);
@@ -61,7 +61,7 @@ public class PotionTracker extends Tracker {
                 return false;
             });
         } else if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
-            this.activePotions.removeIf(potion -> potion.getExpiresAt() <= data.getTicksExisted());
+            activePotions.removeIf(potion -> potion.getExpiresAt() <= data.getTicksExisted());
         } else if (event.getPacket() instanceof WrappedPacketPlayOutRemoveEntityEffect) {
             WrappedPacketPlayOutRemoveEntityEffect packet = (WrappedPacketPlayOutRemoveEntityEffect) event.getPacket();
 
@@ -69,7 +69,7 @@ public class PotionTracker extends Tracker {
                 return;
             }
 
-            this.pendingPotions.add(new Potion(
+            pendingPotions.add(new Potion(
                     PotionEffectType.of(packet.getEffectId()),
                     0,
                     0,

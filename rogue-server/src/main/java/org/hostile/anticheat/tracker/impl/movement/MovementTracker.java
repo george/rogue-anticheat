@@ -1,5 +1,6 @@
-package org.hostile.anticheat.tracker.impl;
+package org.hostile.anticheat.tracker.impl.movement;
 
+import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,7 @@ public class MovementTracker extends Tracker {
 
     private boolean smallMove;
     private boolean teleporting;
+    private boolean inVehicle;
 
     private double walkSpeed = 0.2;
 
@@ -61,39 +63,39 @@ public class MovementTracker extends Tracker {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
             WrappedPacketPlayInFlying packet = (WrappedPacketPlayInFlying) event.getPacket();
 
-            this.smallMove = false;
-            this.teleporting = false;
+            smallMove = false;
+            teleporting = false;
 
-            if (!packet.isMoving()) {
-                this.smallMove = true;
-                return;
-            }
+            JsonObject jsonObject = event.getJsonObject();
 
-            this.gamemode = event.getJsonObject().get("gamemode").getAsString();
-            this.walkSpeed = event.getJsonObject().get("walkSpeed").getAsDouble();
+            gamemode = jsonObject.get("gamemode").getAsString();
+            walkSpeed = jsonObject.get("walkSpeed").getAsDouble();
+            inVehicle = jsonObject.get("inVehicle").getAsBoolean();
 
-            double x = this.currentLocation.getX();
-            double y = this.currentLocation.getY();
-            double z = this.currentLocation.getZ();
+            double x = currentLocation.getX();
+            double y = currentLocation.getY();
+            double z = currentLocation.getZ();
 
-            float yaw = this.currentLocation.getYaw();
-            float pitch = this.currentLocation.getPitch();
+            float yaw = currentLocation.getYaw();
+            float pitch = currentLocation.getPitch();
 
             if (packet.isMoving()) {
                 x = packet.getX();
                 y = packet.getY();
                 z = packet.getZ();
+            } else {
+                smallMove = true;
             }
 
             if (packet.isRotating()) {
                 yaw = packet.getYaw();
                 pitch = packet.getPitch();
 
-                float deltaYaw = Math.abs(yaw - this.currentLocation.getYaw());
-                float deltaPitch = Math.abs(pitch - this.currentLocation.getPitch());
+                float deltaYaw = Math.abs(yaw - currentLocation.getYaw());
+                float deltaPitch = Math.abs(pitch - currentLocation.getPitch());
 
-                float lastDeltaYaw = Math.abs(this.currentLocation.getYaw() - this.previousLocation.getYaw());
-                float lastDeltaPitch = Math.abs(this.currentLocation.getPitch() - this.previousLocation.getPitch());
+                float lastDeltaYaw = Math.abs(currentLocation.getYaw() - previousLocation.getYaw());
+                float lastDeltaPitch = Math.abs(currentLocation.getPitch() - previousLocation.getPitch());
 
                 float accelerationYaw = Math.abs(deltaYaw - lastDeltaYaw);
                 float accelerationPitch = Math.abs(deltaPitch - lastDeltaPitch);
@@ -109,11 +111,11 @@ public class MovementTracker extends Tracker {
                 double sensitivityModY = Math.cbrt(0.8333 * gcdY);
                 double sensTwoY = (1.666 * sensitivityModY) - 0.3333;
 
-                this.sensitivitySamplesPitch.add(sensTwoX * 200);
-                this.sensitivitySamplesYaw.add(sensTwoY * 200);
+                sensitivitySamplesPitch.add(sensTwoX * 200);
+                sensitivitySamplesYaw.add(sensTwoY * 200);
 
-                double sensitivityX = MathUtil.getMode(this.sensitivitySamplesPitch);
-                double sensitivityY = MathUtil.getMode(this.sensitivitySamplesYaw);
+                double sensitivityX = MathUtil.getMode(sensitivitySamplesPitch);
+                double sensitivityY = MathUtil.getMode(sensitivitySamplesYaw);
 
                 RotationEvent rotationEvent = new RotationEvent(
                         yaw, pitch, deltaYaw, deltaPitch, lastDeltaYaw, lastDeltaPitch, accelerationYaw,
@@ -126,13 +128,13 @@ public class MovementTracker extends Tracker {
 
             CustomLocation location = new CustomLocation(x, y, z, yaw, pitch, packet.isOnGround());
 
-            this.previousLocation = this.currentLocation;
-            this.currentLocation = location;
+            previousLocation = currentLocation;
+            currentLocation = location;
 
-            for(Vector teleport : this.pendingTeleports) {
+            for(Vector teleport : pendingTeleports) {
                 if (teleport.getX() == x && teleport.getY() == y && teleport.getZ() == z) {
-                    this.pendingTeleports.remove(teleport);
-                    this.teleporting = true;
+                    pendingTeleports.remove(teleport);
+                    teleporting = true;
 
                     break;
                 }
@@ -144,26 +146,26 @@ public class MovementTracker extends Tracker {
                 if (previousLocation.getX() != 0 || previousLocation.getY() != 0 || previousLocation.getZ() != 0) {
                     //TODO: Handle large movements
                 }
-            } else if (!canFly()) {
-                PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(location, this.previousLocation);
+            } else if (!canFly() && !inVehicle) {
+                PositionUpdateEvent positionUpdateEvent = new PositionUpdateEvent(location, previousLocation);
 
                 data.getChecks(check -> check instanceof PositionUpdateCheck)
                         .forEach(check -> ((PositionUpdateCheck) check).handle(positionUpdateEvent));
             }
 
-            this.pendingFirstTickVelocities.removeIf(velocity -> {
-                VelocityEvent velocityEvent = new VelocityEvent(location, this.previousLocation, velocity);
+            pendingFirstTickVelocities.removeIf(velocity -> {
+                VelocityEvent velocityEvent = new VelocityEvent(location, previousLocation, velocity);
 
                 data.getChecks(check -> check instanceof VelocityCheck)
                         .forEach(check -> ((VelocityCheck) check).handle(velocityEvent));
                 return true;
             });
 
-            this.activeVelocities.removeIf(velocity -> velocity.getCompletedTick() >= data.getTicksExisted());
+            activeVelocities.removeIf(velocity -> velocity.getCompletedTick() >= data.getTicksExisted());
         } else if (event.getPacket() instanceof WrappedPacketPlayOutPosition) {
             WrappedPacketPlayOutPosition packet = (WrappedPacketPlayOutPosition) event.getPacket();
 
-            this.pendingTeleports.add(new Vector(
+            pendingTeleports.add(new Vector(
                     packet.getX(),
                     packet.getY(),
                     packet.getZ()
@@ -175,33 +177,33 @@ public class MovementTracker extends Tracker {
                 return;
             }
 
-            this.pendingVelocities.add(new Velocity(
+            pendingVelocities.add(new Velocity(
                     packet.getVelocityX() / 8000D,
                     packet.getVelocityY() / 8000D,
                     packet.getVelocityZ() / 8000D,
-                    this.data.getPingTracker().getLastTransaction()
+                    data.getPingTracker().getLastTransaction()
             ));
         } else if (event.getPacket() instanceof WrappedPacketPlayOutAbilities) {
             WrappedPacketPlayOutAbilities packet = (WrappedPacketPlayOutAbilities) event.getPacket();
 
-            this.pendingAbilities.add(new Abilities(
+            pendingAbilities.add(new Abilities(
                     packet.isCanFly(),
                     packet.isFlying(),
-                    this.data.getPingTracker().getLastTransaction()
+                    data.getPingTracker().getLastTransaction()
             ));
         } else if (event.getPacket() instanceof WrappedPacketPlayInTransaction) {
             WrappedPacketPlayInTransaction packet = (WrappedPacketPlayInTransaction) event.getPacket();
 
             short transactionId = packet.getTransactionId();
 
-            this.pendingVelocities.removeIf((velocity) -> {
+            pendingVelocities.removeIf((velocity) -> {
                 if (transactionId == velocity.getTransactionId()) {
                     velocity.setCompletedTick(data.getTicksExisted() + (int)
                             ((Math.hypot(velocity.getVelocityX(), velocity.getVelocityZ()) / 2 + 2) * 15)
                     );
 
-                    this.activeVelocities.add(velocity);
-                    this.pendingFirstTickVelocities.add(
+                    activeVelocities.add(velocity);
+                    pendingFirstTickVelocities.add(
                             new Vector(velocity.getVelocityX(), velocity.getVelocityY(), velocity.getVelocityZ())
                     );
 
@@ -211,7 +213,7 @@ public class MovementTracker extends Tracker {
                 return false;
             });
 
-            this.pendingAbilities.removeIf((pendingAbilities) -> {
+            pendingAbilities.removeIf((pendingAbilities) -> {
                 if (transactionId == pendingAbilities.getTransactionId()) {
                     this.abilities = pendingAbilities;
                     return true;
