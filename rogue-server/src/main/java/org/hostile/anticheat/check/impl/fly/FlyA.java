@@ -25,11 +25,11 @@ public class FlyA extends PositionUpdateCheck {
         boolean mathematicallyOnGround = collisions.isMathematicallyOnGround();
 
         if (packetOnGround && !collisionOnGround) {
-            if (incrementBuffer(1) > 5) {
+            if (incrementBuffer(1) > 8) {
                 fail("packetOnGround", true, "collisionOnGround", false);
             }
         } else if (!packetOnGround && (collisionOnGround && mathematicallyOnGround)) {
-            if (incrementBuffer(1) > 5) {
+            if (incrementBuffer(1) > 8) {
                 fail("packetOnGround", false, "collisionOnGround", true, "mathematicallyOnGround", true);
             }
         } else {

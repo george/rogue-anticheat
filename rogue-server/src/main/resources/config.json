@@ -50,7 +50,19 @@
       "check_type": "BadPackets",
       "check_name": "A",
       "action": "flag",
-      "max_violations": 10
+      "max_violations": 1
+    },
+    {
+      "check_type": "BadPackets",
+      "check_name": "B",
+      "action": "flag",
+      "max_violations": 5
+    },
+    {
+      "check_type": "BadPackets",
+      "check_name": "C",
+      "action": "flag",
+      "max_violations": 5
     },
     {
       "check_type": "Fly",

@@ -26,6 +26,7 @@ public class PacketWrapper {
         PACKET_MAP.put(PacketType.Play.Client.ENCHANT_ITEM, getConstructor(WrappedPacketPlayInEnchantItem.class));
         PACKET_MAP.put(PacketType.Play.Client.ENTITY_ACTION, getConstructor(WrappedPacketPlayInEntityAction.class));
         PACKET_MAP.put(PacketType.Play.Client.FLYING, getConstructor(WrappedPacketPlayInFlying.class));
+        PACKET_MAP.put(PacketType.Play.Client.HELD_ITEM_SLOT, getConstructor(WrappedPacketPlayInHeldItemSlot.class));
         PACKET_MAP.put(PacketType.Play.Client.LOOK, getConstructor(WrappedPacketPlayInLook.class));
         PACKET_MAP.put(PacketType.Play.Client.POSITION, getConstructor(WrappedPacketPlayInPosition.class));
         PACKET_MAP.put(PacketType.Play.Client.POSITION_LOOK, getConstructor(WrappedPacketPlayInPositionLook.class));
@@ -47,6 +48,7 @@ public class PacketWrapper {
         PACKET_MAP.put(PacketType.Play.Server.ENTITY_MOVE_LOOK, getConstructor(WrappedPacketPlayOutEntityLookMove.class));
         PACKET_MAP.put(PacketType.Play.Server.ENTITY_TELEPORT, getConstructor(WrappedPacketPlayOutEntityTeleport.class));
         PACKET_MAP.put(PacketType.Play.Server.ENTITY_VELOCITY, getConstructor(WrappedPacketPlayOutEntityVelocity.class));
+        PACKET_MAP.put(PacketType.Play.Server.HELD_ITEM_SLOT, getConstructor(WrappedPacketPlayOutHeldItemSlot.class));
         PACKET_MAP.put(PacketType.Play.Server.KEEP_ALIVE, getConstructor(WrappedPacketPlayOutKeepAlive.class));
         PACKET_MAP.put(PacketType.Play.Server.NAMED_ENTITY_SPAWN, getConstructor(WrappedPacketPlayOutNamedEntitySpawn.class));
         PACKET_MAP.put(PacketType.Play.Server.POSITION, getConstructor(WrappedPacketPlayOutPosition.class));

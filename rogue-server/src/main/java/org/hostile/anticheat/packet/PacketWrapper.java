@@ -24,6 +24,7 @@ public class PacketWrapper {
         PACKET_MAP.put("in_custom_payload", getConstructor(WrappedPacketPlayInCustomPayload.class));
         PACKET_MAP.put("in_enchant_item", getConstructor(WrappedPacketPlayInEnchantItem.class));
         PACKET_MAP.put("in_entity_action", getConstructor(WrappedPacketPlayInEntityAction.class));
+        PACKET_MAP.put("in_held_item_slot", getConstructor(WrappedPacketPlayInHeldItemSlot.class));
         PACKET_MAP.put("in_flying", getConstructor(WrappedPacketPlayInFlying.class));
         PACKET_MAP.put("in_keep_alive", getConstructor(WrappedPacketPlayInKeepAlive.class));
         PACKET_MAP.put("in_resource_pack", getConstructor(WrappedPacketPlayInResourcePackStatus.class));
@@ -42,6 +43,7 @@ public class PacketWrapper {
         PACKET_MAP.put("out_entity_effect", getConstructor(WrappedPacketPlayOutEntityEffect.class));
         PACKET_MAP.put("out_entity_teleport", getConstructor(WrappedPacketPlayOutEntityTeleport.class));
         PACKET_MAP.put("out_entity_velocity", getConstructor(WrappedPacketPlayOutEntityVelocity.class));
+        PACKET_MAP.put("out_held_item_slot", getConstructor(WrappedPacketPlayOutHeldItemSlot.class));
         PACKET_MAP.put("out_keep_alive", getConstructor(WrappedPacketPlayOutKeepAlive.class));
         PACKET_MAP.put("out_named_entity_spawn", getConstructor(WrappedPacketPlayOutNamedEntitySpawn.class));
         PACKET_MAP.put("out_position", getConstructor(WrappedPacketPlayOutPosition.class));

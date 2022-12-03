@@ -8,6 +8,7 @@ import org.hostile.anticheat.check.impl.autoclicker.AutoClickerB;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerC;
 import org.hostile.anticheat.check.impl.autoclicker.AutoClickerD;
 import org.hostile.anticheat.check.impl.badpackets.BadPacketsA;
+import org.hostile.anticheat.check.impl.badpackets.BadPacketsB;
 import org.hostile.anticheat.check.impl.fly.FlyA;
 import org.hostile.anticheat.check.impl.fly.FlyB;
 import org.hostile.anticheat.check.impl.reach.ReachA;
@@ -30,7 +31,7 @@ public class CheckManager {
 
             AutoClickerA.class, AutoClickerB.class, AutoClickerC.class, AutoClickerD.class,
 
-            BadPacketsA.class,
+            BadPacketsA.class, BadPacketsB.class,
 
             FlyA.class, FlyB.class,
 
