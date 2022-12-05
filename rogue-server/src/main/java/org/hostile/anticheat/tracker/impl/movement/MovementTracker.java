@@ -176,7 +176,7 @@ public class MovementTracker extends Tracker {
             if (packet.getEntityId() != data.getEntityId()) {
                 return;
             }
-
+    
             pendingVelocities.add(new Velocity(
                     packet.getVelocityX() / 8000D,
                     packet.getVelocityY() / 8000D,

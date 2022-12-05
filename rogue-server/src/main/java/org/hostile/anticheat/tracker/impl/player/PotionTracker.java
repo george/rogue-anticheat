@@ -40,6 +40,10 @@ public class PotionTracker extends Tracker {
                 return;
             }
 
+            if (packet.getEntityId() != data.getEntityId()) {
+                return;
+            }
+
             pendingPotions.add(new Potion(
                     PotionEffectType.of(packet.getEffectId()),
                     packet.getAmplifier(),

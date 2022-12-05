@@ -133,7 +133,7 @@ public class MathUtil {
      * @param samples The samples to check the skewness of
      * @return The skewness of the samples
      */
-    public double skewness(List<? extends Number> samples) {
+    public double getSkewness(List<? extends Number> samples) {
         double average = getAverage(samples);
         double standardDeviation = getStandardDeviation(samples);
         double median = getMedian(samples);

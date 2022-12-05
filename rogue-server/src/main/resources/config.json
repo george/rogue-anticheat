@@ -47,6 +47,12 @@
       "max_violations": 10
     },
     {
+      "check_type": "AutoClicker",
+      "check_name": "E",
+      "action": "flag",
+      "max_violations": 10
+    },
+    {
       "check_type": "BadPackets",
       "check_name": "A",
       "action": "flag",

@@ -3,10 +3,7 @@ package org.hostile.anticheat.manager;
 import org.hostile.anticheat.check.impl.aimassist.AimAssistA;
 import org.hostile.anticheat.check.impl.aimassist.AimAssistB;
 import org.hostile.anticheat.check.impl.aimassist.AimAssistC;
-import org.hostile.anticheat.check.impl.autoclicker.AutoClickerA;
-import org.hostile.anticheat.check.impl.autoclicker.AutoClickerB;
-import org.hostile.anticheat.check.impl.autoclicker.AutoClickerC;
-import org.hostile.anticheat.check.impl.autoclicker.AutoClickerD;
+import org.hostile.anticheat.check.impl.autoclicker.*;
 import org.hostile.anticheat.check.impl.badpackets.BadPacketsA;
 import org.hostile.anticheat.check.impl.badpackets.BadPacketsB;
 import org.hostile.anticheat.check.impl.fly.FlyA;
@@ -30,6 +27,7 @@ public class CheckManager {
             AimAssistA.class, AimAssistB.class, AimAssistC.class,
 
             AutoClickerA.class, AutoClickerB.class, AutoClickerC.class, AutoClickerD.class,
+            AutoClickerE.class,
 
             BadPacketsA.class, BadPacketsB.class,
 
