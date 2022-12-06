@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.fly;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
+import org.hostile.anticheat.check.type.impl.movement.PositionUpdateCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PositionUpdateEvent;
 import org.hostile.anticheat.location.CustomLocation;

@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.hostile.anticheat.check.type.impl.PositionUpdateCheck;
-import org.hostile.anticheat.check.type.impl.VelocityCheck;
-import org.hostile.anticheat.check.type.impl.rotation.RotationCheck;
+import org.hostile.anticheat.check.type.impl.movement.PositionUpdateCheck;
+import org.hostile.anticheat.check.type.impl.movement.VelocityCheck;
+import org.hostile.anticheat.check.type.impl.movement.RotationCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.event.PositionUpdateEvent;

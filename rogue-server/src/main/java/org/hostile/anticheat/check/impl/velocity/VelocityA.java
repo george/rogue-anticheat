@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.velocity;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.VelocityCheck;
+import org.hostile.anticheat.check.type.impl.movement.VelocityCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.VelocityEvent;
 import org.hostile.anticheat.location.CustomLocation;

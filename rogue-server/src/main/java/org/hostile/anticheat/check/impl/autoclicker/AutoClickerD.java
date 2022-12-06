@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.autoclicker;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.PacketCheck;
+import org.hostile.anticheat.check.type.impl.packet.PacketCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInArmAnimation;
@@ -10,8 +10,6 @@ import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Checks for excessively high CPS without double-clicking

@@ -1,5 +1,6 @@
-package org.hostile.anticheat.check.type.impl.rotation;
+package org.hostile.anticheat.check.type.impl;
 
+import org.hostile.anticheat.check.type.impl.movement.RotationCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.RotationEvent;
 

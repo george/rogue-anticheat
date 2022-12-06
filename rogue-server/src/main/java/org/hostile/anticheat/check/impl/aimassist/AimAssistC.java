@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.aimassist;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.rotation.AttackCheck;
+import org.hostile.anticheat.check.type.impl.AttackCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.RotationEvent;
 

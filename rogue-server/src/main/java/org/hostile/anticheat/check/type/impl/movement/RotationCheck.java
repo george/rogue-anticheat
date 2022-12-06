@@ -1,4 +1,4 @@
-package org.hostile.anticheat.check.type.impl.rotation;
+package org.hostile.anticheat.check.type.impl.movement;
 
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;

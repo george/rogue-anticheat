@@ -1,6 +1,6 @@
 package org.hostile.anticheat.check.type.impl;
 
-import org.hostile.anticheat.check.type.impl.PacketCheck;
+import org.hostile.anticheat.check.type.impl.packet.PacketCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInArmAnimation;

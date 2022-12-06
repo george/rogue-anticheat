@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.aimassist;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.rotation.AttackCheck;
+import org.hostile.anticheat.check.type.impl.AttackCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.RotationEvent;
 
@@ -19,7 +19,7 @@ public class AimAssistB extends AttackCheck {
 
         if (deltaPitch > 0.1 && gcd < 0.009) {
             if (incrementBuffer(1) > 5) {
-                fail("gcd", gcd);
+//                fail("gcd", gcd);
             }
         } else {
             decrementBuffer(0.35);

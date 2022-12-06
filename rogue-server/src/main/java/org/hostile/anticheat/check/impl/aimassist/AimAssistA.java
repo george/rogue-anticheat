@@ -1,7 +1,7 @@
 package org.hostile.anticheat.check.impl.aimassist;
 
 import org.hostile.anticheat.check.annotation.CheckMetadata;
-import org.hostile.anticheat.check.type.impl.rotation.AttackCheck;
+import org.hostile.anticheat.check.type.impl.AttackCheck;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.RotationEvent;
 
@@ -23,7 +23,7 @@ public class AimAssistA extends AttackCheck {
 
         if (sensitivityX < 0 && sensitivityY < 0) {
             if (incrementBuffer(1) > 10) {
-                fail("sensitivityX", sensitivityX, "sensitivityY", sensitivityY);
+//                fail("sensitivityX", sensitivityX, "sensitivityY", sensitivityY);
             }
         } else {
             decrementBuffer(0.25);

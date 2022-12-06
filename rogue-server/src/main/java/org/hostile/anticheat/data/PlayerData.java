@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import org.hostile.anticheat.AntiCheatServer;
 import org.hostile.anticheat.check.type.Check;
-import org.hostile.anticheat.check.type.impl.PacketCheck;
+import org.hostile.anticheat.check.type.impl.packet.PacketCheck;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInFlying;
 import org.hostile.anticheat.tracker.impl.entity.EntityTracker;

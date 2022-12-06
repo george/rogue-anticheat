@@ -1,4 +1,4 @@
-package org.hostile.anticheat.check.type.impl;
+package org.hostile.anticheat.check.type.impl.packet;
 
 import org.hostile.anticheat.check.type.Check;
 import org.hostile.anticheat.data.PlayerData;
