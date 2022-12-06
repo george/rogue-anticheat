@@ -4,7 +4,7 @@ A Spigot AntiCheat plugin utilizing remote check processing
 
 ## Purpose & Structure
 
-Rogue was designed to allow AntiCheat checks to be processed remotely. Rogue collections minimal, essential data before sending it remotely to be processed by the Rogue server. This structure prevents Rogue from causing server lag, while maintaining check accuracy.
+Rogue was designed to allow AntiCheat checks to be processed remotely. Rogue collects minimal, essential data before sending it remotely to be processed by the Rogue server. This structure prevents Rogue from causing server lag, while maintaining check accuracy.
 
 ## Libraries Used
 
