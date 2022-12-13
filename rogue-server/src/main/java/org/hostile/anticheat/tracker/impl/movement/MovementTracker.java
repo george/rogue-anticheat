@@ -52,8 +52,6 @@ public class MovementTracker extends Tracker {
 
     private double walkSpeed = 0.2;
 
-    private String gamemode = "SURVIVAL";
-
     public MovementTracker(PlayerData data) {
         super(data);
     }
@@ -68,7 +66,6 @@ public class MovementTracker extends Tracker {
 
             JsonObject jsonObject = event.getJsonObject();
 
-            gamemode = jsonObject.get("gamemode").getAsString();
             walkSpeed = jsonObject.get("walkSpeed").getAsDouble();
             inVehicle = jsonObject.get("inVehicle").getAsBoolean();
 
@@ -225,7 +222,7 @@ public class MovementTracker extends Tracker {
     }
 
     public boolean canFly() {
-        return (abilities.isCanFly() && abilities.isFlying()) || gamemode.equalsIgnoreCase("CREATIVE");
+        return (abilities.isCanFly() && abilities.isFlying()) || data.getGameMode().equalsIgnoreCase("CREATIVE");
     }
 
     public double getVelocityXZ() {

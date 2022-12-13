@@ -41,6 +41,9 @@ public class PlayerData {
     private int entityId;
     private int ticksExisted;
 
+    private String gameMode;
+    private String worldName;
+
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
 
@@ -57,7 +60,12 @@ public class PlayerData {
     public void handle(PacketEvent event) {
         if (event.getPacket() instanceof WrappedPacketPlayInFlying) {
             ++ticksExisted;
-            entityId = event.getJsonObject().get("entityId").getAsInt();
+
+            JsonObject object = event.getJsonObject();
+
+            entityId = object.get("entityId").getAsInt();
+            gameMode = object.get("gamemode").getAsString();
+            worldName = object.get("world").getAsString();
         }
 
         actionTracker.handle(event);

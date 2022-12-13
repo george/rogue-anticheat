@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.hostile.anticheat.data.PlayerData;
 import org.hostile.anticheat.event.PacketEvent;
 import org.hostile.anticheat.location.Vector;
+import org.hostile.anticheat.packet.inbound.WrappedPacketPlayInTransaction;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutDestroyEntities;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutEntity;
 import org.hostile.anticheat.packet.outbound.WrappedPacketPlayOutEntityTeleport;
@@ -12,12 +13,17 @@ import org.hostile.anticheat.tracker.Tracker;
 import org.hostile.anticheat.util.entity.TrackedEntity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Getter
 public class EntityTracker extends Tracker {
 
-    private final Map<Integer, TrackedEntity> trackedEntities = new HashMap<>();
+    private final Map<Short, Queue<Runnable>> lagCompensation = new ConcurrentHashMap<>();
+    private final Map<Integer, TrackedEntity> trackedEntities = new ConcurrentHashMap<>();
 
     public EntityTracker(PlayerData data) {
         super(data);
@@ -38,7 +44,7 @@ public class EntityTracker extends Tracker {
             double y = (double) packet.getPosY() / 32D;
             double z = (double) packet.getPosZ() / 32D;
 
-            entity.handleRelMove(x, y, z);
+            add(() -> entity.handleRelMove(x, y, z));
         } else if (event.getPacket() instanceof WrappedPacketPlayOutEntityTeleport) {
             WrappedPacketPlayOutEntityTeleport packet = (WrappedPacketPlayOutEntityTeleport) event.getPacket();
 
@@ -48,7 +54,7 @@ public class EntityTracker extends Tracker {
             double y = (double) packet.getPosY() / 32D;
             double z = (double) packet.getPosZ() / 32D;
 
-            entity.addPosition(new Vector(x, y, z));
+            add(() -> entity.addPosition(new Vector(x, y, z)));
         } else if (event.getPacket() instanceof WrappedPacketPlayOutNamedEntitySpawn) {
             WrappedPacketPlayOutNamedEntitySpawn packet = (WrappedPacketPlayOutNamedEntitySpawn) event.getPacket();
 
@@ -58,11 +64,24 @@ public class EntityTracker extends Tracker {
             double y = packet.getPosY() / 32D;
             double z = packet.getPosZ() / 32D;
 
-            entity.addPosition(new Vector(x, y, z));
+            add(() -> entity.addPosition(new Vector(x, y, z)));
         } else if (event.getPacket() instanceof WrappedPacketPlayOutDestroyEntities) {
             WrappedPacketPlayOutDestroyEntities packet = (WrappedPacketPlayOutDestroyEntities) event.getPacket();
 
-            packet.getEntities().forEach(trackedEntities::remove);
+            add(() -> packet.getEntities().forEach(trackedEntities::remove));
+        } else if (event.getPacket() instanceof WrappedPacketPlayInTransaction) {
+            WrappedPacketPlayInTransaction packet = (WrappedPacketPlayInTransaction) event.getPacket();
+
+            short transactionId = packet.getTransactionId();
+
+            lagCompensation.getOrDefault(transactionId, new ConcurrentLinkedQueue<>()).forEach(Runnable::run);
+            lagCompensation.remove(transactionId);
         }
+    }
+
+    public void add(Runnable runnable) {
+        lagCompensation.computeIfAbsent(data.getPingTracker().getLastTransaction(),
+                (transaction) -> new ConcurrentLinkedQueue<>()
+        ).add(runnable);
     }
 }

@@ -53,7 +53,8 @@ public class RogueWebClient {
                         .addProperty("gamemode", player.getGameMode().name())
                         .addProperty("walkSpeed", player.getWalkSpeed())
                         .addProperty("entityId", player.getEntityId())
-                        .addProperty("inVehicle", player.getVehicle() != null);
+                        .addProperty("inVehicle", player.getVehicle() != null)
+                        .addProperty("world", player.getWorld().getName());
             }
 
             String payload = GSON.toJson(jsonChain.getJsonObject());
